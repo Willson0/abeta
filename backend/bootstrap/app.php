@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except:[
             '*'
         ]);
-        $middleware->append(CorsMiddleware::class);
+       // $middleware->append(CorsMiddleware::class);
         $middleware->append(\App\Http\Middleware\LoggingMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {

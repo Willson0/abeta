@@ -15,21 +15,21 @@ class CorsMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $response = $next($request);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With, tuna-skip-browser-warning');
-        $response->headers->set('Access-Control-Max-Age', '86400'); // Кэширование preflight на 24 часа
-
-        // Обрабатываем preflight-запрос (OPTIONS)
-        if ($request->getMethod() === 'OPTIONS') {
-            return response()->json([], 204)
-                ->header('Access-Control-Allow-Origin', '*')
+        if ($request->getMethod() == "OPTIONS") {
+            return response()
+                ->json([], 204) // Ответ для OPTIONS
+                ->header('Access-Control-Allow-Origin', 'https://exobloom.ru/')
                 ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-                ->header('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With, tuna-skip-browser-warning');
+                ->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Authorization')
+                ->header('Access-Control-Allow-Credentials', 'true');
         }
 
-        return $response;
+//        return response()->json($request->getHost());
+        return $next($request)
+            ->header('Access-Control-Allow-Origin', 'https://exobloom.ru') // Разрешаем только ваш фронтенд
+            ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS') // Разрешаем эти методы
+            ->header('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, Authorization') // Разрешаем эти заголовки
+            ->header('Access-Control-Allow-Credentials', 'true'); // Разрешаем куки;
     }
+
 }

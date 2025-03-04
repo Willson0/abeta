@@ -5,15 +5,15 @@ services:
     image: nginx:latest
     container_name: nginx
     ports:
-      - "8021:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - ./backend:/var/www/laravel
       - ./frontend/dist:/var/www/vue
-      - ./certs/domain.crt:/etc/ssl/certs/domain.crt
       - ./certs/domain.key:/etc/ssl/private/domain.key
       # Опционально, если есть CA-сертификат:
-      - ./certs/ca.crt:/etc/ssl/certs/ca.crt
+      - ./certs/fullchain.crt:/etc/ssl/certs/fullchain.crt
     depends_on:
       - php
       - frontend
@@ -46,3 +46,5 @@ services:
     container_name: frontend
     volumes:
       - ./frontend:/var/www/vue
+    working_dir: /var/www/vue
+    command: bash -c "npm install && npm run build && tail -f /dev/null"
