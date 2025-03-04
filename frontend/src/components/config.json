@@ -1,4 +1,4 @@
 {
-  "backend": "http://127.0.0.1:8000/",
-  "storage": "http://127.0.0.1:8000/storage/"
+  "backend": "https://exobloom.ru/api/",
+  "storage": "https://exobloom.ru/storage/"
 }

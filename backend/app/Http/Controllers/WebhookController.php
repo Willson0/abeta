@@ -835,10 +835,11 @@ class WebhookController extends Controller
             $user = User::where("telegram_id", "=", $requestUser["id"])->first();
 
             if (!$user) {
+
                 $user = User::create([
                     "telegram_id" => $requestUser["id"],
-                    "username" => $requestUser["username"],
-                    "fullname" => $requestUser["first_name"],
+                    "username" => $requestUser["username"] ?? "",
+                    "fullname" => $requestUser["first_name"] ?? "",
                     "phone" => null,
                     "notifications" => true,
                 ]);
@@ -1658,7 +1659,7 @@ class WebhookController extends Controller
 
         Http::attach(
             "photo",
-            $admins,
+            $admins[$user->id]["eventImage"],
             "preview.jpg"
         )->post("https://api.telegram.org/bot{$token}/sendPhoto", [
             "chat_id" => $user->telegram_id,
