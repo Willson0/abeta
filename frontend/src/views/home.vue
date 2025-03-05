@@ -150,13 +150,13 @@
                 </div>
             </div>
         </div>
-        <all-component :feed="feed" v-if="selectedCategory === 'Все'"/>
-        <consultation-component v-if="selectedCategory === 'Консультация'"/>
+        <all-component :user="user" :feed="feed" v-if="selectedCategory === 'Все'"/>
+        <consultation-component :user="user" v-if="selectedCategory === 'Консультация'"/>
         <profile-component @updateUser="(newuser) => user = newuser" :user="user" v-if="selectedCategory === 'Профиль'"/>
-        <chat-component v-if="selectedCategory === 'Чат'"/>
-        <event-component :feed="feed" v-if="selectedCategory === 'Ивенты'"/>
-        <analytic-feed-component :feed="feed" v-if="selectedCategory === 'Аналитика'"/>
-        <service-component :feed="feed" v-if="selectedCategory === 'Услуги'"/>
+        <chat-component :user="user" v-if="selectedCategory === 'Чат'"/>
+        <event-component :user="user" :feed="feed" v-if="selectedCategory === 'Ивенты'"/>
+        <analytic-feed-component :user="user" :feed="feed" v-if="selectedCategory === 'Аналитика'"/>
+        <service-component :user="user" :feed="feed" v-if="selectedCategory === 'Услуги'"/>
     </div>
 </template>
 

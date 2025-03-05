@@ -52,6 +52,10 @@ export default {
         feed: {
             type: Object,
             required: true,
+        },
+        user: {
+            type: Object,
+            required: true,
         }
     }
 }
@@ -69,7 +73,7 @@ export default {
         <analytic-component v-for="analytic in feed.analytics?.slice(3,5)" :analytic="analytic" />
         <analytic-component v-for="analytic in feed.analytics?.slice(5,7)" :size="1" :analytic="analytic" />
         <analytic-component v-for="analytic in feed.analytics?.slice(7,9)" :analytic="analytic" />
-        <mail-component />
+        <mail-component :user="user"/>
         <analytic-component v-for="analytic in feed.analytics?.slice(9,11)" :analytic="analytic" />
         <consultation-experts-component />
         <analytic-component v-for="analytic in feed.analytics?.slice(11)" :size="2" :analytic="analytic"/>

@@ -15,6 +15,7 @@ export default {
             user: {},
             config: config,
             feed: {},
+            fields: {},
         }
     },
     async mounted () {
@@ -42,6 +43,11 @@ export default {
             return response.json();
         }).then((response) => {
             this.webinar = response;
+            for (let field of JSON.parse(this.webinar.fields)) {
+                const fixedEncoded = field.replace(/u([0-9A-Fa-f]{4})/g, '\\u$1');
+                const decoded = JSON.parse('"' + fixedEncoded + '"');
+                this.fields[decoded] = "";
+            }
         })
 
         await fetch (config.backend + "profile", {
@@ -72,16 +78,14 @@ export default {
             if (!this.user.fullname || !this.user.phone) return document.querySelector(".webinar_registration_error").classList.add("active");
             document.querySelector(".webinar_registration_error").classList.remove("active");
 
-            await fetch (config.backend + "webinar/" + this.$route.params.id +
-                "/registration", {
+            await fetch (config.backend + "webinar/" + this.$route.params.id + "/registration", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     "initData": window.Telegram.WebApp.initData,
-                    "fullname": this.user.fullname,
-                    "phone": this.user.phone,
+                    "data": this.fields,
                 })
             }).then((response) => {
                 return response.json();
@@ -134,13 +138,9 @@ export default {
                 <div>Для регистрации нужно указать имя и номер телефона</div>
             </div>
             <form @submit.prevent="sendData" class="webinar_registration_form">
-                <div class="form_input">
-                    <label for="name">Имя</label>
-                    <input v-model="user.fullname" type="text" name="name">
-                </div>
-                <div class="form_input">
-                    <label for="phone">Телефон</label>
-                    <input v-model="user.phone" type="text" name="phone">
+                <div class="form_input" v-for="(key, field) in fields">
+                    <label :for="field">{{ field }}</label>
+                    <input v-model="fields[field]" type="text" :name="field">
                 </div>
                 <button>Зарегестрироваться</button>
             </form>

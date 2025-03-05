@@ -9,15 +9,6 @@ use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
 {
-    public function notifications (Request $request) {
-        $user = User::where("telegram_id", $request["initData"]["user"]["id"])->first();
-
-        $user->notifications = $request->notifications;
-        $user->save();
-
-        return response()->json($user);
-    }
-
     public function store (authStoreRequest $request) {
         $user = User::where("telegram_id", $request["initData"]["user"]["id"])->first();
 

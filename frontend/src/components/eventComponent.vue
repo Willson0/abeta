@@ -35,6 +35,10 @@ export default {
         feed: {
             type: Object,
             required: true,
+        },
+        user: {
+            type: Object,
+            required: true,
         }
     },
     methods: {
@@ -74,7 +78,7 @@ export default {
         <webinar-component v-for="web in feed.old_events?.slice(0,1)" :webinar="web" />
         <webinar-component v-for="web in feed.old_events?.slice(1,2)" :size="2" :webinar="web" />
         <webinar-component v-for="web in feed.old_events?.slice(2,3)" :webinar="web" />
-        <mail-component />
+        <mail-component :user="user"/>
         <webinar-component v-for="web in feed.old_events?.slice(3,5)" :webinar="web" />
         <old-events-component :webinars="feed.old_events?.slice(5)" />
         <consultation-experts-component />
@@ -87,7 +91,7 @@ export default {
         <webinar-component v-for="web in feed.upcoming_events?.slice(3,5)" :webinar="web" />
         <webinar-component v-for="web in feed.upcoming_events?.slice(5,7)" :size="2" :webinar="web" />
         <webinar-component v-for="web in feed.upcoming_events?.slice(7,9)" :webinar="web" />
-        <mail-component />
+        <mail-component :user="user"/>
         <webinar-component v-for="web in feed.upcoming_events?.slice(9,11)" :webinar="web" />
         <consultation-experts-component />
         <webinar-component v-for="web in feed.upcoming_events?.slice(11)" :size="3" :webinar="web" />
@@ -100,7 +104,7 @@ export default {
         <webinar-component v-for="web in feed.old_events?.slice(3,5)" :webinar="web" />
         <webinar-component v-for="web in feed.old_events?.slice(5,7)" :size="2" :webinar="web" />
         <webinar-component v-for="web in feed.old_events?.slice(7,9)" :webinar="web" />
-        <mail-component />
+        <mail-component :user="user"/>
         <webinar-component v-for="web in feed.old_events?.slice(9,11)" :webinar="web" />
         <consultation-experts-component />
         <webinar-component v-for="web in feed.old_events?.slice(11)" :size="3" :webinar="web" />

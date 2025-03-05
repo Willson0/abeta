@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Analytic;
+use App\Models\Service;
 use App\Models\support;
 use App\Models\User;
+use App\Models\UserService;
 use App\Models\Webinar;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\SupportsBasicAuth;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Psy\Util\Json;
 
 class WebhookController extends Controller
@@ -26,101 +29,7 @@ class WebhookController extends Controller
 
     public function tgmessage (Request $request) {
         try {
-            $menu = [
-                "name" => "Меню",
-                "menu" => [
-                    "admin_settings" => [
-                        "name" => "Настройки",
-                        "menu" => [
-                            "admin_settings_datacollection" => [
-                                "name" => "Сбор данных",
-                                "menu" => [
-                                    "admin_settings_datacollection_what" => [
-                                        "name" => "Что собираем",
-                                    ],
-                                    "admin_settings_datacollection_phone" => [
-                                        "name" => "Требовать телефон",
-                                    ],
-                                    "admin_settings_datacollection_venture" => [
-                                        "name" => "Данные для венчурных сделок",
-                                    ]
-                                ]
-                            ],
-                            "admin_settings_support" => [
-                                "name" => "Чат поддержки",
-                            ],
-                            "admin_settings_calendly" => [
-                                "name" => "Синхронизация с Calendly",
-                            ],
-                            "admin_settings_statistics" => [
-                                "name" => "Статистика",
-                                "menu" => [
-                                    "admin_settings_statistics_toppopular" => [
-                                        "name" => "Топ популярности",
-                                    ],
-                                    "admin_settings_statistics_allcountusers" => [
-                                        "name" => "Сколько юзеров",
-                                    ],
-                                    "admin_settings_statistics_countusers" => [
-                                        "name" => "Статистика пользователей"
-                                    ],
-                                    "admin_settings_statistics_search" => [
-                                        "name" => "Поиск"
-                                    ],
-                                ]
-                            ],
-                            "admin_settings_group_chat" => [
-                                "name" => "Чат группы",
-                                "menu" => [
-                                    "admin_settings_group_chat_added" => [
-                                        "name" => "Добавлены"
-                                    ],
-                                    "admin_settings_group_chat_blocked" => [
-                                        "name" => "Заблокированы"
-                                    ],
-                                    "admin_settings_group_chat_requirements" => [
-                                        "name" => "Требования"
-                                    ]
-                                ]
-                            ],
-                            "admin_settings_venture" => [
-                                "name" => "Венчурные сделки"
-                            ]
-                        ],
-                    ],
-                    "admin_mailing" => [
-                        "name" => "Рассылка"
-                    ],
-                    "admin_events" => [
-                        "name" => "Ивенты",
-                        "menu" => [
-                            "admin_events_add" => [
-                                "name" => "Добавить"
-                            ],
-                            "admin_events_actual" => [
-                                "name" => "Актуальные"
-                            ],
-                            "admin_events_archive" => [
-                                "name" => "Архив"
-                            ],
-                        ]
-                    ],
-                    "admin_materials" => [
-                        "name" => "Материалы",
-                        "menu" => [
-                            "admin_events_add" => [
-                                "name" => "Добавить"
-                            ],
-                            "admin_events_actual" => [
-                                "name" => "Актуальные"
-                            ],
-                        ]
-                    ],
-                    "admin_edit" => [
-                        "name" => "Редактировать тексты",
-                    ]
-                ]
-            ];
+        $menu = utils::getSettings()["menu"];
 
         $token = env("TELEGRAM_BOT_TOKEN"); // Токен бота
         $editurl = "https://api.telegram.org/bot$token/editMessageReplyMarkup";
@@ -553,8 +462,8 @@ class WebhookController extends Controller
 
                     if ($admins[$user->id]["type"] === "analytics") {
                         $name = "analytics_" . time() . ".jpg";
-                        $image = "analytics/images/".$name;
-                        Storage::disk("public")->put($image, (string) $admins[$user->id]["eventImage"]);
+                        $image = "analytics/images/" . $name;
+                        Storage::disk("public")->put($image, (string)$admins[$user->id]["eventImage"]);
 
                         if ($admins[$user->id]["eventPdf"]) {
                             $name = "analytics_" . time() . ".pdf";
@@ -570,6 +479,20 @@ class WebhookController extends Controller
                             "pdf" => $pdf,
                             "locked" => 1,
                             "fields" => json_encode($fields),
+                        ]);
+                    }
+                    else if ($admins[$user->id]["type"] === "services") {
+                        $name = "services_" . time() . ".jpg";
+                        $image = "services/images/".$name;
+                        Storage::disk("public")->put($image, (string) $admins[$user->id]["eventImage"]);
+
+                        Service::create([
+                            "title" => $admins[$user->id]["eventTitle"],
+                            "description" => $admins[$user->id]["eventDescription"],
+                            "overview" => $admins[$user->id]["eventOverview"],
+                            "button" => $admins[$user->id]["eventButton"],
+                            "color" => $admins[$user->id]["eventColor"],
+                            "image" => $image,
                         ]);
                     } else {
                         $name = "webinar_" . time() . ".jpg";
@@ -634,6 +557,23 @@ class WebhookController extends Controller
                             ]);
                         }
                     }
+                    else if ($type == "services") {
+                        $analytic = Service::find($number);
+                        $photo = Storage::disk("public")->get($analytic->image);
+
+                        Http::attach(
+                            "photo",
+                            $photo,
+                            "image.jpg"
+                        )->post("https://api.telegram.org/bot{$token}/sendPhoto", [
+                            "chat_id" => $user->telegram_id,
+                            "caption" => "Новый материал: Услуга.\n\nЗаголовок: " . $analytic->title
+                                . "\nОписание: " . $analytic->description
+                                . "\nКраткое описание: " . $analytic->overview
+                                . "\nТекст кнопки: " . $analytic->button
+                                . "\nЦвет: " . $analytic->color
+                        ]);
+                    }
                     else {
                         $webinar = Webinar::find($number);
                         $photo = Storage::disk("public")->get($webinar->image);
@@ -667,6 +607,14 @@ class WebhookController extends Controller
                         Cache::forever("admins", $admins);
 
                         $this->actualEditAnalytic($user, $analytic);
+                    } else if ($admins[$user->id]["type"] === "services") {
+                        utils::answerData("Услуга №$number", $request, $user);
+                        $analytic = Service::find($number);
+
+                        $admins[$user->id]["edit_webinar"] = $analytic->id;
+                        Cache::forever("admins", $admins);
+
+                        $this->actualEditService($user, $analytic);
                     } else {
                         utils::answerData("Вебинар №$number", $request, $user);
 
@@ -696,6 +644,7 @@ class WebhookController extends Controller
 
                     $type = Cache::get("admins")[$user->id]["type"];
                     if ($type === "analytics") $webinar = Analytic::find($number);
+                    else if ($type === "services") $webinar = Service::find($number);
                     else $webinar = Webinar::find($number);
 
                     Http::post($sendurl, [
@@ -720,6 +669,7 @@ class WebhookController extends Controller
 
                     $type = Cache::get("admins")[$user->id]["type"];
                     if ($type === "analytics") $webinar = Analytic::find($number);
+                    else if ($type === "services") $webinar = Service::find($number);
                     else $webinar = Webinar::find($number);
 
                     utils::sendMessage($user->telegram_id, "Вебинар №$webinar->id ($webinar->title) успешно удален!");
@@ -823,6 +773,71 @@ class WebhookController extends Controller
 
                     utils::sendMessage($user->telegram_id, "Вы начали чат с $supUser->fullname.\n\nВопрос от пользователя:\n$support->text");
                     utils::sendMessage($supUser->telegram_id, "С вами начал чат администратор $user->fullname ($user->telegram_id).\n\nВаш вопрос:\n$support->text");
+                }
+                else if (preg_match('/^admin_services_requests_\d+$/', $request["callback_query"]["data"])) {
+                    $number = 0;
+                    if (preg_match('/(\d+)$/', $request["callback_query"]["data"], $matches))
+                        $number = (int)$matches[1];
+
+                    utils::answerData("Services", $request, $user);
+
+                    $data = UserService::find($number);
+                    Log::critical($data);
+                    $response = Http::post($sendurl, [
+                        'chat_id' => $user->telegram_id,
+                        'text' => "Вы уверены, что хотите начать выполнение запроса $number?",
+                        "reply_markup" => [
+                            "inline_keyboard" => [
+                                [["text" => "✅ Да", "callback_data" => "admin_services_requests_accept_" . $number],
+                                ["text" => "❌ Нет", "callback_data" => "admin_events_actual_delete_decline"]],
+                            ]
+                        ]
+                    ]);
+                    Log::critical($response);
+                }
+                else if (str_contains($request["callback_query"]["data"], "admin_services_requests_accept_")) {
+                    $number = 0;
+                    if (preg_match('/(\d+)$/', $request["callback_query"]["data"], $matches))
+                        $number = (int)$matches[1];
+
+                    utils::answerData("Services", $request, $user);
+
+                    $data = UserService::find($number);
+                    $str = "Вы успешно начали выполнение запроса услуги №$number\n\nДанные для связи:\n@{$data->user->username} (Telegram ID: {$data->user->telegram_id})\nИмя: {$data->user->fullname}";
+                    $data->delete();
+
+                    utils::returnToAdmin($menu, $user, $str);
+                }
+                else if (str_contains($request["callback_query"]["data"], "admin_edit_next_")) {
+                    utils::answerData("Next", $request, $user);
+
+                    $field = str_replace("admin_edit_next_", "", $request["callback_query"]["data"]);
+                    $this->findSubarrayByKey($menu, $field, $result);
+
+                    $keyboard = [];
+                    foreach ($result["menu"] as $key => $value) {
+                        $keyboard[] = [
+                            ["text" => $value["name"], "callback_data" => "admin_edit_next_$key"],
+                            ["text" => "✏️", "callback_data" => "admin_edit_edit_$key"],
+                        ];
+                    }
+
+                    Log::critical($keyboard);
+
+                    Http::post($sendurl, [
+                        'chat_id' => $user->telegram_id,
+                        'text' => $result["name"],
+                        "reply_markup" => [
+                            "inline_keyboard" => $keyboard
+                        ]
+                    ]);
+                }
+                else if (str_contains($request["callback_query"]["data"], "admin_edit_edit_")) {
+                    utils::answerData("Next", $request, $user);
+                    $user->step = $request["callback_query"]["data"];
+                    $user->save();
+
+                    utils::sendMessage($user->telegram_id, "Введите новое значение этого пункта меню:");
                 }
             }
         }
@@ -950,6 +965,23 @@ class WebhookController extends Controller
                 ]);
                 return response()->json(["status" => "ok"], 200);
             }
+            else if ($message["text"] == "/calendly") {
+                $client_id = env('CALENDLY_CLIENT_ID');
+                $redirect_uri = env('CALENDLY_CALLBACK');
+
+                $auth_code = Str::random(10);
+                $user->auth_code = $auth_code;
+                $user->save();
+
+                $query = http_build_query([
+                    'client_id'     => $client_id,
+                    'response_type' => 'code',
+                    'redirect_uri'  => $redirect_uri . "?auth_code=$auth_code",
+                ]);
+
+                $authorizationUrl = "https://auth.calendly.com/oauth/authorize?$query";
+                utils::sendMessage($user->telegram_id, $authorizationUrl);
+            }
             else if (preg_match('/^admin_settings_datacollection_what_edit_\d+$/', $user->step)) {
                 $number = 0;
                 if (preg_match('/(\d+)$/', $user->step, $matches))
@@ -1047,6 +1079,15 @@ class WebhookController extends Controller
                             ],
                         ])
                     ]);
+                else if ($admins[$user->id]["type"] === "services") {
+                    $user->step = "admin_events_add_form_overview";
+                    $user->save();
+
+                    Http::post("https://api.telegram.org/bot{$token}/sendMessage", [
+                        "chat_id" => $user->telegram_id,
+                        "text" => "Отправьте краткое описание: ",
+                    ]);
+                }
                 else utils::sendMessage($user->telegram_id, "Отправьте ссылку на конференцию: ");
             }
             else if ($user->step === "admin_events_add_form_link") {
@@ -1092,6 +1133,33 @@ class WebhookController extends Controller
                 $user->save();
                 utils::sendMessage($user->telegram_id, "Отправьте картинку для вебинара");
             }
+            else if ($user->step === "admin_events_add_form_overview") {
+                $admins = Cache::get("admins");
+                $admins[$user->id]["eventOverview"] = $message["text"];
+                Cache::forever("admins", $admins);
+
+                $user->step = "admin_events_add_form_button";
+                $user->save();
+                utils::sendMessage($user->telegram_id, "Отправьте текст кнопки");
+            }
+            else if ($user->step === "admin_events_add_form_button") {
+                $admins = Cache::get("admins");
+                $admins[$user->id]["eventButton"] = $message["text"];
+                Cache::forever("admins", $admins);
+
+                $user->step = "admin_events_add_form_color";
+                $user->save();
+                utils::sendMessage($user->telegram_id, "Отправьте цвет блока");
+            }
+            else if ($user->step === "admin_events_add_form_color") {
+                $admins = Cache::get("admins");
+                $admins[$user->id]["eventColor"] = $message["text"];
+                Cache::forever("admins", $admins);
+
+                $user->step = "admin_events_add_form_image";
+                $user->save();
+                utils::sendMessage($user->telegram_id, "Отправьте картинку: ");
+            }
             else if ($user->step === "admin_events_add_form_pdf") {
                 $pdf = $this->downloadPDF($user, $message);
                 if (!$pdf) return response("", 200);
@@ -1113,6 +1181,7 @@ class WebhookController extends Controller
                 Cache::forever("admins", $admins);
 
                 if ($admins[$user->id]["type"] === "analytics") $this->sendAddAnalyticMenu($user);
+                else if ($admins[$user->id]["type"] === "services") $this->sendAddServiceMenu($user);
                 else $this->sendAddWebinarMenu($user);
 
                 $user->step = "admin_events_add_form_check";
@@ -1138,6 +1207,7 @@ class WebhookController extends Controller
                 Cache::forever("admins", $admins);
 
                 if ($admins[$user->id]["type"] === "analytics") $this->sendAddAnalyticMenu($user);
+                else if ($admins[$user->id]["type"] === "services") $this->sendAddServiceMenu($user);
                 else $this->sendAddWebinarMenu($user);
             }
             else if (str_contains($user->step, "admin_events_actual_edit_")) {
@@ -1147,6 +1217,7 @@ class WebhookController extends Controller
                 $id = Cache::get("admins")[$user->id]["edit_webinar"];
 
                 if ($type == "analytics") $webinar = Analytic::find($id);
+                else if ($type == "services") $webinar = Service::find($id);
                 else $webinar = Webinar::find($id);
 
                 if ($field === "image") {
@@ -1174,12 +1245,14 @@ class WebhookController extends Controller
                 $photo = Storage::disk("public")->get($webinar->image);
 
                 if ($type == "analytics") $this->actualEditAnalytic($user, $webinar);
+                else if ($type == "services") $this->actualEditService($user, $webinar);
                 else $this->actualEditWebinar($photo, $token, $user, $webinar);
             }
             else if ($user->step == "admin_settings_statistics_search") {
                 $field = Cache::get("admins")[$user->id]["type"];
 
                 if ($field == "analytics") $data = Analytic::where("title", "like", "%" . $message["text"] . "%")->get();
+                if ($field == "services") $data = Service::where("title", "like", "%" . $message["text"] . "%")->get();
                 else $data = Webinar::where("title", "like", "%" . $message["text"] . "%")->get();
 
                 $text = "Поиск по запросу: " . $message["text"] . "\n\n";
@@ -1187,6 +1260,20 @@ class WebhookController extends Controller
 
                 utils::returnToAdmin($menu, $user, $text);
             }
+            else if (str_contains($user->step, "admin_edit_edit_")) {
+                $field = str_replace("admin_edit_edit_", "", $user->step);
+                $menu = utils::getSettings()["menu"];
+
+                Log::critical("НУЖНЫЙ ФИЛД: " . $field);
+
+                $this->updateMenuNameByKey($menu["menu"], $field, $message["text"]);
+
+                utils::updateSettings("menu", $menu);
+
+                utils::returnToAdmin($menu, $user, "Успешно измененно значение поля!");
+                return response ()->json([], 200);
+            }
+
             $result = [];
 
             if ($user->step == "admin_menu") $result = $menu;
@@ -1277,6 +1364,14 @@ class WebhookController extends Controller
                         $admins = Cache::get("admins");
                         $admins[$user->id]["forbidden"] = [];
                         Cache::forever("admins", $admins);
+
+                        if ($admins[$user->id]["type"] == "services") {
+                            $user->step = "admin_events_add_form_title";
+                            $user->save();
+
+                            utils::sendMessage($user->telegram_id, "Отправьте заголовок:");
+                            return response()->json([], 200);
+                        }
 
                         Http::post($url, [
                             'chat_id' => $user->telegram_id,
@@ -1374,6 +1469,53 @@ class WebhookController extends Controller
                             ]
                         ]);
                     }
+                    else if ($user->step === 'admin_services_requests') {
+                        $data = UserService::all();
+                        $keyboard = [];
+                        foreach ($data as $record) {
+                            $keyboard[] = ["text" => "Запрос от {$record->user->fullname} | {$record->service->title}",
+                                "callback_data" => "admin_services_requests_$record->id"];
+                        }
+                        $keyboard = array_chunk($keyboard, 1);
+
+                        Http::post($url, [
+                            'chat_id' => $user->telegram_id,
+                            'text' => "Обращения по услугам: ",
+                            "reply_markup" => [
+                                "inline_keyboard" => $keyboard
+                            ]
+                        ]);
+                    }
+                    else if ($user->step === "admin_settings_calendly") {
+                        $client_id = env('CALENDLY_CLIENT_ID');
+                        $redirect_uri = env('CALENDLY_CALLBACK') . "?admin=1";
+
+                        $query = http_build_query([
+                            'client_id'     => $client_id,
+                            'response_type' => 'code',
+                            'redirect_uri'  => $redirect_uri,
+                        ]);
+
+                        $authorizationUrl = "https://auth.calendly.com/oauth/authorize?$query";
+                        utils::sendMessage($user->telegram_id, "Чтобы изменить аккаунт Calendly для создания ивентов перейдите по ссылке:\n" . $authorizationUrl);
+                    }
+                    else if ($user->step === "admin_edit") {
+                        $keyboard = [];
+                        foreach ($menu["menu"] as $key => $value) {
+                            $keyboard[] = [
+                                ["text" => $value["name"], "callback_data" => "admin_edit_next_$key"],
+                                ["text" => "✏️", "callback_data" => "admin_edit_edit_$key"],
+                            ];
+                        }
+
+                        Http::post($url, [
+                            'chat_id' => $user->telegram_id,
+                            'text' => strtoupper($menu["name"]),
+                            "reply_markup" => [
+                                "inline_keyboard" => $keyboard
+                            ]
+                        ]);
+                    }
                 }
                 if ($user->step === 'admin_events') {
                     $admins = Cache::get("admins");
@@ -1383,6 +1525,11 @@ class WebhookController extends Controller
                 else if ($user->step === 'admin_materials') {
                     $admins = Cache::get("admins");
                     $admins[$user->id]["type"] = "analytics";
+                    Cache::forever("admins", $admins);
+                }
+                else if ($user->step === 'admin_services') {
+                    $admins = Cache::get("admins");
+                    $admins[$user->id]["type"] = "services";
                     Cache::forever("admins", $admins);
                 }
             }
@@ -1513,6 +1660,7 @@ class WebhookController extends Controller
 
         $admins = Cache::get("admins");
         if ($admins[$user->id]["type"] === "analytics") $query = Analytic::query();
+        else if ($admins[$user->id]["type"] === "services") $query = Service::query();
         else $query = Webinar::where("date", $sign, Carbon::now());
 
         $count = $query->count();
@@ -1570,6 +1718,34 @@ class WebhookController extends Controller
                     [["text" => "Изменить ссылку", "callback_data" => "admin_events_actual_edit_link"]],
                     [["text" => "Изменить дату", "callback_data" => "admin_events_actual_edit_date"]],
                     [["text" => "Изменить картинку", "callback_data" => "admin_events_actual_edit_image"]],
+                ],
+            ])
+        ]);
+    }
+    protected function actualEditService($user, $webinar): void
+    {
+        $token = env("TELEGRAM_BOT_TOKEN");
+        $image = Storage::disk("public")->get($webinar->image);
+
+        Http::attach(
+            "photo",
+            $image,
+            "photo.jpg"
+        )->post("https://api.telegram.org/bot{$token}/sendPhoto", [
+            "chat_id" => $user->telegram_id,
+            "caption" => "Ивент $webinar->id ID: Вебинар.\n\nЗаголовок: " . $webinar->title
+                . "\nОписание: " . $webinar->description
+                . "\nКраткое описание: " . $webinar->overview
+                . "\nТекст кнопки: " . $webinar->button
+                . "\nЦвет: " . $webinar->color
+            ,
+            "reply_markup" => json_encode([
+                "inline_keyboard" => [
+                    [["text" => "Изменить заголовок", "callback_data" => "admin_events_actual_edit_title"]],
+                    [["text" => "Изменить описание", "callback_data" => "admin_events_actual_edit_description"]],
+                    [["text" => "Изменить краткое описание", "callback_data" => "admin_events_actual_edit_overview"]],
+                    [["text" => "Изменить текст кнопки", "callback_data" => "admin_events_actual_edit_button"]],
+                    [["text" => "Изменить цвет", "callback_data" => "admin_events_actual_edit_color"]],
                 ],
             ])
         ]);
@@ -1678,14 +1854,52 @@ class WebhookController extends Controller
                 ],
             ])
         ]);
+
+
+    }
+    protected function sendAddServiceMenu ($user)
+    {
+        $admins = Cache::get("admins");
+        $token = env("TELEGRAM_BOT_TOKEN");
+
+        Http::attach(
+            "photo",
+            $admins[$user->id]["eventImage"],
+            "preview.jpg"
+        )->post("https://api.telegram.org/bot{$token}/sendPhoto", [
+            "chat_id" => $user->telegram_id,
+            "caption" => "Новый ивент: Услуга.\n\nЗаголовок: " . $admins[$user->id]["eventTitle"]
+                . "\nОписание: " . $admins[$user->id]["eventDescription"]
+                . "\nКраткое описание: " . $admins[$user->id]["eventOverview"]
+                . "\nТекст кнопки: " . $admins[$user->id]["eventButton"]
+                . "\nЦвет: " . $admins[$user->id]["eventColor"]
+            ,
+            "reply_markup" => json_encode([
+                "inline_keyboard" => [
+                    [["text" => "Изменить заголовок", "callback_data" => "admin_events_add_edit_Title"]],
+                    [["text" => "Изменить описание", "callback_data" => "admin_events_add_edit_Description"]],
+                    [["text" => "Изменить краткое описание", "callback_data" => "admin_events_add_edit_Overview"]],
+                    [["text" => "Изменить текст кнопки", "callback_data" => "admin_events_add_edit_Button"]],
+                    [["text" => "Изменить цвет", "callback_data" => "admin_events_add_edit_Color"]],
+                    [["text" => "Изменить картинку", "callback_data" => "admin_events_add_edit_Image"]],
+                    [["text" => "Добавить услугу", "callback_data" => "admin_events_add_form_add"]],
+                ],
+            ])
+        ]);
     }
     protected function downloadImage ($user, $message) {
-        if (!isset($message["photo"][0])) {
+        if (!isset($message["photo"][0]) and !isset($message["document"])) {
             utils::sendMessage($user->telegram_id,"Отправьте картинку!");
             return false;
         }
+        if (isset($message["document"])) {
+            if ($message["document"]["mime_type"] != "image/png") {
+                utils::sendMessage($user->telegram_id,"Отправьте картинку!");
+                return false;
+            }
+            $file_id = $message["document"]["file_id"];
+        } else $file_id = end($message["photo"])["file_id"];
         $token = env("TELEGRAM_BOT_TOKEN");
-        $file_id = end($message["photo"])["file_id"];
         $response = Http::post("https://api.telegram.org/bot{$token}/getFile", [
             "file_id" => $file_id,
         ]);
@@ -1716,5 +1930,24 @@ class WebhookController extends Controller
         $filePath = $fileData["result"]["file_path"];
 
         return Http::get("https://api.telegram.org/file/bot{$token}/{$filePath}");
+    }
+
+    function updateMenuNameByKey(&$menu, $targetKey, $newName) {
+        foreach ($menu as $key => &$value) {
+            Log::critical($key);
+            Log::critical($value);
+            Log::critical("-----------------------------------");
+            if ($key === $targetKey && isset($value['name'])) {
+                $value['name'] = $newName;
+                Log::critical($menu, $value);
+                return true;
+            }
+            if (is_array($value) && isset($value['menu'])) {
+                if ($this->updateMenuNameByKey($value['menu'], $targetKey, $newName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

@@ -345,11 +345,30 @@
     padding:8px 0;
     border-radius:12px;
     background-color:#191919;
-    color:white;
     font-weight:700;
     font-size:18px;
     line-height:24px;
     cursor:pointer;
+    position:relative;
+}
+
+.feed_newsletter_button>p {
+    font-weight:700;
+    font-size:18px;
+    line-height:24px;
+    opacity:0;
+    transition:0.2s;
+}
+
+.feed_newsletter_button>p:last-child {
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%, -50%);
+}
+
+.feed_newsletter_button>p.active {
+    opacity:1;
 }
 
 .feed_newsletter_button {
@@ -1157,6 +1176,8 @@ font-weight:500;
     padding-bottom:24px;
     margin-left:16px;
     min-width:280px;
+    display:flex;
+    flex-direction:column;
 }
 
 .webinar_links_zoom>img {
@@ -1183,6 +1204,7 @@ font-weight:500;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    margin-bottom:32px;
 }
 
 .webinar_links_zoom_link>a {
@@ -1198,7 +1220,7 @@ font-weight:500;
 }
 
 .webinar_links_zoom_button, .webinar_links_calendar_button {
-    margin-top:32px;
+    margin-top:auto;
     background-color:#FF734C;
     border-radius:12px;
     font-family: 'inter', serif;
@@ -1368,6 +1390,8 @@ font-weight:500;
     padding: 24px 16px 60px;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
+    width:100%;
+    box-sizing: border-box;
 }
 
 .services_popup.active>.services_popup_main {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnalyticController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CalendlyController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
@@ -28,12 +29,16 @@ Route::group (["prefix" => "api"], function () {
     });
 
     Route::group (["prefix" => "webhook"], function () {
-       Route::post("/tg", [WebhookController::class, "tgmessage"]);
+        Route::post("/tg", [WebhookController::class, "tgmessage"]);
+        Route::get("/calendly", [CalendlyController::class, "callback"]);
+        Route::get("/calendly/admin", [CalendlyController::class, "admincallback"]);
     });
 
     Route::group(["prefix" => "webinar"], function () {
         Route::post("/{id}", [WebinarController::class, "show"]);
         Route::post("/{id}/registration", [WebinarController::class, "registration"])
+            ->middleware(CheckTelegram::class);
+        Route::post("/{id}/calendar", [WebinarController::class, "calendar"])
             ->middleware(CheckTelegram::class);
     });
 

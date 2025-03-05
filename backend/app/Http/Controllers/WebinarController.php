@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\UserWebinar;
 use App\Models\Webinar;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class WebinarController extends Controller
 {
@@ -37,21 +40,49 @@ class WebinarController extends Controller
         if (UserWebinar::where("user_id", $user->id)->where("webinar_id", $webinar->id)->exists())
             abort (409, "Вы уже подавали заявку на регистрацию");
 
-        if ($user->fullname != $request->fullname or $user->phone != $request->phone)
-            $user->update([
-                "fullname" => $request->fullname,
-                "phone" => $request->phone,
-            ]);
-
         $userWebinar = UserWebinar::create([
             "user_id" => $user->id,
             "webinar_id" => $webinar->id,
-            "fullname" => $request->fullname,
-            "phone" => $request->phone,
+            "data" => json_encode($request->data),
         ]);
 
         $webinar["registered"] = true;
 
         return response()->json($webinar);
+    }
+
+    public function calendar($id, Request $request) {
+        $user = User::where("telegram_id", $request["initData"]["user"]["id"])->first();;
+        $webinar = Webinar::find($id);
+
+        if (!UserWebinar::where("user_id", $user->id)->where("webinar_id", $webinar->id)->exists())
+            abort (409, "Вы еще не зарегестрировались в этом вебинаре");
+
+        if ($user->calendly_access_token == null) abort (401, "Аккаунт calendly не привязан");
+
+        $response = Http::withToken($user->calendly_access_token)->get("https://api.calendly.com/users/me");
+        Log::critical($response);
+        Log::critical($user->calendly_access_token);
+
+        if ($response->successful()) {
+            $data = $response->json();
+            $uri = $data["resource"]["uri"];
+            $resp = Http::withToken($user->calendly_access_token)
+                ->post("https://api.calendly.com/one_off_event_types", [
+                    "name" => substr($webinar->title, 0, 50),
+                    "host" => $uri,
+                    "location" => [
+                        "kind" => "zoom_conference",
+                    ],
+                    "duration" => 60,
+                    "date_setting" => [
+                        "type" => "date_range",
+                        "start_date" => Carbon::parse($webinar->date)->toDateString(),
+                        "end_date" => Carbon::parse($webinar->date)->toDateString()
+                    ]
+                ]);
+
+            Log::critical($resp);
+        }
     }
 }
