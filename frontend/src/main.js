@@ -19,9 +19,9 @@ const router = createRouter({
     routes
 })
 
+window.Telegram.WebApp.expand();
+window.Telegram.WebApp.disableVerticalSwipes();
+
 createApp(App)
     .use(router)
     .mount('#app')
-
-window.Telegram.WebApp.expand(); // Растягиваем приложение на весь экран
-window.Telegram.WebApp.disableVerticalSwipes();
