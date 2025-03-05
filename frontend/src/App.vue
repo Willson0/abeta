@@ -1,4 +1,5 @@
 <script setup>
+window.Telegram.WebApp.expand();
 </script>
 
 <template>
