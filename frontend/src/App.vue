@@ -1,5 +1,10 @@
 <script setup>
-window.Telegram.WebApp.expand();
+export default {
+    mounted () {
+        window.Telegram.WebApp.expand();
+        window.Telegram.WebApp.disableVerticalSwipes();
+    }
+}
 </script>
 
 <template>
