@@ -122,7 +122,7 @@
                 }).then((response) => {
                     this.user = response;
                     alert (this.user);
-                    if (!this.user) {
+                    if (Object.keys(this.user).length === 0) {
                         let el = document.querySelector(".forbiddenPopup");
                         alert (el.style.display);
                         el.style.display = "flex";
