@@ -148,6 +148,7 @@
 </script>
 
 <template>
+    {{user}}
     <div class="forbiddenPopup" style="display:none"><div>Для продолжения пройдите регистрацию в боте (/start).</div></div>
     <div class="main">
         <div class="header">
