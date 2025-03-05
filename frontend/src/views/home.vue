@@ -117,17 +117,15 @@
                         "Content-Type": "application/json",
                     }
                 }).then((response) => {
-                    alert (response.ok)
-                    if (!response.ok) {
+                    return response.json();
+                }).then((response) => {
+                    this.user = response;
+                    if (!this.user) {
                         let el = document.querySelector(".forbiddenPopup");
                         alert (el.style.display);
                         el.style.display = "flex";
                         alert (el.style.display);
-
                     }
-                    return response.json();
-                }).then((response) => {
-                    this.user = response;
                 });
 
                 await fetch (config.backend + "feed/all", {
