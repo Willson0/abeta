@@ -119,9 +119,7 @@
                 }).then((response) => {
                     if (!response.ok) {
                         let el = document.querySelector(".forbiddenPopup");
-                        alert (el.style.display);
                         el.style.display = "flex";
-                        alert (el.style.display);
                     }
                     return response.json();
                 }).then((response) => {
