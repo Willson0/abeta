@@ -41,7 +41,7 @@
             window.addEventListener("scroll", () => {
                 if (this.timer) return;
                 // alert (nav.getBoundingClientRect().top);
-                if (nav.getBoundingClientRect().top <= 10 && nav.getBoundingClientRect().top >= -10) {
+                if (nav.getBoundingClientRect().top <= 10) {
                     const secondRow = document.querySelector(".main>.nav>div:last-child");
                     const top = secondRow.clientHeight;
                     const left = document.querySelector(".main>.nav>div:first-child").scrollWidth;
