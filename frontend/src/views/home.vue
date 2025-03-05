@@ -117,9 +117,11 @@
                         "Content-Type": "application/json",
                     }
                 }).then((response) => {
+                    alert (response.status);
                     return response.json();
                 }).then((response) => {
                     this.user = response;
+                    alert (this.user);
                     if (!this.user) {
                         let el = document.querySelector(".forbiddenPopup");
                         alert (el.style.display);
