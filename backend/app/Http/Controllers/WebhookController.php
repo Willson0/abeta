@@ -6,7 +6,7 @@ use App\Models\Admin;
 use App\Models\Analytic;
 use App\Models\GroupLog;
 use App\Models\Service;
-use App\Models\support;
+use App\Models\Support;
 use App\Models\User;
 use App\Models\UserService;
 use App\Models\VentureDeal;
@@ -1534,13 +1534,14 @@ class WebhookController extends Controller
                             $keyboard[] = ["text" => "[$record->user_id] $record->text", "callback_data" => "admin_settings_support_claim_$record->id"];
                         $keyboard = array_chunk($keyboard, 1);
 
-                        Http::post($url, [
+                        $resp = Http::post($url, [
                             'chat_id' => $user->telegram_id,
                             'text' => "Незакрытые вопросы в поддержку ($count): ",
                             "reply_markup" => [
                                 "inline_keyboard" => $keyboard
                             ]
                         ]);
+                        Log::critical($resp);
                     }
                     else if ($user->step === 'admin_services_requests') {
                         $data = UserService::all();

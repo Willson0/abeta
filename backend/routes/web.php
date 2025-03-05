@@ -34,7 +34,6 @@ Route::group (["prefix" => "api"], function () {
     Route::group (["prefix" => "webhook"], function () {
         Route::post("/tg", [WebhookController::class, "tgmessage"]);
         Route::get("/calendly", [CalendlyController::class, "callback"]);
-        Route::get("/calendly/admin", [CalendlyController::class, "admincallback"]);
     });
 
     Route::group(["prefix" => "webinar"], function () {
