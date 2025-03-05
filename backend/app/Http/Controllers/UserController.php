@@ -13,7 +13,7 @@ class UserController extends Controller
     public function profile (Request $request) {
         $user = User::where("telegram_id", $request["initData"]["user"]["id"])->first();
 
-        Log::critical($user);
+        if (!$user) abort (404);
 
         return $user;
     }
