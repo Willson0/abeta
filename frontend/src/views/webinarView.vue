@@ -95,6 +95,23 @@ export default {
         },
         copyLink () {
             navigator.clipboard.writeText(this.webinar.link);
+        },
+        async calendar () {
+            await fetch (config.backend + "webinar/" + this.$route.params.id + "/calendar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "initData": window.Telegram.WebApp.initData,
+                })
+            }).then((response) => {
+                if (response.ok) {
+                    let el = document.querySelector(".webinar_links_calendar_button");
+                    el.classList.add("active");
+                    setTimeout(() => el.classList.remove("active"), 3000);
+                }
+            })
         }
     },
     computed: {
@@ -173,11 +190,11 @@ export default {
             <div class="webinar_links_calendar">
                 <img src="/img/calendar.svg" alt="">
                 <div class="webinar_links_calendar_title">Добавьте событие в календарь, чтобы не забыть</div>
-                <button class="webinar_links_calendar_button">Добавить в календарь</button>
+                <button class="webinar_links_calendar_button" @click="calendar">Добавить в календарь</button>
             </div>
         </div>
         <future-events-component :webinars="feed.upcoming_events"/>
-        <mail-component />
+        <mail-component  user="user"/>
     </div>
 </template>
 

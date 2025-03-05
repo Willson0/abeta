@@ -43,10 +43,8 @@ class ServiceController extends Controller
 
         UserService::create([
             "user_id" => $user->id,
-            "webinar_id" => $service->id,
+            "service_id" => $service->id,
         ]);
-
-        $service["registered"] = true;
 
         return response()->json($service);
     }

@@ -1,6 +1,25 @@
 <script>
+import config from "@/components/config.json";
+
 export default {
-    name: "consultationExpertsComponent"
+    name: "consultationExpertsComponent",
+    methods: {
+        async sendData () {
+            await fetch (config.backend + "support", {
+                method: "POST",
+                body: JSON.stringify({"initData": window.Telegram.WebApp.initData, "text": "Консультация с экспертами ABETA"}),
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }).then((response) => {
+                if (response.ok) {
+                    let el = document.querySelector(".feed_consultation_button");
+                    el.classList.add("active");
+                    setTimeout(() => el.classList.remove("active"), 3000);
+                }
+            })
+        }
+    }
 }
 </script>
 
@@ -16,7 +35,7 @@ export default {
         <div class="feed_consultation_description">
             Расширим возможности, подберем инструменты и инвестиционную стратегию
         </div>
-        <button class="feed_consultation_button">Выбрать удобное время</button>
+        <button @click="sendData" class="feed_consultation_button">Выбрать удобное время</button>
     </div>
 </template>
 

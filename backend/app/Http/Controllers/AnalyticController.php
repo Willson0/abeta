@@ -42,19 +42,10 @@ class AnalyticController extends Controller
         if (AnalyticUser::where("analytic_id", $analytic->id)->where("user_id", $user->id)->exists())
             abort (400, "Доступ уже был получен.");
 
-        if ($request->fullname != $user->fullname or $request->phone != $user->phone) {
-            $user->update ([
-                "fullname" => $request->fullname,
-                "phone" => $request->phone,
-            ]);
-        }
-
         $analyticUser = AnalyticUser::create([
             "analytic_id" => $analytic->id,
             "user_id" => $user->id,
-            "phone" => $request->phone,
-            "fullname" => $request->fullname,
-            "investment_portfolio" => $request->investment_portfolio,
+            "data" => json_encode($request->data),
         ]);
 
         $analytic->locked = 0;

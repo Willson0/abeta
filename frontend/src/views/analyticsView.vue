@@ -18,6 +18,7 @@ export default {
             invest_port: "",
             config: config,
             feed: {},
+            fields: {},
         }
     },
     async mounted () {
@@ -45,6 +46,11 @@ export default {
             return response.json();
         }).then((response) => {
             this.analytic = response;
+            for (let field of JSON.parse(this.analytic.fields)) {
+                const fixedEncoded = field.replace(/u([0-9A-Fa-f]{4})/g, '\\u$1');
+                const decoded = JSON.parse('"' + fixedEncoded + '"');
+                this.fields[decoded] = "";
+            }
         })
 
         await fetch (config.backend + "profile", {
@@ -78,9 +84,7 @@ export default {
                 },
                 body: JSON.stringify({
                     "initData": window.Telegram.WebApp.initData,
-                    "fullname": this.user.fullname,
-                    "phone": this.user.phone,
-                    "investment_portfolio": this.invest_port
+                    "data": this.fields,
                 })
             }).then((response) => {
                 return response.json();
@@ -134,17 +138,9 @@ export default {
             <div class="form_free">Бесплатно</div>
             <div class="form_title">Доступ к закрытым материалам</div>
             <form @submit.prevent="sendData" class="webinar_registration_form">
-                <div class="form_input">
-                    <label for="name">Имя</label>
-                    <input v-model="user.fullname" type="text" name="name">
-                </div>
-                <div class="form_input">
-                    <label for="phone">Телефон</label>
-                    <input v-model="user.phone" type="text" name="phone">
-                </div>
-                <div class="form_input">
-                    <label for="phone">Инвестицонный портфель</label>
-                    <input v-model="invest_port" type="text" name="phone">
+                <div class="form_input" v-for="(key, field) in fields">
+                    <label :for="field">{{ field }}</label>
+                    <input v-model="fields[field]" type="text" :name="field">
                 </div>
                 <button>Получить доступ</button>
             </form>
@@ -154,7 +150,7 @@ export default {
         </div>
         <other-analytics-component :analytics="feed?.analytics"/>
         <consultation-experts-component />
-        <mail-component />
+        <mail-component :user="user"/>
     </div>
 </template>
 

@@ -5,7 +5,10 @@ use App\Http\Controllers\AnalyticController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CalendlyController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VentureController;
 use App\Http\Controllers\WebhookController;
@@ -63,6 +66,11 @@ Route::group (["prefix" => "api"], function () {
        Route::post("/settings", [SettingsController::class, "settings"]);
        Route::post("/mailing", [AdminController::class, "mailing"]);
     });
+
+    Route::post("/service/{id}/registration", [ServiceController::class, "registration"])->middleware(CheckTelegram::class);
+
+    Route::post("/group", [GroupController::class, "index"])->middleware(CheckTelegram::class);
+    Route::post("/support", [SupportController::class, "store"])->middleware(CheckTelegram::class);
 
     Route::get("test", [AuthController::class, "test"]);
 });

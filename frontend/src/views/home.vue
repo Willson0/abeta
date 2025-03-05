@@ -22,35 +22,26 @@
                 timer: false,
             }
         },
+        provide() {
+            return {
+                user: this.provideuser,
+            }
+        },
+        computed: {
+            provideuser() {
+                return this.user;
+            }
+        },
         async mounted () {
             document.body.style.backgroundColor = "#F3F4F6";
             this.tg = window.Telegram.WebApp;
             this.tg.expand();
 
-            await fetch (config.backend + "profile", {
-                method: "POST",
-                body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            }).then((response) => {
-                return response.json();
-            }).then((response) => {
-                this.user = response;
-            });
-
-            await fetch (config.backend + "feed/all", {
-                method: "GET",
-            }).then((response) => {
-                return response.json();
-            }).then((response) => {
-                this.feed = response;
-            });
-
             const nav = document.querySelector(".main>.nav");
             window.addEventListener("scroll", () => {
                 if (this.timer) return;
-                if (nav.getBoundingClientRect().top === 0) {
+                // alert (nav.getBoundingClientRect().top);
+                if (nav.getBoundingClientRect().top <= 10 && nav.getBoundingClientRect().top >= -10) {
                     const secondRow = document.querySelector(".main>.nav>div:last-child");
                     const top = secondRow.clientHeight;
                     const left = document.querySelector(".main>.nav>div:first-child").scrollWidth;
@@ -113,7 +104,31 @@
                             })
                     });
                 }
-            })
+            }, { passive: true })
+
+            try {
+                await fetch (config.backend + "profile", {
+                    method: "POST",
+                    body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }).then((response) => {
+                    return response.json();
+                }).then((response) => {
+                    this.user = response;
+                });
+
+                await fetch (config.backend + "feed/all", {
+                    method: "GET",
+                }).then((response) => {
+                    return response.json();
+                }).then((response) => {
+                    this.feed = response;
+                });
+            } catch {
+
+            }
         },
         methods: {
 
@@ -132,7 +147,7 @@
                 <div class="header_profile_notification"></div>
             </div>
         </div>
-        <div class="nav">
+        <div class="nav" style="position:sticky">
             <div>
                 <div @click="selectedCategory = category"
                      :class="selectedCategory === category ? 'active' : ''"

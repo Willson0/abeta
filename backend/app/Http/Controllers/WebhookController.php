@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Analytic;
+use App\Models\GroupLog;
 use App\Models\Service;
 use App\Models\support;
 use App\Models\User;
 use App\Models\UserService;
+use App\Models\VentureDeal;
 use App\Models\Webinar;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\SupportsBasicAuth;
@@ -17,6 +19,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use PHPUnit\Metadata\Group;
 use Psy\Util\Json;
 
 class WebhookController extends Controller
@@ -222,7 +225,8 @@ class WebhookController extends Controller
                         }
                     }
                     foreach ($users as $us) {
-                        utils::sendMessage($us->telegram_id, $admins[$user->id]["mailing"]);
+                        if ($us->expert_mailing)
+                            utils::sendMessage($us->telegram_id, $admins[$user->id]["mailing"]);
                     }
                     unset($admins[$user->id]["selected"]);
                     unset($admins[$user->id]["selectedWebinars"]);
@@ -839,15 +843,66 @@ class WebhookController extends Controller
 
                     utils::sendMessage($user->telegram_id, "Введите новое значение этого пункта меню:");
                 }
+                else if (str_contains($request["callback_query"]["data"], "admin_settings_venture_")) {
+                    $number = 0;
+                    if (preg_match('/(\d+)$/', $request["callback_query"]["data"], $matches))
+                        $number = (int)$matches[1];
+
+                    utils::answerData("Venture deal", $request, $user);
+
+                    $deal = VentureDeal::find($number);
+                    $deal->processed = 1;
+                    $deal->save();
+
+                    utils::returnToAdmin($menu, $user, "Вы успешно принялись за запрос на венчурные сделки №$deal->id.\nИнформация о пользователе:\nИмя: {$deal->user->fullname}\nТелефон: {$deal->user->phone}\nТелеграм ID: {$deal->user->telegram_id}\n@{$deal->user->username}");
+                }
+                else if ($request["callback_query"]["data"] == "admin_support_close") {
+                    utils::answerData("Close", $request, $user);
+
+                    $admin = Admin::where("telegram_id", $user->telegram_id)->first();
+                    $support = Support::where("admin_id", $admin->id)->first();
+
+                    $support->closed = 1;
+                    $support->save();
+
+                    $supUser = $support->user;
+
+                    utils::returnToAdmin($menu, $user, "Администратор $user->fullname ($user->telegram_id) закрыл чат поддержки.");
+                    utils::sendMessage($supUser->telegram_id, "Администратор $user->fullname ($user->telegram_id) закрыл чат поддержки.");
+
+                    $supUser->step = "";
+                    $supUser->save();
+                }
             }
         }
         if (isset($request->message)) {
             $message = [...$request->message];
 
             if (!isset($message["text"])) $message["text"] = "";
+            if (isset($message["chat"])) {
+                if (in_array ($message["chat"]["type"], ["group", "supergroup"])) {
+                    if (isset($message["left_chat_member"])) {
+                        if ($message["left_chat_member"]["id"] != $message["from"]["id"])
+                            GroupLog::create([
+                                "telegram_id" => $message["left_chat_member"]["id"],
+                                "blocking" => 1,
+                            ]);
+                    }
+
+                    if (isset($message["new_chat_member"])) {
+                        GroupLog::create ([
+                            "telegram_id" => $message["new_chat_member"]["id"],
+                            "blocking" => 0,
+                        ]);
+                    }
+
+                    return response()->json([], 200);
+                }
+            }
 
             $requestUser = $message["from"];
             $user = User::where("telegram_id", "=", $requestUser["id"])->first();
+
 
             if (!$user) {
 
@@ -888,7 +943,7 @@ class WebhookController extends Controller
             }
 
             $urlReaction = "https://api.telegram.org/bot$token/setMessageReaction";
-            if ($user->step === "response") {
+            if ($user->step === "support") {
                 $support = Support::where("user_id", $user->id)->whereNotNull("admin_id")->first();
                 if (!$support) {
                     $admin = Admin::where("telegram_id", $user->telegram_id)->first();
@@ -898,14 +953,29 @@ class WebhookController extends Controller
                         return response("", 200);
                     }
 
+                    if ($message["text"] == "/close") {
+                        $response = Http::post($sendurl, [
+                            'chat_id' => $user->telegram_id,
+                            'text' => "Вы уверены, что хотите закрыть этот чат?",
+                            "reply_markup" => [
+                                "inline_keyboard" => [
+                                    [["text" => "✅ Да", "callback_data" => "admin_support_close"]],
+                                ]
+                            ]
+                        ]);
+                        return response("", 200);
+                    }
+
                     $support = Support::where("admin_id", $admin->id)->first();
                     if (!$support) utils::returnToAdmin($menu, $user, "Нет активных вопросов в чат поддержки");
 
                     utils::sendMessage($support->user->telegram_id, "Сообщение от администратора $user->fullname ($user->telegram_id):\n\n{$message["text"]}");
-                    Http::post($urlReaction, [
+                    $resp = Http::post($urlReaction, [
                         'chat_id' => $user->telegram_id,
                         "message_id" => $message["message_id"],
-                        "reaction" => ["✅"],
+                        "reaction" => [
+                            ["type" => "emoji", "emoji" =>  "👀"]
+                        ],
                     ]);
                     return response ("", 200);
                 }
@@ -1264,8 +1334,6 @@ class WebhookController extends Controller
                 $field = str_replace("admin_edit_edit_", "", $user->step);
                 $menu = utils::getSettings()["menu"];
 
-                Log::critical("НУЖНЫЙ ФИЛД: " . $field);
-
                 $this->updateMenuNameByKey($menu["menu"], $field, $message["text"]);
 
                 utils::updateSettings("menu", $menu);
@@ -1273,6 +1341,11 @@ class WebhookController extends Controller
                 utils::returnToAdmin($menu, $user, "Успешно измененно значение поля!");
                 return response ()->json([], 200);
             }
+            else if ($user->step == "admin_settings_group_chat_link") {
+                utils::updateSettings("group_link", $message["text"]);
+                utils::returnToAdmin($menu, $user, "Ссылка на группу успешно изменена");
+            }
+
 
             $result = [];
 
@@ -1515,6 +1588,56 @@ class WebhookController extends Controller
                                 "inline_keyboard" => $keyboard
                             ]
                         ]);
+                    }
+                    else if ($user->step === "admin_settings_group_chat_added" or $user->step === "admin_settings_group_chat_blocked") {
+                        if ($user->step === "admin_settings_group_chat_blocked") $model = GroupLog::where("blocking", 1);
+                        else $model = GroupLog::where("blocking", 0);
+
+                        $countAllUsers = $model->count();
+                        $countDayUsers = $model->whereBetween("created_at", [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()])->count();
+                        $count24HourUsers = $model->whereBetween("created_at", [Carbon::now()->subHours(24), Carbon::now()])->count();
+                        $countWeekUsers = $model->whereBetween("created_at", [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();
+                        $countMonthUsers = $model->whereBetween("created_at", [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()])->count();
+                        $countSubMonthUsers = $model->whereBetween("created_at", [Carbon::now()->subMonth()->startOfMonth(), Carbon::now()->subMonth()->endOfMonth()])->count();
+                        $count30DayUsers = $model->whereBetween("created_at", [Carbon::now()->subDays(30), Carbon::now()])->count();
+
+                        $text = <<<EOT
+                        Количество всех пользователей: $countAllUsers
+                        Количество пользователей за 24 часа: $count24HourUsers
+                        Количество пользователей за этот день: $countDayUsers
+                        Количество пользователей за эту неделю: $countWeekUsers
+                        Количество пользователей за этот месяц: $countMonthUsers
+                        Количество пользователей за предыдущий месяц: $countSubMonthUsers
+                        Количество пользователей за 30 дней: $count30DayUsers
+                        EOT;
+                        ;
+
+                        utils::returnToAdmin($menu, $user, $text);
+                    }
+                    else if ($user->step === "admin_settings_group_chat_requirements") {
+                        $user->step = "admin_settings_group_chat_link";
+                        $user->save();
+
+                        utils::sendMessage($user->telegram_id, "Отправьте ссылку приглашение в группу: ");
+                        return response()->json([], 200);
+                    }
+                    else if ($user->step === "admin_settings_venture") {
+                        $keyboard = [];
+                        foreach (VentureDeal::where("processed", 0)->get() as $deal) {
+                            $keyboard[] = ["text" => "Запрос от " . Carbon::parse($deal->created_at)->toDateString(), "callback_data" => "admin_settings_venture_$deal->id"];
+                        }
+                        $keyboard = array_chunk($keyboard, 1);
+
+                        Http::post($url, [
+                            'chat_id' => $user->telegram_id,
+                            'text' => "Запросы на венчурные сделки",
+                            "reply_markup" => [
+                                "inline_keyboard" => $keyboard
+                            ]
+                        ]);
+                    }
+                    else if ($user->step === "admin_mailing_return") {
+                        utils::returnToAdmin($menu, $user, "Назад");
                     }
                 }
                 if ($user->step === 'admin_events') {

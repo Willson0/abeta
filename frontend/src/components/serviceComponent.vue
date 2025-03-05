@@ -31,6 +31,21 @@ export default {
             let popup = document.querySelector(".services_popup");
             popup.classList.remove("active");
             setTimeout(() => popup.style.display = "", 200);
+        },
+        async sendData () {
+            await fetch (config.backend + "service/" + this.selectedService.id + "/registration", {
+                method: "POST",
+                body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }).then((response) => {
+                if (response.ok) {
+                    let el = document.querySelector(".services_popup_button");
+                    el.classList.add("active");
+                    setTimeout(() => el.classList.remove("active"), 3000);
+                }
+            })
         }
     }
 }
@@ -45,7 +60,7 @@ export default {
             </div>
             <div class="services_popup_title">{{selectedService.title}}</div>
             <div class="services_popup_description">{{selectedService.description}}</div>
-            <button @click="closePopup" class="services_popup_button">{{selectedService.button}}</button>
+            <button @click="sendData" class="services_popup_button">{{selectedService.button}}</button>
         </div>
     </div>
     <div class="services">

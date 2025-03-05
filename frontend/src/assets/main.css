@@ -63,10 +63,10 @@
     column-gap:8px;
     row-gap:8px;
     padding:16px;
+    position:relative;
 }
 
 .main>.nav {
-    position:sticky;
     top:0;
     z-index:9999;
     transition:0.5s;
@@ -139,6 +139,8 @@
 
 .feed_webinar_image>img {
     width:100%;
+    border-radius:12px;
+
 }
 
 .feed_webinar_image>.feed_webinar_image_tags {
@@ -350,21 +352,44 @@
     line-height:24px;
     cursor:pointer;
     position:relative;
-}
-
-.feed_newsletter_button>p {
-    font-weight:700;
-    font-size:18px;
-    line-height:24px;
-    opacity:0;
+    color:white;
     transition:0.2s;
 }
 
-.feed_newsletter_button>p:last-child {
+.feed_newsletter_button>p, .feed_chat_button>p {
+    font-weight:700;
+    font-size:18px;
+    line-height:24px;
+    opacity:1;
+    transition:0.2s;
+    white-space: nowrap;
+}
+
+.feed_newsletter_button>p {
+    opacity: 0;
+}
+
+.feed_newsletter_button>p:last-child, .feed_chat_button>p:last-child {
     position:absolute;
     left:50%;
     top:50%;
     transform:translate(-50%, -50%);
+}
+
+.feed_chat_button>p:last-child {
+    opacity:0;
+}
+
+.feed_chat_button.active {
+    background-color:gray;
+}
+
+.feed_chat_button.active>p:first-child {
+    opacity:0;
+}
+
+.feed_chat_button.active>p:last-child {
+    opacity: 1;
 }
 
 .feed_newsletter_button>p.active {
@@ -427,6 +452,12 @@
     line-height:24px;
     margin-bottom:8px;
     cursor:pointer;
+    transition:0.2s;
+}
+
+.feed_consultation_button.active {
+    background-color: gray;
+
 }
 
 .feed_webinar_alt {
@@ -631,6 +662,11 @@
 .consultation_support>button {
     background-color: #FF734C;
     color:white;
+    transition:0.2s;
+}
+
+.consultation_support_button.active {
+    background-color:gray;
 }
 
 .consultation_venture>button {
@@ -1231,6 +1267,10 @@ font-weight:500;
     width:100%;
     color:white;
     cursor:pointer;
+    transition:0.2s;
+}
+.webinar_links_calendar_button.active {
+    background-color: gray;
 }
 
 .webinar_links_calendar_title {
@@ -1448,4 +1488,9 @@ font-weight:500;
     font-size:18px;
     line-height:24px;
     color:white;
+    transition:0.2s;
+}
+
+.services_popup_button.active {
+    background-color:gray;
 }
