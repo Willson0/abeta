@@ -1352,7 +1352,7 @@ class WebhookController extends Controller
             if ($user->step == "admin_menu") $result = $menu;
             else $this->findSubarrayByKey($menu, $user->step, $result);
 
-            if ($result) {
+            if (isset($result["menu"])) {
                 $newstep = "";
                 $this->findKeyByName($result["menu"], $message["text"], $newstep);
 
