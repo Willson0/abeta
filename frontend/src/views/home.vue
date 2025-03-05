@@ -117,6 +117,10 @@
                         "Content-Type": "application/json",
                     }
                 }).then((response) => {
+                    if (!response.ok) {
+                        let el = document.querySelector(".forbiddenPopup");
+                        el.style.display = "flex";
+                    }
                     return response.json();
                 }).then((response) => {
                     this.user = response;
@@ -140,6 +144,7 @@
 </script>
 
 <template>
+    <div class="forbiddenPopup" style="display:none"><div>Для продолжения пройдите регистрацию в боте (/start).</div></div>
     <div class="main">
         <div class="header">
             <div class="header_logo">
