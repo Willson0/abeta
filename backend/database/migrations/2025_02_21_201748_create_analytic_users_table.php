@@ -20,8 +20,8 @@ return new class extends Migration
             $table->index("user_id");
             $table->index("analytic_id");
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('analytic_id')->references('id')->on('analytics');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('analytic_id')->references('id')->on('analytics')->onDelete('cascade');
 
             $table->string("phone");
             $table->string("fullname");

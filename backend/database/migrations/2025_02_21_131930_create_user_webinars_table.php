@@ -20,8 +20,8 @@ return new class extends Migration
             $table->index("user_id");
             $table->index("webinar_id");
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('webinar_id')->references('id')->on('webinars');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('webinar_id')->references('id')->on('webinars')->onDelete('cascade');
 
             $table->timestamps();
         });

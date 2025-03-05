@@ -16,13 +16,13 @@ return new class extends Migration
 
             $table->unsignedBigInteger("user_id");
             $table->index('user_id');
-            $table->foreign("user_id")->references("id")->on("users");
+            $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
 
             $table->text("text");
 
             $table->unsignedBigInteger("admin_id")->nullable();
             $table->index('admin_id');
-            $table->foreign("admin_id")->references("id")->on("admins");
+            $table->foreign("admin_id")->references("id")->on("admins")->onDelete("cascade");
 
             $table->boolean("closed")->default(false);
 
