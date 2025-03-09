@@ -89,6 +89,43 @@ const router = createRouter({
     routes
 })
 
+function loadTelegramScript() {
+    return new Promise((resolve, reject) => {
+        if (window.Telegram) {
+            // Скрипт уже загружен
+            resolve();
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://telegram.org/js/telegram-web-app.js';
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('Не удалось загрузить Telegram Web App'));
+        document.head.appendChild(script);
+    });
+}
+
+// Логика загрузки скрипта в зависимости от маршрута
+router.beforeEach((to, from, next) => {
+    // Список маршрутов, где НЕ нужен Telegram Web App
+    const excludeRoutes = ['/admin'];
+
+    if (!excludeRoutes.some(route => to.path.startsWith(route))) {
+        loadTelegramScript()
+            .then(() => {
+                console.log('Telegram Web App загружен');
+                next();
+            })
+            .catch(err => {
+                console.error(err);
+                next();
+            });
+    } else {
+        // Если скрипт не нужен, просто продолжаем навигацию
+        next();
+    }
+});
+
 window.Telegram.WebApp.expand();
 window.Telegram.WebApp.disableVerticalSwipes();
 
