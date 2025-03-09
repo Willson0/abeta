@@ -277,7 +277,6 @@ export default {
                             <tr @click="changeSelectCategory(category.id); togglePopup('admin_addproduct_popup_category')"
                                 v-show="!selectCategories.find(el => el.category === category.id)"
                                 v-for="category in categories.recent.slice(0,4)">
-                                <td><img src="../assets/img/exobloom_bot.webp" alt=""></td>
                                 <td>{{ category.name }}</td>
                                 <td class="admin_addproduct_popup_category_tags"><div>{{ category.tags.length }} Tags</div></td>
                                 <td><i class="fa-solid fa-ellipsis-vertical"></i></td>
@@ -292,7 +291,6 @@ export default {
                         <tr @click="changeSelectCategory(category.id); togglePopup('admin_addproduct_popup_category')"
                             v-for="category in categories.popular.slice(0,10)"
                             v-show="!selectCategories.find(el => el.category === category.id)">
-                            <td><img src="../assets/img/exobloom_bot.webp" alt=""></td>
                             <td>{{ category.name }}<span title="Usages"> x{{ category.usage_count }}</span></td>
                             <td class="admin_addproduct_popup_category_tags"><div>{{ category.tags.length }} Tags</div></td>
                             <td><i class="fa-solid fa-ellipsis-vertical"></i></td>
@@ -309,7 +307,6 @@ export default {
                         <tr @click="changeSelectCategory(category.id); togglePopup('admin_addproduct_popup_category')"
                             v-show="!selectCategories.find(el => el.category === category.id)"
                             v-for="category in categories.categories">
-                            <td><img src="../assets/img/exobloom_bot.webp" alt=""></td>
                             <td>{{ category.name }}</td>
                             <td class="admin_addproduct_popup_category_tags"><div>{{ category.tags.length }} Tags</div></td>
                             <td><i class="fa-solid fa-ellipsis-vertical"></i></td>
