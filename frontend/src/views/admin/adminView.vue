@@ -1,6 +1,6 @@
 <script>
 import adminnav from "@/components/adminnav.vue"
-import config from "@/assets/config.json"
+import config from "@/components/config.json"
 import {formatDate, notify, removeLoading, togglePopup} from "@/assets/utils.js";
 export default {
     name: "adminView",
@@ -107,19 +107,6 @@ export default {
                 let info = document.querySelector(".admin_main_subscription_info_container");
                 info.style.opacity = '';
             })
-        },
-        taskselect (id, ev) {
-            // let el = ev.target.closest(".admin_main_tasks_el_checkbox");
-
-            console.log( id);
-            console.log(this.taskselected.indexOf(id));
-
-            if (this.taskselected.indexOf(id) !== -1) this.taskselected.splice(this.taskselected.indexOf(id), 1);
-            else this.taskselected.push(id);
-
-            console.log(this.taskselected);
-            // el.classList.toggle("active");
-
         },
         showinfo (cl, text) {
             document.querySelectorAll(`.${cl}`).forEach((el) => {
@@ -255,7 +242,6 @@ export default {
         document.body.style.backgroundColor = "#12121c";
 
         await this.fetchstats();
-        await this.fetchtasks();
     }
 }
 </script>
@@ -294,12 +280,8 @@ export default {
         <div class="admin_main_subscriptions">
             <div class="admin_main_subscription_header">
                 <div class="admin_main_subscription_title">
-                    <h2>Total subscriptions</h2>
-                    <h1>Performance</h1>
-                </div>
-                <div class="admin_main_subscription_buttons">
-                    <button v-for="button in [['Account', 'accounts'], ['Purchases', 'order'], ['Subscriptions', 'subscription']]"
-                    @click="perf = button[1]; canvinit()" :class="perf === button[1] ? 'active' : ''">{{ button[0] }}</button>
+                    <h2>Пользователи</h2>
+                    <h1>Эффективность</h1>
                 </div>
             </div>
             <div class="admin_main_subscriptions_canvas">
@@ -317,15 +299,15 @@ export default {
                         <i class="fa-solid fa-money-bill"></i>
                     </div>
                     <div class="admin_main_statistics_el_main_title">
-                        <h4>Money</h4>
-                        <h3>{{ data.money }}$</h3>
+                        <h4>Вебинары</h4>
+                        <h3>{{ data.money }} ивентов</h3>
                     </div>
                 </div>
                 <div class="admin_main_statistics_el_footer">
                     <div class="admin_main_statistics_el_footer_line"></div>
                     <div class="admin_main_statistics_el_footer_info">
                         <i class="fa-regular fa-calendar"></i>
-                        Income this month
+                        За последние 30 дней
                     </div>
                 </div>
             </div>
@@ -335,15 +317,15 @@ export default {
                         <i class="fa-solid fa-cash-register"></i>
                     </div>
                     <div class="admin_main_statistics_el_main_title">
-                        <h4>Money</h4>
-                        <h3>{{ data.money }}$</h3>
+                        <h4>Аналитики</h4>
+                        <h3>{{ data.money }} материалов</h3>
                     </div>
                 </div>
                 <div class="admin_main_statistics_el_footer">
                     <div class="admin_main_statistics_el_footer_line"></div>
                     <div class="admin_main_statistics_el_footer_info">
                         <i class="fa-regular fa-calendar"></i>
-                        Income for the last 30 days
+                        За последние 30 дней
                     </div>
                 </div>
             </div>
@@ -354,15 +336,15 @@ export default {
                         <i class="fa-solid fa-users"></i>
                     </div>
                     <div class="admin_main_statistics_el_main_title">
-                        <h4>Activity</h4>
-                        <h3>{{ data.usersPerDay }} users</h3>
+                        <h4>Услуги</h4>
+                        <h3>{{ data.usersPerDay }} пользователей</h3>
                     </div>
                 </div>
                 <div class="admin_main_statistics_el_footer">
                     <div class="admin_main_statistics_el_footer_line"></div>
                     <div class="admin_main_statistics_el_footer_info">
                         <i class="fa-solid fa-rotate-right"></i>
-                        For this day
+                        За последние 30 дней
                     </div>
                 </div>
             </div>
@@ -373,15 +355,15 @@ export default {
                         <i class="fa-regular fa-message"></i>
                     </div>
                     <div class="admin_main_statistics_el_main_title">
-                        <h4>Activity</h4>
-                        <h3>{{ data.logsPerDay }} logs</h3>
+                        <h4>Венчурные сделки</h4>
+                        <h3>{{ data.logsPerDay }} пользователей</h3>
                     </div>
                 </div>
                 <div class="admin_main_statistics_el_footer">
                     <div class="admin_main_statistics_el_footer_line"></div>
                     <div class="admin_main_statistics_el_footer_info">
                         <i class="fa-solid fa-rotate-right"></i>
-                        For this day
+                        За последние 30 дней
                     </div>
                 </div>
             </div>
@@ -390,33 +372,22 @@ export default {
             <div class="admin_main_tasks">
                 <div class="admin_main_tasks_header">
                     <div class="admin_main_tasks_title">
-                        <h1>Tasks ({{tasks.filter(t => new Date(t.deadline) > new Date()).length}})</h1>
-                        <h2>Actually</h2>
-                    </div>
-                    <div class="admin_main_tasks_settings">
-                        <button @click="completeTasks()" :style="taskselected.length ? 'opacity:1; cursor:pointer;' : ''">Complete</button>
-                        <i @click="task = -1; updtask={}; togglePopup('admin_main_tasks_popup')" class="fa-solid fa-gear"></i>
+                        <h1>Топ популярности</h1>
+                        <h2>Материалы</h2>
                     </div>
                 </div>
                 <div class="admin_main_tasks_main">
-                    <div v-for="el in tasks.filter(t => new Date(t.deadline) > new Date())">
-                        <div :class="taskselected.indexOf(el.id) !== -1 ? 'active' : ''"
-                             @click="taskselect(el.id, $event)" class="admin_main_tasks_el_checkbox">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
+                    <div @click="$router.push('/admin/analytics/' + el.id)" v-for="el in data.analytics">
                         <div class="admin_main_tasks_el_text">
                             <div class="admin_main_tasks_el_title">
-                                <span :style="el.completed_at ? 'text-decoration: line-through' : ''">{{ el.title }}</span>
-                                <div v-if="el.completed_at" :title="formatDate(el.completed_at)">Complete</div>
+                                <span>{{ el.title }}</span>
                             </div>
-                            <div :style="el.completed_at ? 'text-decoration: line-through' : ''" class="admin_main_tasks_el_description">
-                                {{ el.task }}
+                            <div class="admin_main_tasks_el_description">
+                                {{ el.description }}
                             </div>
                         </div>
                         <div class="admin_main_tasks_el_edit">
-                            <i @click="task = el.id; updtask = Object.assign({}, el);
-                            updtask.deadline = new Date(updtask.deadline).toISOString().split('T')[0];
-                            togglePopup('admin_main_tasks_popup')" class="fa-solid fa-pen"></i>
+                            <i class="fa-solid fa-pen"></i>
                         </div>
                     </div>
                 </div>
@@ -424,81 +395,23 @@ export default {
             <div class="admin_main_tasks">
                 <div class="admin_main_tasks_header">
                     <div class="admin_main_tasks_title">
-                        <h1>Tasks ({{tasks.filter(t => new Date(t.deadline) < new Date()).length}})</h1>
-                        <h2>Old</h2>
+                        <h1>Топ популярности</h1>
+                        <h2>Ивенты</h2>
                     </div>
-<!--                    <div class="admin_main_tasks_settings">-->
-<!--                        <button @click="completeTasks()" :style="taskselected.length ? 'opacity:1; cursor:pointer;' : ''">Complete</button>-->
-<!--                        <i @click="" class="fa-solid fa-gear"></i>-->
-<!--                    </div>-->
                 </div>
                 <div class="admin_main_tasks_main">
-                    <div v-for="el in tasks.filter(t => new Date(t.deadline) < new Date())">
-<!--                        <div :class="taskselected.indexOf(el.id) !== -1 ? 'active' : ''"-->
-<!--                             @click="taskselect(el.id, $event)" class="admin_main_tasks_el_checkbox">-->
-<!--                            <i class="fa-solid fa-check"></i>-->
-<!--                        </div>-->
+                    <div @click="$router.push('/admin/webinars/' + el.id)" v-for="el in data.webinars">
                         <div class="admin_main_tasks_el_text">
                             <div class="admin_main_tasks_el_title">
-                                <span :style="el.completed_at ? 'text-decoration: line-through' : ''">{{ el.title }}</span>
-                                <div v-if="el.completed_at" :title="formatDate(el.completed_at)">Complete</div>
-                                <div v-else style="background-color: #D91B32">Expired</div>
+                                <span>{{ el.title }}</span>
                             </div>
-                            <div :style="el.completed_at ? 'text-decoration: line-through' : ''" class="admin_main_tasks_el_description">
-                                {{ el.task }}
+                            <div class="admin_main_tasks_el_description">
+                                {{ el.description }}
                             </div>
                         </div>
-<!--                        <div class="admin_main_tasks_el_edit">-->
-<!--                            <i @click="task = el.id; updtask = Object.assign({}, el);-->
-<!--                            updtask.deadline = new Date(updtask.deadline).toISOString().split('T')[0];-->
-<!--                            togglePopup('admin_main_tasks_popup')" class="fa-solid fa-pen"></i>-->
-<!--                        </div>-->
                     </div>
                 </div>
             </div>
-<!--            <div class="admin_main_management">-->
-<!--                <div class="admin_main_management_title">-->
-<!--                    Management table-->
-<!--                </div>-->
-<!--                <div class="admin_main_management_table">-->
-<!--                    <table>-->
-<!--                        <thead>-->
-<!--                            <tr>-->
-<!--                                <th>Photo</th>-->
-<!--                                <th>Name</th>-->
-<!--                                <th>Job position</th>-->
-<!--                                <th>Salary</th>-->
-<!--                                <th>Milestone</th>-->
-<!--                                <th>Actions</th>-->
-<!--                            </tr>-->
-<!--                        </thead>-->
-<!--                        <tbody>-->
-<!--                            <tr v-for="row in 10">-->
-<!--                                <th>-->
-<!--                                    <img src="../assets/img/logo.png" alt="">-->
-<!--                                </th>-->
-<!--                                <th>Nurik Jober</th>-->
-<!--                                <th>Cleaner</th>-->
-<!--                                <th>-->
-<!--                                    <div class="admin_main_management_table_salary_container">-->
-<!--                                        <p>30%</p>-->
-<!--                                        <div class="admin_main_management_table_salary">-->
-<!--                                            <div :style="`width: ${0.3*100}%`"></div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </th>-->
-<!--                                <th>$ 99.22</th>-->
-<!--                                <th>-->
-<!--                                    <div class="admin_main_management_table_buttons">-->
-<!--                                        <i class="fa-solid fa-rotate-right"></i>-->
-<!--                                        <i class="fa-solid fa-x"></i>-->
-<!--                                    </div>-->
-<!--                                </th>-->
-<!--                            </tr>-->
-<!--                        </tbody>-->
-<!--                    </table>-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
     </adminnav>
 </template>

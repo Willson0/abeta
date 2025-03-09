@@ -1,6 +1,6 @@
 <script>
 import adminnav from "@/components/adminnav.vue";
-import config from "@/assets/config.json"
+import config from "@/components/config.json"
 import {removeLoading} from "@/assets/utils.js";
 export default {
     name: "adminAdminsView.vue",

@@ -11,12 +11,19 @@ import AdminLoginView from "@/views/admin/adminLoginView.vue";
 import AdminView from "@/views/admin/adminView.vue";
 import adminUsersView from "@/views/admin/adminUsersView.vue";
 import adminUserIndexView from "@/views/admin/adminUserIndexView.vue";
-import adminOrderView from "@/views/admin/adminOrderView.vue";
+import adminOrderView from "@/views/admin/adminServiceView.vue";
 import adminLogView from "@/views/admin/adminLogView.vue";
 import adminAdminsView from "@/views/admin/adminAdminsView.vue";
 import adminAddProductView from "@/views/admin/adminAddProductView.vue";
-import adminProductsView from "@/views/admin/adminProductsView.vue";
+import adminProductsView from "@/views/admin/adminWebinarsView.vue";
 import adminProductIndexView from "@/views/admin/adminProductIndexView.vue";
+import adminAnalyticsView from "@/views/admin/adminAnalyticsView.vue";
+import adminAddAnalyticView from "@/views/admin/adminAddAnalyticView.vue";
+import adminAnalyticIndexView from "@/views/admin/adminAnalyticIndexView.vue";
+import adminServiceView from "@/views/admin/adminServiceView.vue";
+import adminAddServiceView from "@/views/admin/adminAddServiceView.vue";
+import adminServiceIndexView from "@/views/admin/adminServiceIndexView.vue";
+import mailingView from "@/views/admin/mailingView.vue";
 
 const routes = [
     { path: '/', component: Home },
@@ -47,10 +54,10 @@ const routes = [
         name: 'userIndexAdmin'
     },
     {
-        path: "/admin/orders",
-        component: adminOrderView,
-        meta: { title: 'ABETA | Orders', h: 'Orders' },
-        name: 'ordersAdmin'
+        path: "/admin/services",
+        component: adminServiceView,
+        meta: { title: 'ABETA | Services', h: 'Services' },
+        name: 'servicesAdmin'
     },
     {
         path: "/admin/logs",
@@ -65,22 +72,58 @@ const routes = [
         name: 'adminsAdmin'
     },
     {
-        path: "/admin/products/add",
+        path: "/admin/webinars/add",
         component: adminAddProductView,
-        meta: { title: 'ABETA | Add product', h: 'Add product' },
+        meta: { title: 'ABETA | Add webinar', h: 'Add Webinar' },
         name: 'addProductAdmin'
     },
     {
-        path: "/admin/products",
+        path: "/admin/webinars",
         component: adminProductsView,
-        meta: { title: 'ABETA | Products', h: 'Products' },
+        meta: { title: 'ABETA | Webinars', h: 'Webinars' },
         name: 'productsAdmin'
     },
     {
-        path: "/admin/products/:id",
+        path: "/admin/webinars/:id",
         component: adminProductIndexView,
-        meta: { title: 'ABETA | Product', h: 'Product' },
+        meta: { title: 'ABETA | Webinar', h: 'Webinar' },
         name: 'indexProductAdmin'
+    },
+    {
+        path: "/admin/analytics/add",
+        component: adminAddAnalyticView,
+        meta: { title: 'ABETA | Add analytic', h: 'Add analytic' },
+        name: 'addAnalyticAdmin'
+    },
+    {
+        path: "/admin/analytics",
+        component: adminAnalyticsView,
+        meta: { title: 'ABETA | Analytics', h: 'Analytics' },
+        name: 'analyticsAdmin'
+    },
+    {
+        path: "/admin/analytics/:id",
+        component: adminAnalyticIndexView,
+        meta: { title: 'ABETA | analytic', h: 'analytic' },
+        name: 'indexAnalyticAdmin'
+    },
+    {
+        path: "/admin/services/add",
+        component: adminAddServiceView,
+        meta: { title: 'ABETA | Add service', h: 'Add service' },
+        name: 'addServiceAdmin'
+    },
+    {
+        path: "/admin/services/:id",
+        component: adminServiceIndexView,
+        meta: { title: 'ABETA | Service', h: 'Service' },
+        name: 'indexServiceAdmin'
+    },
+    {
+        path: "/admin/mailing",
+        component: mailingView,
+        meta: { title: 'ABETA | Mailing', h: 'Mailing' },
+        name: 'mailingAdmin'
     },
 ]
 
@@ -114,6 +157,9 @@ router.beforeEach((to, from, next) => {
         loadTelegramScript()
             .then(() => {
                 console.log('Telegram Web App загружен');
+
+                window.Telegram.WebApp.expand();
+                window.Telegram.WebApp.disableVerticalSwipes();
                 next();
             })
             .catch(err => {
@@ -125,9 +171,6 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
-
-window.Telegram.WebApp.expand();
-window.Telegram.WebApp.disableVerticalSwipes();
 
 createApp(App)
     .use(router)

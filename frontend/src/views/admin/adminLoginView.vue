@@ -1,5 +1,5 @@
 <script>
-import config from "../assets/config.json"
+import config from "@/components/config.json"
 export default {
     name: "adminLoginView",
     data () {

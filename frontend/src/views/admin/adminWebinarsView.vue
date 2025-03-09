@@ -3,7 +3,6 @@ import adminnav from "@/components/adminnav.vue";
 import config from "@/components/config.json"
 import {removeLoading} from "@/assets/utils.js";
 export default {
-    name: "adminUsersView",
     data () {
         return {
             dateasc:true,
@@ -15,11 +14,9 @@ export default {
             countpage: 10,
             inputpage: '...',
             selectedusers: [],
-            users: [],
-            totaluser: 0,
-            totalblocked: 0,
-            totalonline: 0,
+            products: [],
             search: '',
+            config: config,
         }
     },
     components: {
@@ -51,7 +48,7 @@ export default {
 
             this.page = Number(input.value);
             if (this.countpage - Number(this.inputpage) < 3) return this.inputpage = '...';
-            this.fetchusers();
+            this.fetchproducts();
         });
 
         input.addEventListener('keydown', function(event) {
@@ -63,24 +60,11 @@ export default {
             }
         });
 
-        await this.fetchusers();
-        await fetch (config.backend + "user/stats", {
-            "methods" : "GET",
-            credentials: 'include',
-        }).then((response) => {
-            if (!response.ok) return alert ("Непредвиденная ошибка. Сообщите разработчику");
-            return response.json();
-        }).then((response) => {
-            this.totaluser = response.users;
-            this.totalblocked = response.blocked;
-            this.totalonline = response.online;
-
-            if (this.users) removeLoading();
-        })
+        await this.fetchproducts();
     },
     methods: {
-        async fetchusers() {
-            let url = config.backend + 'user?limit=10';
+        async fetchproducts() {
+            let url = config.backend + 'webinar?limit=10';
             url += `&page=${this.page}`
             if (this.dateasc !== null) url += `&datesort=${this.dateasc?'asc':'desc'}`;
             if (this.nameasc !== null) url += `&namesort=${this.nameasc?'asc':'desc'}`;
@@ -98,10 +82,9 @@ export default {
                     return alert ("Произошла непредвиденная ошибка! Обратитесь к разработчику.");
                 return response.json();
             }).then((response) => {
-                this.users = response.users;
+                this.products = response.data;
                 this.countpage = response.count;
-
-                if (this.totalonline !== 0) removeLoading();
+                removeLoading();
             })
         },
         showsort () {
@@ -139,12 +122,10 @@ export default {
             let allcheckbox = document.querySelectorAll('.admin_users_main_main_table_checkbox');
             if (!headercheckbox.classList.contains("active")) {
                 this.selectedusers = [];
-                this.users.forEach((user) => this.selectedusers.push(user.id));
+                this.products.forEach((user) => this.selectedusers.push(user.id));
             }
             else
                 this.selectedusers = [];
-
-        //     TODO: with backend change all.
         },
         formatDate(dateString) {
             const date = new Date(dateString);
@@ -170,7 +151,7 @@ export default {
                 this.page = page;
                 this.inputpage = '...';
             }
-            await this.fetchusers();
+            await this.fetchproducts();
         },
         selectcheckbox (ev, id) {
             let el = ev.target.closest('.admin_users_main_main_table_checkbox');
@@ -181,24 +162,24 @@ export default {
             }
         },
         async downloadexport() {
-            await fetch(config.backend + "user/export", {
-                    method: "GET",
-                    credentials: "include",
-                }).then ((response) => {
-                    if (!response.ok) return alert("Непредвиденная ошибка. Сообщите разработчику");
-                    return response.blob();
-                }).then((response) => {
-                    let url = window.URL.createObjectURL(response);
-                    console.log(url);
+            await fetch(config.backend + "product/export", {
+                method: "GET",
+                credentials: "include",
+            }).then ((response) => {
+                if (!response.ok) return alert("Непредвиденная ошибка. Сообщите разработчику");
+                return response.blob();
+            }).then((response) => {
+                let url = window.URL.createObjectURL(response);
+                console.log(url);
 
-                    let a = document.createElement('a');
-                    a.href = url;
-                    a.download = "users.xls";
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
+                let a = document.createElement('a');
+                a.href = url;
+                a.download = "products.xls";
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
 
-                    window.URL.revokeObjectURL(url);
+                window.URL.revokeObjectURL(url);
             })
         }
     }
@@ -207,25 +188,12 @@ export default {
 
 <template>
     <adminnav>
-        <div class="admin_users_statistics">
-            <div>
-                <h1>{{ totaluser }}</h1>
-                <p>Total users</p>
-            </div>
-            <div>
-                <h1>{{ totalblocked }}</h1>
-                <p>Total blocked</p>
-            </div>
-            <div>
-                <h1>{{ totalonline }}</h1>
-                <p>Online</p>
-            </div>
-        </div>
         <div class="admin_users_main">
+        <button @click="$router.push({name: 'addProductAdmin'})" class="admin_products_new">Add new webinar</button>
             <div class="admin_users_main_header">
                 <div class="admin_users_main_header_search">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input @input="fetchusers()" v-model="search" placeholder="Search by name" type="text">
+                    <input @input="fetchproducts()" v-model="search" placeholder="Search by name" type="text">
                 </div>
                 <div class="admin_users_main_header_buttons">
                     <div class="admin_users_main_header_buttons_sort">
@@ -261,7 +229,7 @@ export default {
                             <hr>
                             <div class="admin_users_main_header_buttons_sort_buttons">
                                 <button @click="nameasc=null; dateasc=true">Reset</button>
-                                <button @click="showsort(); fetchusers()">Apply now</button>
+                                <button @click="showsort(); fetchproducts()">Apply now</button>
                             </div>
                         </div>
                     </div>
@@ -304,7 +272,7 @@ export default {
                             <hr>
                             <div class="admin_users_main_header_buttons_sort_buttons">
                                 <button @click="nameasc=true; dateasc=true">Reset</button>
-                                <button @click="showfilter(); fetchusers()">Apply now</button>
+                                <button @click="showfilter(); fetchproducts()">Apply now</button>
                             </div>
                         </div>
                     </div>
@@ -318,37 +286,29 @@ export default {
             <div class="admin_users_main_main">
                 <table class="admin_users_main_main_table">
                     <thead>
-                        <tr>
-                            <th><div :class="selectedusers.length === users.length ? 'active' : ''" @click="selectall()" class="admin_users_main_main_table_checkbox"><i class="fa-solid fa-check"></i></div></th>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Surname</th>
-                            <th>Username</th>
-                            <th>Avatar</th>
-                            <th>Email</th>
-                            <th>Email Verified</th>
-                            <th>Blocked</th>
-                            <th>Registered at</th>
-                        </tr>
+                    <tr>
+                        <th><div :class="selectedusers.length === products.length ? 'active' : ''" @click="selectall()" class="admin_users_main_main_table_checkbox"><i class="fa-solid fa-check"></i></div></th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th>Link</th>
+                        <th>Record link</th>
+                        <th>Date</th>
+                        <th>Created at</th>
+                    </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(user, key) in users">
-                        <th><div @click="selectcheckbox($event, user.id)" :class="selectedusers.includes(user.id) ? 'active' : ''" class="admin_users_main_main_table_checkbox"><i class="fa-solid fa-check"></i></div></th>
-                        <th>{{ user.id }}</th>
-                        <th><a target="_blank" :href="'/admin/users/' + user.id">{{ user.name ? user.name : '?' }}</a></th>
-                        <th>{{ user.surname ? user.surname : '?'}}</th>
-                        <th>{{ user.username ? user.username : '?' }}</th>
-                        <th><a target="_blank" :href="user.avatar">link</a></th>
-                        <th>{{ user.email ? user.email : '-' }}</th>
-                        <th>{{ user.email_verified_at ? formatDate(user.email_verified_at) : '-' }}</th>
-                        <th>
-                            <div :class="user.blocked_at ? 'blocked' : ''" class="admin_users_main_main_table_blocked">
-                                <div></div>
-                                <p v-if="user.blocked_at">Blocked</p>
-                                <p v-else>Unblocked</p>
-                            </div>
-                        </th>
-                        <th>{{ user.created_at ? formatDate(user.created_at) : '-' }}</th>
+                    <tr class="admin_products_main_main_table_tr" v-for="(product, key) in products">
+                        <th><div @click="selectcheckbox($event, product.id)" :class="selectedusers.includes(product.id) ? 'active' : ''" class="admin_users_main_main_table_checkbox"><i class="fa-solid fa-check"></i></div></th>
+                        <th>{{ product.id }}</th>
+                        <th><a target="_blank" :href="'/admin/webinars/' + product.id">{{ product.title ? product.title : '?' }}</a></th>
+                        <th style="text-overflow: ellipsis; max-width:250px; overflow:hidden;">{{ product.description ? product.description : '?'}}</th>
+                        <th><a target="_blank" :href="config.storage + product.image">link</a></th>
+                        <th><a target="_blank" :href="product.link">link</a></th>
+                        <th><a target="_blank" :href="product.record_link">{{product.record_link ? "link" : "-"}}</a></th>
+                        <th>{{ product.date ? formatDate(product.date) : '-' }}</th>
+                        <th>{{ product.created_at ? formatDate(product.created_at) : '-' }}</th>
                     </tr>
                     </tbody>
                 </table>

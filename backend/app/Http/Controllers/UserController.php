@@ -17,4 +17,9 @@ class UserController extends Controller
 
         return $user;
     }
+
+    public function index (Request $request) {
+        $request->limit = 10;
+        return utils::index(User::class, $request);
+    }
 }

@@ -10,8 +10,7 @@ export default {
             name: "",
             link: "",
             date: "",
-            record_link: "",
-            tags: [3, 10, 50],
+            tags: [3,10,50],
             images: [],
             categories: [],
             selectCategories: [],
@@ -20,69 +19,38 @@ export default {
             categorySearch: "",
             fields: [],
             selectedFields: [],
-            webinar: [],
+            pdf: "",
+            overview: "",
+            button: "",
+            color: "",
         }
     },
-    async mounted() {
+    async mounted () {
         this.updImgs();
         addTitle("admin_addproduct_popup_category_main tbody tr td:last-child", "Check");
 
         this.fetchCategories();
     },
     methods: {
+        pdfChange (ev) {
+            const file = ev.target.files[0];
+            this.pdf = file || null;
+        },
         togglePopup,
-        async fetchCategories() {
-            await fetch(config.backend + "webinar/" + this.$route.params.id + "?image=1", {
-                method: "POST",
-                credentials: "include",
-            }).then((response) => {
-                if (!response.ok) return alert("error");
-                return response.json();
-            }).then((response) => {
-                this.webinar = response;
-
-                this.name = response.title;
-                this.description = response.description;
-                document.querySelector(".admin_addproduct_main_textarea").innerHTML = this.description;
-                this.date = response.date;
-                this.selectedFields = JSON.parse(response.fields).map(str => str.replace(/u([0-9a-fA-F]{4})/g, (_, code) => String.fromCharCode(parseInt(code, 16))));;
-                console.log(this.selectedFields);
-                this.link = response.link;
-
-
-                fetch (config.backend + "admin/getfile", {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "content-type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        path: response["image"]
-                    })
-                }).then((res) => {
-                    return res.blob();
-                }).then((res) => {
-                    this.images[0] = res;
-                    console.log(this.images[0])
-                    this.updImgs();
-                });
-
-
-            })
-
+        async fetchCategories () {
             let query = config.backend + "admin/fields";
-            await fetch(query, {
+            await fetch (query, {
                 method: "GET",
                 credentials: "include",
             }).then((response) => {
-                if (!response.ok) return alert("error");
+                if (!response.ok) return alert ("error");
                 return response.json();
             }).then((response) => {
                 this.fields = response;
                 removeLoading();
             })
         },
-        formatText() {
+        formatText () {
             const selected = window.getSelection();
             if (!selected.isCollapsed) {
                 let range = selected.getRangeAt(0);
@@ -100,14 +68,14 @@ export default {
                 div.style.left = window.scrollX + rect.left + "px";
 
                 document.body.appendChild(div);
-                const walker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_ELEMENT, null);
+                const walker = document.createTreeWalker(range.commonAncestorContainer, NodeFilter.SHOW_ELEMENT,null);
 
                 let bold = document.querySelector(".formatmenu .bold");
-                let italic = document.querySelector(".formatmenu .italic");
-                let underline = document.querySelector(".formatmenu .underline");
+                let italic =  document.querySelector(".formatmenu .italic");
+                let underline =  document.querySelector(".formatmenu .underline");
 
                 while (walker.nextNode()) {
-                    console.log(walker.currentNode.tagName);
+                    console.log (walker.currentNode.tagName);
                     if (walker.currentNode.tagName === "B") {
                         bold.classList.add("active");
                     } else if (walker.currentNode.tagName === "I") {
@@ -147,39 +115,36 @@ export default {
         async sendData() {
             let formData = new FormData();
 
-            if (!this.name) return alert("Insert 'NAME' please");
-            if (!this.link) return alert("Insert 'Ссылка' please");
-            if (!this.date) return alert("Insert 'Дата' please");
-            if (this.images.length === 0) return alert("Count of images must be bigger 0!");
-            if (this.selectedFields === 0) return alert("Количество полей должно быть больше 0");
+            if (!this.name) return alert ("Insert 'NAME' please");
+            if (this.images.length === 0) return alert ("Count of images must be bigger 0!");
+            if (this.color.length !== 6) return alert ("Неправильный формат цвета");
+            if (!this.overview) return alert ("Заполните поле 'краткое описание', пожалуйста");
+            if (!this.button) return alert ("Заполните поле 'кнопка', пожалуйста");
 
             formData.append("title", this.name);
             formData.append("description", document.querySelector(".admin_addproduct_main_textarea").innerHTML);
-            formData.append("link", this.link);
-            formData.append("date", this.date);
+            formData.append("overview", this.overview);
+            formData.append("button", this.button);
+            formData.append("color", this.color);
             formData.append("image", this.images[0]);
-            this.selectedFields.forEach((el) => formData.append("fields[]", el));
-            console.log(this.selectedFields);
-            if (this.record_link) formData.append("record_link", this.record_link);
-            console.log(this.images[0]);
 
             for (const [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
             }
 
-            await fetch(config.backend + "webinar/" + this.$route.params.id + "/edit", {
+            await fetch (config.backend + "service", {
                 method: "POST",
                 credentials: "include",
                 body: formData,
             }).then((response) => {
                 if (response.status === 401) return this.$router.push({name: "adminlogin"});
-                else if (!response.ok) return alert("Error");
+                else if (!response.ok) return alert ("Error");
                 return response.json();
             }).then((response) => {
-                this.$router.push("/admin/webinars/" + response.id);
+                this.$router.push("/admin/services/" + response.id);
             });
         },
-        addimg(ev) {
+        addimg (ev) {
             let file = ev.target.files[0];
             if (file && file.type.startsWith("image/")) {
                 this.images.push(file);
@@ -216,7 +181,7 @@ export default {
                 img.style.width = index % 2 === 0 ? half : "100%";
                 img.style.height = index % 2 === 1 ? half : "100%";
 
-                if (index === this.images.length - 1) {
+                if (index === this.images.length-1) {
                     img.style.height = "100%";
                     img.style.width = "100%";
                 }
@@ -226,8 +191,8 @@ export default {
                 div.appendChild(img);
 
                 let parent;
-                if (index === 0) parent = document.querySelector(".admin_addproduct_main_images");
-                else parent = document.querySelector(`#img${index - 1}`);
+                if (index===0) parent = document.querySelector(".admin_addproduct_main_images");
+                else parent = document.querySelector(`#img${index-1}`);
 
                 parent.appendChild(div);
             });
@@ -239,7 +204,7 @@ export default {
                 })
             }
         },
-        changeSelectCategory(id) {
+        changeSelectCategory (id) {
             if (this.selectCategories.find(el => el.category === id)) return;
 
             if (this.chooseCategory === -1)
@@ -251,11 +216,11 @@ export default {
             this.selectCategories[this.chooseCategory].category = id;
             this.selectCategories[this.chooseCategory].tag = -1;
         },
-        changeSelectTag(id) {
+        changeSelectTag (id) {
             if (!this.categories.categories
-                .find(el => el.id === this.selectCategories[this.chooseCategory].category)
-                .tags.find(el => el.id === id) && chooseCategory !== -1)
-                return alert("Invalid tag");
+            .find(el => el.id === this.selectCategories[this.chooseCategory].category)
+            .tags.find(el => el.id === id) && chooseCategory !== -1)
+                    return alert("Invalid tag");
 
 
             this.selectCategories[this.chooseCategory].tag = id;
@@ -263,7 +228,7 @@ export default {
         ondragover(ev) {
             ev.preventDefault();
         },
-        drop(ev) {
+        drop (ev) {
             ev.preventDefault();
             const files = ev.dataTransfer.files;
 
@@ -271,7 +236,7 @@ export default {
                 for (let file of files) {
                     if (file.type.startsWith("image/"))
                         this.images.push(file);
-                    else console.log("Push IMAGE file please")
+                    else console.log ("Push IMAGE file please")
                 }
                 this.updImgs();
             }
@@ -280,13 +245,13 @@ export default {
             Object.assign(this.$data, this.$options.data.call(this));
             this.updImgs();
         },
-        saveSelection() {
+        saveSelection () {
             const selection = window.getSelection();
             if (selection.rangeCount > 0) {
                 this.selection = selection.getRangeAt(0);
             }
         },
-        restoreSelection() {
+        restoreSelection () {
             const selection = window.getSelection();
             if (this.selection) {
                 selection.removeAllRanges();
@@ -312,16 +277,14 @@ export default {
                     <h3>Recent</h3>
                     <table class="admin_addproduct_popup_category_table">
                         <tbody>
-                        <tr @click="changeSelectCategory(category.id); togglePopup('admin_addproduct_popup_category')"
-                            v-show="!selectCategories.find(el => el.category === category.id)"
-                            v-for="category in categories.recent.slice(0,4)">
-                            <td><img src="../assets/img/exobloom_bot.webp" alt=""></td>
-                            <td>{{ category.name }}</td>
-                            <td class="admin_addproduct_popup_category_tags">
-                                <div>{{ category.tags.length }} Tags</div>
-                            </td>
-                            <td><i class="fa-solid fa-ellipsis-vertical"></i></td>
-                        </tr>
+                            <tr @click="changeSelectCategory(category.id); togglePopup('admin_addproduct_popup_category')"
+                                v-show="!selectCategories.find(el => el.category === category.id)"
+                                v-for="category in categories.recent.slice(0,4)">
+                                <td><img src="../assets/img/exobloom_bot.webp" alt=""></td>
+                                <td>{{ category.name }}</td>
+                                <td class="admin_addproduct_popup_category_tags"><div>{{ category.tags.length }} Tags</div></td>
+                                <td><i class="fa-solid fa-ellipsis-vertical"></i></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -334,9 +297,7 @@ export default {
                             v-show="!selectCategories.find(el => el.category === category.id)">
                             <td><img src="../assets/img/exobloom_bot.webp" alt=""></td>
                             <td>{{ category.name }}<span title="Usages"> x{{ category.usage_count }}</span></td>
-                            <td class="admin_addproduct_popup_category_tags">
-                                <div>{{ category.tags.length }} Tags</div>
-                            </td>
+                            <td class="admin_addproduct_popup_category_tags"><div>{{ category.tags.length }} Tags</div></td>
                             <td><i class="fa-solid fa-ellipsis-vertical"></i></td>
                         </tr>
                         </tbody>
@@ -353,9 +314,7 @@ export default {
                             v-for="category in categories.categories">
                             <td><img src="../assets/img/exobloom_bot.webp" alt=""></td>
                             <td>{{ category.name }}</td>
-                            <td class="admin_addproduct_popup_category_tags">
-                                <div>{{ category.tags.length }} Tags</div>
-                            </td>
+                            <td class="admin_addproduct_popup_category_tags"><div>{{ category.tags.length }} Tags</div></td>
                             <td><i class="fa-solid fa-ellipsis-vertical"></i></td>
                         </tr>
                         </tbody>
@@ -368,13 +327,11 @@ export default {
         <div v-if="selectCategories[chooseCategory]">
             <div v-if="categories.categories.find(el => el.id === selectCategories[chooseCategory].category)">
                 <div class="admin_addproduct_popup_tag_main">
-                    <h3>Tags of
-                        {{ categories.categories.find(el => el.id === selectCategories[chooseCategory].category).name }}
-                        ({{ selectCategories[chooseCategory].category }})</h3>
+                    <h3>Tags of {{categories.categories.find(el => el.id === selectCategories[chooseCategory].category).name}} ({{selectCategories[chooseCategory].category}})</h3>
                     <div>
                         <div @click="changeSelectTag(tag.id); togglePopup('admin_addproduct_popup_tag')"
                              v-for="tag in categories.categories.find(el => el.id === selectCategories[chooseCategory].category).tags">
-                            {{ tag.name }}
+                            {{tag.name}}
                         </div>
                     </div>
                 </div>
@@ -392,6 +349,10 @@ export default {
                             <input v-model="name" type="text">
                         </div>
                         <div>
+                            <h3>Product Overview</h3>
+                            <input v-model="overview" type="text">
+                        </div>
+                        <div>
                             <h3>Business Description</h3>
                             <div @mouseup="saveSelection(); formatText()" class="admin_addproduct_main_textarea"
                                  spellcheck="false" contenteditable="true" @keyup="saveSelection()">
@@ -400,20 +361,11 @@ export default {
                     </div>
                 </div>
                 <div>
-                    <h2>Дата</h2>
+                    <h2>Кнопка</h2>
                     <div>
                         <div>
-                            <h3>Дата</h3>
-                            <input v-model="date" type="datetime-local">
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h2>Поля заполнения</h2>
-                    <div class="admin_addproduct_fields">
-                        <div
-                            @click="selectedFields.includes(field) ? selectedFields = selectedFields.filter((a) => a !== field) : selectedFields.push(field)"
-                            :class="selectedFields.includes(field) ? 'active' : ''" v-for="field in fields">{{ field }}
+                            <h3>Текст</h3>
+                            <input v-model="button" type="text">
                         </div>
                     </div>
                 </div>
@@ -423,8 +375,7 @@ export default {
                     <h2>Product Images</h2>
                     <div class="admin_addproduct_main_images">
 
-                        <label v-if="images.length === 0" class="admin_addproduct_main_addimage" @drop="drop"
-                               @dragover="ondragover">
+                        <label v-if="images.length === 0" class="admin_addproduct_main_addimage" @drop="drop" @dragover="ondragover">
                             <input @change="addimg" type="file" accept="image/*" alt="">
                             <div>
                                 <i class="fa-regular fa-image"></i>
@@ -435,26 +386,17 @@ export default {
                     </div>
                 </div>
                 <div>
-                    <h2>Ссылка</h2>
+                    <h2>Цвет</h2>
                     <div>
                         <div>
-                            <h3>Ссылка на вебинар</h3>
-                            <input v-model="link">
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h2>Ссылка на запись</h2>
-                    <div>
-                        <div>
-                            <h3>Ссылка на вебинар</h3>
-                            <input v-model="record_link">
+                            <h3>Hex-формат (xxxxxx)</h3>
+                            <input v-model="color">
                         </div>
                     </div>
                 </div>
                 <div class="admin_addproduct_main_buttons">
                     <button @click="discard">Discard</button>
-                    <button @click="sendData" class="admin_addproduct_main_buttons_add">Save webinar</button>
+                    <button @click="sendData" class="admin_addproduct_main_buttons_add">Add service</button>
                 </div>
             </div>
         </div>

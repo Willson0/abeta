@@ -1,5 +1,5 @@
 <script>
-import config from "@/assets/config.json"
+import config from "@/components/config.json"
 import adminnav from "@/components/adminnav.vue";
 import {addClickScroll, parseLog, removeLoading} from "@/assets/utils.js"
 

@@ -75,7 +75,8 @@ export default {
         formatDate,
 
         async sendData() {
-            if (!this.user.fullname || !this.user.phone) return document.querySelector(".webinar_registration_error").classList.add("active");
+            for (let field in this.fields)
+                if (!field) return document.querySelector(".webinar_registration_error").classList.add("active");
             document.querySelector(".webinar_registration_error").classList.remove("active");
 
             await fetch (config.backend + "webinar/" + this.$route.params.id + "/registration", {
@@ -152,14 +153,14 @@ export default {
                 <div class="webinar_registration_info_date">{{formatDate(webinar.date)}}</div>
             </div>
             <div class="webinar_registration_error">
-                <div>Для регистрации нужно указать имя и номер телефона</div>
+                <div>Для регистрации нужно заполнить все поля</div>
             </div>
             <form @submit.prevent="sendData" class="webinar_registration_form">
                 <div class="form_input" v-for="(key, field) in fields">
                     <label :for="field">{{ field }}</label>
                     <input v-model="fields[field]" type="text" :name="field">
                 </div>
-                <button>Зарегестрироваться</button>
+                <button>Зарегистрироваться</button>
             </form>
             <div class="form_policy">
                 Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a>

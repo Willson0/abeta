@@ -1,6 +1,6 @@
 <script>
 import adminnav from "@/components/adminnav.vue";
-import config from "@/assets/config.json"
+import config from "@/components/config.json"
 import {removeLoading} from "@/assets/utils.js";
 export default {
     data () {
@@ -16,6 +16,7 @@ export default {
             selectedusers: [],
             products: [],
             search: '',
+            config: config,
         }
     },
     components: {
@@ -63,7 +64,7 @@ export default {
     },
     methods: {
         async fetchproducts() {
-            let url = config.backend + 'product?limit=10';
+            let url = config.backend + 'analytic?limit=10';
             url += `&page=${this.page}`
             if (this.dateasc !== null) url += `&datesort=${this.dateasc?'asc':'desc'}`;
             if (this.nameasc !== null) url += `&namesort=${this.nameasc?'asc':'desc'}`;
@@ -188,7 +189,7 @@ export default {
 <template>
     <adminnav>
         <div class="admin_users_main">
-        <button @click="$router.push({name: 'addProductAdmin'})" class="admin_products_new">Add new product</button>
+        <button @click="$router.push({name: 'addAnalyticAdmin'})" class="admin_products_new">Add new analytic</button>
             <div class="admin_users_main_header">
                 <div class="admin_users_main_header_search">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -290,9 +291,10 @@ export default {
                         <th>ID</th>
                         <th>Name</th>
                         <th>Description</th>
-                        <th style="text-align:center;">Price</th>
-                        <th>Stock Quantity</th>
-                        <th>Average Rating</th>
+                        <th>Image</th>
+                        <th>Link</th>
+                        <th>PDF</th>
+                        <th>Date</th>
                         <th>Created at</th>
                     </tr>
                     </thead>
@@ -300,11 +302,12 @@ export default {
                     <tr class="admin_products_main_main_table_tr" v-for="(product, key) in products">
                         <th><div @click="selectcheckbox($event, product.id)" :class="selectedusers.includes(product.id) ? 'active' : ''" class="admin_users_main_main_table_checkbox"><i class="fa-solid fa-check"></i></div></th>
                         <th>{{ product.id }}</th>
-                        <th><a target="_blank" :href="'/admin/products/' + product.id">{{ product.name ? product.name : '?' }}</a></th>
+                        <th><a target="_blank" :href="'/admin/analytics/' + product.id">{{ product.title ? product.title : '?' }}</a></th>
                         <th style="text-overflow: ellipsis; max-width:250px; overflow:hidden;">{{ product.description ? product.description : '?'}}</th>
-                        <th style="text-align:center;">{{ product.price ? product.price : '?' }}$</th>
-                        <th>{{ product.stock_quantity ? product.stock_quantity : '-' }}</th>
-                        <th>{{ product.average_rating ? product.average_rating : '-' }}</th>
+                        <th><a target="_blank" :href="config.storage + product.image">link</a></th>
+                        <th><a target="_blank" :href="product.link">{{product.link ? "link" : "-"}}</a></th>
+                        <th><a target="_blank" :href="product.pdf">{{product.pdf ? "link" : "-"}}</a></th>
+                        <th>{{ product.date ? formatDate(product.date) : '-' }}</th>
                         <th>{{ product.created_at ? formatDate(product.created_at) : '-' }}</th>
                     </tr>
                     </tbody>

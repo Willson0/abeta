@@ -1,16 +1,15 @@
 <script>
-import config from "@/assets/config.json"
+import config from "@/components/config.json"
 import adminnav from "@/components/adminnav.vue";
 import {togglePopup, removeLoading, addTitle} from "@/assets/utils.js";
-import {toValue} from "@vue/reactivity";
 export default {
     name: "adminAddProductView.vue",
     data () {
         return {
             description: "",
             name: "",
-            price: 0,
-            stock_quantity: 0,
+            link: "",
+            date: "",
             tags: [3,10,50],
             images: [],
             categories: [],
@@ -18,20 +17,20 @@ export default {
             chooseCategory: 0,
             selection: null,
             categorySearch: "",
+            fields: [],
+            selectedFields: [],
         }
     },
     async mounted () {
         this.updImgs();
+        addTitle("admin_addproduct_popup_category_main tbody tr td:last-child", "Check");
 
-        await this.fetchCategories();
-
-        addTitle("admin_addproduct_popup_category_main tbody tr td:last-child", "Check")
+        this.fetchCategories();
     },
     methods: {
         togglePopup,
         async fetchCategories () {
-            let query = config.backend + "category";
-            if (this.categorySearch) query += `?s=${this.categorySearch}`
+            let query = config.backend + "admin/fields";
             await fetch (query, {
                 method: "GET",
                 credentials: "include",
@@ -39,7 +38,7 @@ export default {
                 if (!response.ok) return alert ("error");
                 return response.json();
             }).then((response) => {
-                this.categories = response;
+                this.fields = response;
                 removeLoading();
             })
         },
@@ -109,25 +108,20 @@ export default {
             let formData = new FormData();
 
             if (!this.name) return alert ("Insert 'NAME' please");
-            if (!this.price) return alert ("Insert 'PRICE' please");
-            if (this.price <= 0) return alert ("Price must be bigger than 0!");
-            if (!this.stock_quantity) return alert ("Insert 'STOCK QUANTITY' please");
-            if (this.stock_quantity <= 0) return alert ("Stock quantity must be bigger than 0!");
+            if (!this.link) return alert ("Insert 'Ссылка' please");
+            if (!this.date) return alert ("Insert 'Дата' please");
+            if (new Date(this.date) <= new Date()) return alert ("Дата должна быть новее сегодняшней");
             if (this.images.length === 0) return alert ("Count of images must be bigger 0!");
+            if (this.selectedFields === 0) return alert ("Количество полей должно быть больше 0");
 
-            formData.append("name", this.name);
+            formData.append("title", this.name);
             formData.append("description", document.querySelector(".admin_addproduct_main_textarea").innerHTML);
-            formData.append("status", "active");
-            formData.append("price", this.price);
-            formData.append("stock_quantity", this.stock_quantity);
+            formData.append("link", this.link);
+            formData.append("date", this.date);
+            formData.append("image", this.images[0]);
+            this.selectedFields.forEach((el) => formData.append("fields[]", el));
 
-            for (let category of this.selectCategories)
-                formData.append("tags[]", category.tag);
-
-            for (let image of this.images)
-                formData.append("images[]", image);
-
-            await fetch (config.backend + "product", {
+            await fetch (config.backend + "webinar", {
                 method: "POST",
                 credentials: "include",
                 body: formData,
@@ -136,7 +130,7 @@ export default {
                 else if (!response.ok) return alert ("Error");
                 return response.json();
             }).then((response) => {
-                this.$router.push("/admin/products/" + response.product.id);
+                this.$router.push("/admin/webinars/" + response.id);
             });
         },
         addimg (ev) {
@@ -265,7 +259,6 @@ export default {
         <div>
             <div class="admin_addproduct_popup_category_input">
                 <i class="fa-solid fa-magnifying-glass"></i>
-<!--                TODO: change icon because this font-weight is very big :(-->
                 <input v-model="categorySearch" @input="fetchCategories()" placeholder="Search..." type="text">
             </div>
             <div v-if="categories.popular && !categorySearch" class="admin_addproduct_popup_category_main">
@@ -353,33 +346,19 @@ export default {
                     </div>
                 </div>
                 <div>
-                    <h2>Tags</h2>
-                    <div class="admin_addproduct_main_categories">
-                        <div v-if="categories.categories" v-for="(el, key) in selectCategories">
-                            <h3 @click="chooseCategory = key; togglePopup('admin_addproduct_popup_category')">
-                                {{ categories.categories.find(ctg => ctg.id === el.category).name }}
-                            </h3>
-                            <div @click="chooseCategory = key; togglePopup('admin_addproduct_popup_tag')">
-                                {{ el.tag !== -1 ? categories.categories.find(ctg => ctg.id === el.category)
-                                .tags.find(tg => tg.id === el.tag).name : "--" }}
-                            </div>
-                        </div>
+                    <h2>Дата</h2>
+                    <div>
                         <div>
-                            <h3 @click="chooseCategory = -1; togglePopup('admin_addproduct_popup_category')"
-                            title="Click to choose new category">
-                                Product category
-                            </h3>
-                            <div class="unavailable" title="unavailable">--</div>
+                            <h3>Дата</h3>
+                            <input v-model="date" type="datetime-local">
                         </div>
                     </div>
                 </div>
                 <div>
-                    <h2>Inventory</h2>
-                    <div>
-                        <div>
-                            <h3>Quantity</h3>
-                            <input v-model="stock_quantity" type="number">
-                        </div>
+                    <h2>Поля заполнения</h2>
+                    <div class="admin_addproduct_fields">
+                        <div @click="selectedFields.includes(field) ? selectedFields = selectedFields.filter((a) => a !== field) : selectedFields.push(field)"
+                             :class="selectedFields.includes(field) ? 'active' : ''" v-for="field in fields">{{field}}</div>
                     </div>
                 </div>
             </div>
@@ -388,7 +367,7 @@ export default {
                     <h2>Product Images</h2>
                     <div class="admin_addproduct_main_images">
 
-                        <label class="admin_addproduct_main_addimage" @drop="drop" @dragover="ondragover">
+                        <label v-if="images.length === 0" class="admin_addproduct_main_addimage" @drop="drop" @dragover="ondragover">
                             <input @change="addimg" type="file" accept="image/*" alt="">
                             <div>
                                 <i class="fa-regular fa-image"></i>
@@ -399,17 +378,17 @@ export default {
                     </div>
                 </div>
                 <div>
-                    <h2>Pricing</h2>
+                    <h2>Ссылка</h2>
                     <div>
                         <div>
-                            <h3>Price</h3>
-                            <input v-model="price" type="number">
+                            <h3>Ссылка на вебинар</h3>
+                            <input v-model="link">
                         </div>
                     </div>
                 </div>
                 <div class="admin_addproduct_main_buttons">
                     <button @click="discard">Discard</button>
-                    <button @click="sendData" class="admin_addproduct_main_buttons_add">Add Product</button>
+                    <button @click="sendData" class="admin_addproduct_main_buttons_add">Add webinar</button>
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\WebinarStoreRequest;
 use App\Models\User;
 use App\Models\UserWebinar;
 use App\Models\Webinar;
@@ -9,11 +10,18 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class WebinarController extends Controller
 {
+    public function index (Request $request) {
+        return utils::index(Webinar::class, $request);
+    }
+
     public function show($id, Request $request) {
         $webinar = Webinar::find($id);
+
+        if (!$webinar) abort (404);
 
         if (isset($request["initData"])) {
             if (!utils::isSafe(env("TELEGRAM_BOT_TOKEN"), $request["initData"]))
@@ -27,8 +35,7 @@ class WebinarController extends Controller
             if (UserWebinar::where("webinar_id", $id)->where("user_id", $user->id)->exists())
                 $webinar["registered"] = true;
         }
-
-        if (!$webinar["registered"]) unset($webinar["link"]);
+        if (!$webinar["registered"] && !$request->cookie("admin")) unset($webinar["link"]);
 
         return response()->json($webinar);
     }
@@ -84,5 +91,49 @@ class WebinarController extends Controller
 
             Log::critical($resp);
         }
+    }
+
+    public function store (WebinarStoreRequest $request) {
+        $data = $request->validated();
+
+        $ext = $data["image"]->getClientOriginalExtension();
+        $time = time();
+        $newFile = "webinars/webinar_" . $time . ".$ext";
+        Storage::disk("public")->putFileAs("webinars", $data["image"], "webinar_" . $time . ".$ext");
+
+        $web = Webinar::create([
+            "title" => $data["title"],
+            "description" => $data["description"],
+            "link" => $data["link"],
+            "image" => $newFile,
+            "date" => $data["date"],
+            "fields" => json_encode($data["fields"]),
+        ]);
+
+        return response()->json($web);
+    }
+
+    public function update (Webinar $webinar, WebinarStoreRequest $request) {
+        $data = $request->validated();
+        Storage::disk("public")->delete($webinar["image"]);
+
+        $ext = $request->file("image")->extension();
+        $time = time();
+        $newFile = "webinars/webinar_" . $time . ".$ext";
+        Storage::disk("public")->putFileAs("webinars", $data["image"], "webinar_" . $time . ".$ext");
+
+        $webinar->update([
+            "title" => $data["title"],
+            "description" => $data["description"],
+            "link" => $data["link"],
+            "image" => $newFile,
+            "date" => $data["date"],
+            "fields" => json_encode($data["fields"]),
+        ]);
+
+        if (isset($data["record_link"])) $webinar->record_link = $data["record_link"];
+        $webinar->save();
+
+        return response()->json($webinar);
     }
 }
