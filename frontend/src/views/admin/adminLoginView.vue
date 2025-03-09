@@ -38,7 +38,7 @@ export default {
     <div class="adminLogin">
         <div class="adminLogin_main">
             <div class="adminLogin_main_site">
-                <img src="../assets/img/logo.webp" alt="">
+                <img src="/img/logo.svg" alt="">
                 <h2>ExoBloom</h2>
             </div>
             <div class="adminLogin_main_title">
