@@ -302,7 +302,7 @@ export default {
                     <tr class="admin_products_main_main_table_tr" v-for="(product, key) in products">
                         <th><div @click="selectcheckbox($event, product.id)" :class="selectedusers.includes(product.id) ? 'active' : ''" class="admin_users_main_main_table_checkbox"><i class="fa-solid fa-check"></i></div></th>
                         <th>{{ product.id }}</th>
-                        <th><a target="_blank" :href="'/admin/analytics/' + product.id">{{ product.title ? product.title : '?' }}</a></th>
+                        <th><a target="_blank" :href="'/admin/services/' + product.id">{{ product.title ? product.title : '?' }}</a></th>
                         <th style="text-overflow: ellipsis; max-width:250px; overflow:hidden;">{{ product.description ? product.description : '?'}}</th>
                         <th style="text-overflow: ellipsis; max-width:250px; overflow:hidden;">{{ product.overview ? product.overview : '?'}}</th>
                         <th><a target="_blank" :href="config.storage + product.image">link</a></th>
