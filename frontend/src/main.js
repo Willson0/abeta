@@ -9,8 +9,6 @@ import WebinarView from "@/views/webinarView.vue";
 import AnalyticsView from "@/views/analyticsView.vue";
 import AdminLoginView from "@/views/admin/adminLoginView.vue";
 import AdminView from "@/views/admin/adminView.vue";
-import adminUsersView from "@/views/admin/adminUsersView.vue";
-import adminUserIndexView from "@/views/admin/adminUserIndexView.vue";
 import adminOrderView from "@/views/admin/adminServiceView.vue";
 import adminLogView from "@/views/admin/adminLogView.vue";
 import adminAdminsView from "@/views/admin/adminAdminsView.vue";
@@ -40,18 +38,6 @@ const routes = [
         component: AdminView,
         meta: { title: 'ABETA | Admin', h: 'Dashboard' },
         name: 'admin'
-    },
-    {
-        path: "/admin/users",
-        component: adminUsersView,
-        meta: { title: 'ABETA | Users', h: 'Users' },
-        name: 'usersAdmin'
-    },
-    {
-        path: "/admin/users/:id",
-        component: adminUserIndexView,
-        meta: { title: 'ABETA | User', h: 'User' },
-        name: 'userIndexAdmin'
     },
     {
         path: "/admin/services",
