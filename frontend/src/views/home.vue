@@ -33,7 +33,7 @@
             }
         },
         async mounted () {
-            this.$router.push({ query: { s: "Все" } })
+            this.$router.push({ query: { s: "Все" } });
             document.body.style.backgroundColor = "#F3F4F6";
             this.tg = window.Telegram.WebApp;
             this.tg.expand();
@@ -145,7 +145,6 @@
 </script>
 
 <template>
-    <div style="position:fixed; top:0;left:0;">{{route.query}}</div>
     <div class="forbiddenPopup" style="display:none"><div>Для продолжения пройдите регистрацию в боте (/start).</div></div>
     <div class="main">
         <div class="header">
