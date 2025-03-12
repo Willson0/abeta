@@ -20,7 +20,7 @@ export default {
                 if (response.ok) {
                     let el = document.querySelector(".feed_chat_button");
                     el.classList.add("active");
-                    setTimeout(() => el.classList.remove("active"), 3000);
+                    setTimeout(() => {el.classList.remove("active"); location.reload()}, 3000);
                 }
             })
 
