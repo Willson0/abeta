@@ -157,29 +157,29 @@
         </div>
         <div class="nav" style="position:sticky">
             <div>
-                <div @click="selectedCategory = category"
-                     :class="selectedCategory === category ? 'active' : ''"
+                <div @click="$router.replace({ query: { s: category } });"
+                     :class="$route.query.s === category ? 'active' : ''"
                      v-for="category in ['Все', 'Ивенты', 'Аналитика', 'Услуги']">
                     <div v-if="category === 'Консультация'" class="nav_notification"></div>
                     <p>{{category}}</p>
                 </div>
             </div>
             <div>
-                <div @click="selectedCategory = category"
-                     :class="selectedCategory === category ? 'active' : ''"
+                <div @click="$router.replace({ query: { s: category } });"
+                     :class="$route.query.s === category ? 'active' : ''"
                      v-for="category in ['Консультация', 'Чат', 'Профиль']">
                     <div v-if="category === 'Консультация'" class="nav_notification"></div>
                     <p>{{category}}</p>
                 </div>
             </div>
         </div>
-        <all-component :user="user" :feed="feed" v-if="selectedCategory === 'Все'"/>
-        <consultation-component :user="user" v-if="selectedCategory === 'Консультация'"/>
-        <profile-component @updateUser="(newuser) => user = newuser" :user="user" v-if="selectedCategory === 'Профиль'"/>
-        <chat-component :user="user" v-if="selectedCategory === 'Чат'"/>
-        <event-component :user="user" :feed="feed" v-if="selectedCategory === 'Ивенты'"/>
-        <analytic-feed-component :user="user" :feed="feed" v-if="selectedCategory === 'Аналитика'"/>
-        <service-component :user="user" :feed="feed" v-if="selectedCategory === 'Услуги'"/>
+        <all-component :user="user" :feed="feed" v-if="$route.query.s === 'Все'"/>
+        <consultation-component :user="user" v-if="$route.query.s === 'Консультация'"/>
+        <profile-component @updateUser="(newuser) => user = newuser" :user="user" v-if="$route.query.s === 'Профиль'"/>
+        <chat-component :user="user" v-if="$route.query.s === 'Чат'"/>
+        <event-component :user="user" :feed="feed" v-if="$route.query.s === 'Ивенты'"/>
+        <analytic-feed-component :user="user" :feed="feed" v-if="$route.query.s === 'Аналитика'"/>
+        <service-component :user="user" :feed="feed" v-if="$route.query.s === 'Услуги'"/>
     </div>
 </template>
 
