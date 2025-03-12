@@ -95,7 +95,7 @@ export default {
             </form>
             <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a></div>
         </div>
-        <div class="feed_consultation" v-else>
+        <div class="feed_consultation" v-else style="margin-top:16px;">
             <div class="feed_consultation_title" >
                 Вы записаны на консультацию
             </div>
