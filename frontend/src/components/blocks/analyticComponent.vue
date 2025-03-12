@@ -24,7 +24,7 @@ export default {
 </script>
 
 <template>
-    <div v-if="size === 0" @click="this.$router.push('/analytics/' + analytic.id)" class="feed_webinar feed_web">
+    <div v-if="size === 0" @click="this.$router.push('/analytics/' + analytic.id + '?s=' + $route.query.s)" class="feed_webinar feed_web">
         <div class="feed_webinar_image">
             <img :src="config.storage + analytic.image" alt="">
         </div>
@@ -32,14 +32,14 @@ export default {
         <div class="feed_webinar_title">{{analytic.title}}</div>
         <div class="feed_webinar_description">{{analytic.description}}</div>
     </div>
-    <div v-if="size === 1" @click="this.$router.push('/analytics/' + analytic.id)"
+    <div v-if="size === 1" @click="this.$router.push('/analytics/' + analytic.id + '?s=' + $route.query.s)"
          class="feed_webinar_alt feed_web" :style="'background-color:' + generateSoftRandomColor()">
         <div class="feed_webinar_alt_date">Аналитика &middot; {{analytic.time}} минут чтения</div>
         <hr>
         <div class="feed_webinar_alt_title">{{ analytic.title }}</div>
         <div class="feed_webinar_alt_description">{{ analytic.description }}</div>
     </div>
-    <div v-if="size === 2" @click="this.$router.push('/analytics/' + analytic.id)"
+    <div v-if="size === 2" @click="this.$router.push('/analytics/' + analytic.id + '?s=' + $route.query.s)"
          class="feed_webinar_alt feed_web" style="background-color:white; color:black;">
         <div class="feed_webinar_alt_date" style="color:#FF734C">Аналитика &middot; {{analytic.time}} минут чтения</div>
         <hr style="background-color:#FF734C">

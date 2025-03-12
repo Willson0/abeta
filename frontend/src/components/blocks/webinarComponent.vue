@@ -26,7 +26,7 @@ export default {
 </script>
 
 <template>
-    <div @click="$router.push('/webinar/' + webinar.id)" class="feed_webinar feed_web" v-if="size === 0">
+    <div @click="$router.push('/webinar/' + webinar.id + '?s=' + $route.query.s)" class="feed_webinar feed_web" v-if="size === 0">
         <div class="feed_webinar_image">
             <div class="feed_webinar_image_tags">
                 <div class="feed_webinar_image_date" v-if="getRelativeDate(webinar.date)">{{getRelativeDate(webinar.date)}}</div>
@@ -37,7 +37,7 @@ export default {
         <div class="feed_webinar_title">{{webinar.title}}</div>
         <div class="feed_webinar_description">{{webinar.description}}</div>
     </div>
-    <div @click="$router.push('/webinar/' + webinar.id)" :style="'background-color:' + generateSoftRandomColor()"
+    <div @click="$router.push('/webinar/' + webinar.id + '?s=' + $route.query.s)" :style="'background-color:' + generateSoftRandomColor()"
          v-if="size === 1" class="feed_others_events_slider_webinar feed_webinar feed_web">
         <div class="feed_others_future_events_slider_webinar_type" v-if="getRelativeDate(webinar.date)">{{ getRelativeDate(webinar.date) }}</div>
         <div class="feed_others_events_slider_webinar_title">{{webinar.title}}</div>
@@ -45,14 +45,14 @@ export default {
         <hr>
         <div class="feed_others_events_slider_webinar_date">Вебинар &middot; {{ formatDate(webinar.date) }}</div>
     </div>
-    <div v-if="size === 2" @click="this.$router.push('/webinar/' + webinar.id)" class="feed_webinar_alt feed_web"
+    <div v-if="size === 2" @click="this.$router.push('/webinar/' + webinar.id + '?s=' + $route.query.s)" class="feed_webinar_alt feed_web"
     :style="'background-color:' + generateSoftRandomColor()">
         <div class="feed_webinar_alt_date" style="color:white">Вебинар &middot; {{new Date() > new Date(webinar.date) ? 'В записи' : formatDate(webinar.date)}}</div>
         <hr style="background-color: white">
         <div class="feed_webinar_alt_title">{{ webinar.title }}</div>
         <div class="feed_webinar_alt_description">{{ webinar.description }}</div>
     </div>
-    <div v-if="size === 3" @click="this.$router.push('/webinar/' + webinar.id)" class="feed_webinar_alt feed_web"
+    <div v-if="size === 3" @click="this.$router.push('/webinar/' + webinar.id + '?s=' + $route.query.s)" class="feed_webinar_alt feed_web"
     style="background-color:white; color:black;">
         <div class="feed_webinar_alt_date" style="color:#FF734C">Вебинар &middot; {{new Date() > new Date(webinar.date) ? 'В записи' : formatDate(webinar.date)}}</div>
         <hr style="background-color:#FF734C">

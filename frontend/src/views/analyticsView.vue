@@ -22,7 +22,6 @@ export default {
         }
     },
     async mounted () {
-        alert (window.history.length);
         document.body.style.backgroundColor = "#F3F4F6";
 
         let backbutton = window.Telegram.WebApp.BackButton;
@@ -31,7 +30,7 @@ export default {
         backbutton.show();
 
         backbutton.onClick(function () {
-            window.history.back();
+            this.$router.push('/?' + this.$route.query.s);
             backbutton.hide();
         })
 
