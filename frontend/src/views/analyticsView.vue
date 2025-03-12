@@ -22,7 +22,7 @@ export default {
         }
     },
     async mounted () {
-        alert (window.history);
+        alert (window.history.length);
         document.body.style.backgroundColor = "#F3F4F6";
 
         let backbutton = window.Telegram.WebApp.BackButton;

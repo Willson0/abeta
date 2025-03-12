@@ -19,8 +19,8 @@ export default {
         }
     },
     async mounted () {
+        alert (window.history.length);
         document.body.style.backgroundColor = "#F3F4F6";
-        alert (window.history);
 
         let backbutton = window.Telegram.WebApp.BackButton;
         this.backbutton = backbutton;
