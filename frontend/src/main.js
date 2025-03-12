@@ -22,6 +22,7 @@ import adminServiceView from "@/views/admin/adminServiceView.vue";
 import adminAddServiceView from "@/views/admin/adminAddServiceView.vue";
 import adminServiceIndexView from "@/views/admin/adminServiceIndexView.vue";
 import mailingView from "@/views/admin/mailingView.vue";
+import successCalendlyView from "@/views/notification/successCalendlyView.vue";
 
 const routes = [
     { path: '/', component: Home },
@@ -111,6 +112,12 @@ const routes = [
         meta: { title: 'ABETA | Mailing', h: 'Mailing' },
         name: 'mailingAdmin'
     },
+    {
+        path: "/notify/calendly",
+        component: successCalendlyView,
+        meta: { title: 'ABETA | Calendly' },
+        name: 'calendlyNotify'
+    },
 ]
 
 const router = createRouter({
@@ -137,7 +144,7 @@ function loadTelegramScript() {
 // Логика загрузки скрипта в зависимости от маршрута
 router.beforeEach((to, from, next) => {
     // Список маршрутов, где НЕ нужен Telegram Web App
-    const excludeRoutes = ['/admin'];
+    const excludeRoutes = ['/admin', '/notify'];
 
     if (!excludeRoutes.some(route => to.path.startsWith(route))) {
         loadTelegramScript()

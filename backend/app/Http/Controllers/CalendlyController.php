@@ -56,7 +56,7 @@ class CalendlyController extends Controller
             $user->auth_code = null;
             $user->save();
 
-            return response("Успешная привязка! Можете вернуться в Telegram.",200);
+            return view('calendly');
         }
 
         return response("Произошла ошибка. Не удалось привязать аккаунт, обратитесь к администраторам.", 409);
