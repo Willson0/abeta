@@ -42,7 +42,7 @@
 <body>
 <div class="notify_calendly">
     <div>
-        <img src="{{ url('successBubble.png') }}" alt="">
+        <img src="/storage/successBubble.png" alt="">
         <div class="notify_calendly_text">Можете вернуться<br>в Telegram</div>
     </div>
 </div>
