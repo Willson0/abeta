@@ -3,6 +3,12 @@ import config from "@/components/config.json";
 
 export default {
     name: "chatComponent",
+    props: {
+      user: {
+          type: Object,
+          required: true,
+      }
+    },
     methods: {
         async sendData () {
             await fetch (config.backend + "group", {
@@ -32,7 +38,7 @@ export default {
 </script>
 
 <template>
-    <div class="chat">
+    <div class="chat" v-if="!user.chat_request">
         <div class="feed_chat_image">
             <img src="/img/closed_chat.svg" alt="">
         </div>
@@ -48,6 +54,14 @@ export default {
             <p>Запросить доступ</p>
             <p>Приглашение отправлено</p>
         </button>
+    </div>
+    <div v-else style="background-color: #36B251">
+        <div class="feed_chat_image">
+            <img style="filter: invert(1);" src="/img/closed_chat.svg" alt="">
+        </div>
+        <ul class="chat_description" style="list-style: none">
+            <li>Ваш запрос получен. Доступ к чату откроется в течение 24 часов</li>
+        </ul>
     </div>
 </template>
 
