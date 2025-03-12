@@ -23,7 +23,8 @@ export default {
                     setTimeout(() => {el.classList.remove("active"); location.reload()}, 3000);
                 }
             })
-
+        },
+        async mounted () {
             await fetch (config.backend + "profile", {
                 method: "POST",
                 body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
@@ -31,10 +32,6 @@ export default {
                     "Content-Type": "application/json",
                 }
             }).then((response) => {
-                if (!response.ok) {
-                    let el = document.querySelector(".forbiddenPopup");
-                    el.style.display = "flex";
-                }
                 return response.json();
             }).then((response) => {
                 this.user = response;
@@ -60,7 +57,7 @@ export default {
             <p>Приглашение отправлено</p>
         </button>
     </div>
-    <div class="chat" v-else style="background-color: #36B251">
+    <div class="feed_chat" v-else style="background-color: #36B251">
         <div class="feed_chat_image">
             <img style="filter: invert(1);" src="/img/closed_chat.svg" alt="">
         </div>
