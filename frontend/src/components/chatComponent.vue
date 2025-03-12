@@ -55,7 +55,7 @@ export default {
             <p>Приглашение отправлено</p>
         </button>
     </div>
-    <div v-else style="background-color: #36B251">
+    <div class="chat" v-else style="background-color: #36B251">
         <div class="feed_chat_image">
             <img style="filter: invert(1);" src="/img/closed_chat.svg" alt="">
         </div>
