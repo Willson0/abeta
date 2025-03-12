@@ -157,7 +157,7 @@
         </div>
         <div class="nav" style="position:sticky">
             <div>
-                <div @click="$router.replace({ query: { s: category } });"
+                <div @click="$router.push({ query: { s: category } });"
                      :class="$route.query.s === category ? 'active' : ''"
                      v-for="category in ['Все', 'Ивенты', 'Аналитика', 'Услуги']">
                     <div v-if="category === 'Консультация'" class="nav_notification"></div>
@@ -165,7 +165,7 @@
                 </div>
             </div>
             <div>
-                <div @click="$router.replace({ query: { s: category } });"
+                <div @click="$router.push({ query: { s: category } });"
                      :class="$route.query.s === category ? 'active' : ''"
                      v-for="category in ['Консультация', 'Чат', 'Профиль']">
                     <div v-if="category === 'Консультация'" class="nav_notification"></div>
