@@ -20,6 +20,7 @@ export default {
     },
     async mounted () {
         document.body.style.backgroundColor = "#F3F4F6";
+        alert (window.history);
 
         let backbutton = window.Telegram.WebApp.BackButton;
         this.backbutton = backbutton;
@@ -124,7 +125,6 @@ export default {
 </script>
 
 <template>
-    {{window.history}}
     <div class="webinar">
         <div class="feed_webinar_image">
             <div class="feed_webinar_image_tags">
