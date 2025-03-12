@@ -97,6 +97,7 @@ export default {
 </script>
 
 <template>
+    {{window.history}}
     <div class="analytics">
         <div class="feed_webinar_image">
             <div class="feed_webinar_image_tags" v-if="analytic.video">

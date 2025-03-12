@@ -124,6 +124,7 @@ export default {
 </script>
 
 <template>
+    {{window.history}}
     <div class="webinar">
         <div class="feed_webinar_image">
             <div class="feed_webinar_image_tags">
