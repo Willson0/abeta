@@ -7,7 +7,6 @@ export default {
 <template>
     <div class="notify_calendly">
         <div>
-            <img src="/successBubble.png" alt="">
             <div class="notify_calendly_text">Можете вернуться<br>в Telegram</div>
         </div>
     </div>
