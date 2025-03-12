@@ -21,7 +21,7 @@ export default {
                 if (response.ok) {
                     let el = document.querySelector(".feed_chat_button");
                     el.classList.add("active");
-                    setTimeout(() => el.classList.remove("active"), 3000);
+                    setTimeout(() => {el.classList.remove("active"); location.reload()}, 3000);
                 }
             })
 
@@ -59,9 +59,12 @@ export default {
         <div class="feed_chat_image">
             <img style="filter: invert(1);" src="/img/closed_chat.svg" alt="">
         </div>
-        <ul class="chat_description" style="list-style: none">
-            <li>Ваш запрос получен. Доступ к чату откроется в течение 24 часов</li>
-        </ul>
+        <div class="chat_title" style="color:white">
+            Закрытый чат ABETA
+        </div>
+        <div class="chat_description" style="color:white;">
+           Ваш запрос получен. Доступ к чату откроется в течение 24 часов
+        </div>
     </div>
 </template>
 
