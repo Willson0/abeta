@@ -40,6 +40,21 @@ export default {
             }).then((response) => {
                 this.venture = true;
             })
+        },
+        async sendData () {
+            await fetch (config.backend + "support", {
+                method: "POST",
+                body: JSON.stringify({"initData": window.Telegram.WebApp.initData, "text": "Консультация с экспертами ABETA"}),
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }).then((response) => {
+                if (response.ok) {
+                    let el = document.querySelector(".feed_consultation_button");
+                    el.classList.add("active");
+                    setTimeout(() => {el.classList.remove("active"); location.reload()}, 3000);
+                }
+            })
         }
     }
 }
@@ -61,7 +76,7 @@ export default {
         <div class="form">
             <div class="form_free">Бесплатно</div>
             <div class="form_title">Консультация c ведущим<br>аналитиком компании</div>
-            <form action="">
+            <form @submit.prevent="sendData">
                 <div class="form_input">
                     <label for="name">Имя</label>
                     <input type="text" name="name">
