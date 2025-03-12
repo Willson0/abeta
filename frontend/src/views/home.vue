@@ -146,7 +146,7 @@
 </script>
 
 <template>
-    <div style="position:fixed; top:0;left:0;">{{$route.query}}</div>
+    <div style="position:fixed; top:0;left:0;">{{window.history.length}}</div>
     <div class="forbiddenPopup" style="display:none"><div>Для продолжения пройдите регистрацию в боте (/start).</div></div>
     <div class="main">
         <div class="header">
