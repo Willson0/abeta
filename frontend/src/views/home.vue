@@ -33,7 +33,7 @@
             }
         },
         async mounted () {
-            this.$router.push({ query: { s: "Все" } });
+            if (!this.$route.query.s) this.$router.push({ query: { s: "Все" } });
             document.body.style.backgroundColor = "#F3F4F6";
             this.tg = window.Telegram.WebApp;
             this.tg.expand();
