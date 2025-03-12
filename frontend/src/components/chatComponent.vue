@@ -62,7 +62,7 @@ export default {
         <div class="chat_title" style="color:white">
             Закрытый чат ABETA
         </div>
-        <div class="chat_description" style="color:white;">
+        <div class="feed_chat_description" style="color:white;">
            Ваш запрос получен. Доступ к чату откроется в течение 24 часов
         </div>
     </div>
