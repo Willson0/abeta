@@ -42,6 +42,7 @@ export default {
 </script>
 
 <template>
+    {{user}}
     <div class="feed_chat" v-if="!user.chat_request">
         <div class="feed_chat_image">
             <img src="/img/closed_chat.svg" alt="">
