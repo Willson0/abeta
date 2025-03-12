@@ -35,13 +35,6 @@
         async mounted () {
             if (!this.$route.query.s) this.$router.push({ query: { s: "Все" } });
 
-            window.onpopstate = function(event) {
-                this.$router.push({
-                    path: '/',
-                    query: { s: this.$route.query.s, timestamp: Date.now() }
-                });
-            }
-
             document.body.style.backgroundColor = "#F3F4F6";
             this.tg = window.Telegram.WebApp;
             this.tg.expand();
