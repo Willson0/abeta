@@ -24,19 +24,20 @@ export default {
                 }
             })
         },
-        async mounted () {
-            await fetch (config.backend + "profile", {
-                method: "POST",
-                body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            }).then((response) => {
-                return response.json();
-            }).then((response) => {
-                this.user = response;
-            });
-        }
+
+    },
+    async mounted () {
+        await fetch (config.backend + "profile", {
+            method: "POST",
+            body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((response) => {
+            this.user = response;
+        });
     }
 }
 </script>
