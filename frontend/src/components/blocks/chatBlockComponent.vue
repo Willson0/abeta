@@ -5,6 +5,7 @@ export default {
     data () {
       return {
           ok: false,
+          user: {},
       }
     },
     methods: {
@@ -27,16 +28,24 @@ export default {
                 method: "POST",
                 body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 }
-            })
+            }).then((response) => {
+                if (!response.ok) {
+                    let el = document.querySelector(".forbiddenPopup");
+                    el.style.display = "flex";
+                }
+                return response.json();
+            }).then((response) => {
+                this.user = response;
+            });
         }
     }
 }
 </script>
 
 <template>
-    <div class="feed_chat">
+    <div class="feed_chat" v-if="!user.chat_request">
         <div class="feed_chat_image">
             <img src="/img/closed_chat.svg" alt="">
         </div>
@@ -50,6 +59,17 @@ export default {
             <p>Запросить доступ</p>
             <p>Приглашение отправлено</p>
         </button>
+    </div>
+    <div class="chat" v-else style="background-color: #36B251">
+        <div class="feed_chat_image">
+            <img style="filter: invert(1);" src="/img/closed_chat.svg" alt="">
+        </div>
+        <div class="chat_title" style="color:white">
+            Закрытый чат ABETA
+        </div>
+        <div class="feed_chat_description" style="color:white;">
+            Ваш запрос получен. Доступ к чату откроется в течение 24 часов
+        </div>
     </div>
 </template>
 
