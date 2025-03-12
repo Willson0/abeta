@@ -59,7 +59,7 @@ export default {
         <div class="feed_consultation_description" v-else>
             В скором времени с вами свяжется эксперт
         </div>
-        <button @click="sendData" class="feed_consultation_button">Выбрать удобное время</button>
+        <button @click="sendData" v-if="!user.support" class="feed_consultation_button">Выбрать удобное время</button>
     </div>
 </template>
 

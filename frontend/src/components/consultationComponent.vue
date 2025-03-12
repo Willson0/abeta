@@ -25,6 +25,12 @@ export default {
             this.venture = response;
         })
     },
+    props: {
+      user: {
+          type: Object,
+          required: true,
+      }
+    },
     methods: {
         async sendVenture () {
             await fetch (config.backend + "venture", {
@@ -73,7 +79,7 @@ export default {
             </ul>
         </div>
 
-        <div class="form">
+        <div class="form" v-if="!user.support">
             <div class="form_free">Бесплатно</div>
             <div class="form_title">Консультация c ведущим<br>аналитиком компании</div>
             <form @submit.prevent="sendData">
@@ -88,6 +94,14 @@ export default {
                 <button>Выбрать удобное время</button>
             </form>
             <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a></div>
+        </div>
+        <div class="feed_consultation" v-else>
+            <div class="feed_consultation_title" >
+                Вы записаны на консультацию
+            </div>
+            <div class="feed_consultation_description" >
+                В скором времени с вами свяжется эксперт
+            </div>
         </div>
 
         <support-component />
