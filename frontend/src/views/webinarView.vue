@@ -27,7 +27,7 @@ export default {
         backbutton.show();
 
         backbutton.onClick(function () {
-            window.history.back();
+            window.location = "/?s=Ивенты";
             backbutton.hide();
         })
 
