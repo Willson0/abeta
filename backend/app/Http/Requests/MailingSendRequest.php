@@ -22,8 +22,12 @@ class MailingSendRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "users" => "required|array|min:1",
+            "users" => "nullable|array",
             "users.*" => "integer|exists:users,id",
+            "webinars" => "nullable|array",
+            "webinars.*" => "integer|exists:webinars,id",
+            "analytics" => "nullable|array",
+            "analytics.*" => "integer|exists:analytics,id",
             "text" => "string|required",
             "image" => "nullable|image|mimes:jpeg,png,jpg,gif,svg",
         ];

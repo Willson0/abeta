@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MailingSendRequest;
+use App\Models\Analytic;
 use App\Models\User;
+use App\Models\Webinar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -13,8 +15,23 @@ class MailingController extends Controller
     public function send (MailingSendRequest $request) {
         $data = $request->validated();
         $token = env("TELEGRAM_BOT_TOKEN");
+
+        if (!isset($data["users"])) $data["users"] = [];
+
+        if (isset($data["webinars"]))
+        foreach ($data["webinars"] as $web) {
+            $webinar = Webinar::find($web);
+            if ($webinar->users) $data["users"] = array_merge($data['users'], $webinar->users->pluck("id")->toArray());
+        }
+        if (isset($data["analytics"]))
+        foreach ($data["analytics"] as $web) {
+            $webinar = Analytic::find($web);
+            if ($webinar->users) $data["users"] = array_merge($data['users'], $webinar->users->pluck("id")->toArray());
+        }
+        $data["users"] = array_unique($data['users']);
         foreach ($data["users"] as $user) {
-            $user = User::find($user);
+            if (!isset($user["id"]))
+                $user = User::find($user);
 //            if (isset($data["image"]))
 //                $resp = Http::attach(
 //                    "photo",

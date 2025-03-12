@@ -14,4 +14,8 @@ class Analytic extends Model
         $this->time = ceil(strlen($this->description) / 1500);
         return $this;
     }
+
+    public function users () {
+        return $this->belongsToMany(User::class, "analytic_users");
+    }
 }

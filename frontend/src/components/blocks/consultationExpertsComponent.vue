@@ -3,6 +3,11 @@ import config from "@/components/config.json";
 
 export default {
     name: "consultationExpertsComponent",
+    data () {
+        return {
+            user: {},
+        }
+    },
     methods: {
         async sendData () {
             await fetch (config.backend + "support", {
@@ -19,21 +24,40 @@ export default {
                 }
             })
         }
+    },
+    async mounted () {
+        await fetch (config.backend + "profile", {
+            method: "POST",
+            body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((response) => {
+            this.user = response;
+        });
     }
 }
 </script>
 
 <template>
     <div class="feed_consultation">
-        <div class="feed_consultation_photos">
+        <div class="feed_consultation_photos" v-if="!user.support">
             <img v-for="(img, key) in ['/img/avatar1.png', '/img/avatar2.png', '/img/avatar3.png']"
                  :src="img" alt="" :style="'right: ' + 8*key + 'px'">
         </div>
-        <div class="feed_consultation_title">
+        <div class="feed_consultation_title"  v-if="!user.support">
             Бесплатная консультация с экспертами ABETA
         </div>
-        <div class="feed_consultation_description">
+        <div class="feed_consultation_title" v-else>
+            Вы записаны на консультацию
+        </div>
+        <div class="feed_consultation_description" v-if="!user.support">
             Расширим возможности, подберем инструменты и инвестиционную стратегию
+        </div>
+        <div class="feed_consultation_description" v-else>
+            В скором времени с вами свяжется эксперт
         </div>
         <button @click="sendData" class="feed_consultation_button">Выбрать удобное время</button>
     </div>

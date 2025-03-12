@@ -26,6 +26,12 @@ export default {
             userSearch: "",
             users: [],
             selectedUsers: [],
+            matSearch: "",
+            webSearch: "",
+            webs: [],
+            mats: [],
+            selectedWebs: [],
+            selectedMats: [],
         }
     },
     async mounted () {
@@ -66,6 +72,30 @@ export default {
                     if (response.ok) return response.json();
                 }).then((response) => {
                     this.users = response;
+                })
+            }
+        },
+        async searchWeb () {
+            if (this.webSearch.length > 3) {
+                await fetch (config.backend + "webinar?s=" + this.webSearch , {
+                    method: "GET",
+                    credentials: "include"
+                }).then((response) => {
+                    if (response.ok) return response.json();
+                }).then((response) => {
+                    this.webs = response;
+                })
+            }
+        },
+        async searchMat () {
+            if (this.matSearch.length > 3) {
+                await fetch (config.backend + "analytic?s=" + this.matSearch , {
+                    method: "GET",
+                    credentials: "include"
+                }).then((response) => {
+                    if (response.ok) return response.json();
+                }).then((response) => {
+                    this.mats = response;
                 })
             }
         },
@@ -152,6 +182,8 @@ export default {
             if (this.images[0]) formData.append("image", this.images[0]);
 
             this.selectedUsers.forEach((el) => formData.append("users[]", el));
+            this.selectedWebs.forEach((el) => formData.append("webinars[]", el));
+            this.selectedMats.forEach((el) => formData.append("analytics[]", el));
 
             for (const [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
@@ -394,20 +426,36 @@ export default {
                         </div>
                     </div>
                 </div>
-<!--                <div>-->
-<!--                    <h2>Product Images</h2>-->
-<!--                    <div class="admin_addproduct_main_images">-->
-
-<!--                        <label v-if="images.length === 0" class="admin_addproduct_main_addimage" @drop="drop" @dragover="ondragover">-->
-<!--                            <input @change="addimg" type="file" accept="image/*" alt="">-->
-<!--                            <div>-->
-<!--                                <i class="fa-regular fa-image"></i>-->
-<!--                                <p>Click to upload or drag and drop</p>-->
-<!--                            </div>-->
-<!--                        </label>-->
-
-<!--                    </div>-->
-<!--                </div>-->
+                <div>
+                    <h2>Интересы</h2>
+                    <div>
+                        <div>
+                            <h3>Поиск вебинаров</h3>
+                            <input type="text" @input="searchWeb" placeholder="Введите название вебинара" v-model="webSearch">
+                        </div>
+                        <div class="admin_mailing_users">
+                            <div :class="selectedWebs.includes(user.id) ? 'active' : ''"
+                                 v-for="user in webs.data"
+                                 @click="selectedWebs.includes(user.id) ? selectedWebs = selectedWebs.filter((el) => el !== user.id) : selectedWebs.push(user.id)"
+                            >{{user.title}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h2>Интересы</h2>
+                    <div>
+                        <div>
+                            <h3>Поиск материалов</h3>
+                            <input type="text" @input="searchMat" placeholder="Введите название аналитики" v-model="matSearch">
+                        </div>
+                        <div class="admin_mailing_users">
+                            <div :class="selectedMats.includes(user.id) ? 'active' : ''"
+                                 v-for="user in mats.data"
+                                 @click="selectedMats.includes(user.id) ? selectedMats = selectedMats.filter((el) => el !== user.id) : selectedMats.push(user.id)"
+                            >{{user.title}}</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="admin_addproduct_main_buttons">
                     <button @click="sendDataAll">Отправить всем</button>
                     <button @click="sendData" class="admin_addproduct_main_buttons_add">Отправить</button>
