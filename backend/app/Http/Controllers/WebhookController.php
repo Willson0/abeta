@@ -62,7 +62,7 @@ class WebhookController extends Controller
                     utils::answerData("Вы успешно отказались от добавления ФИО", $request, $user);
                     utils::sendMessage($user->telegram_id, "Все данные успешно добавлены");
 
-                    Http::post($url, [
+                    $resp = Http::post($url, [
                         'chat_id' => $user->telegram_id,
                         'text' => "Успешная регистрация. Спасибо, что Вы с нами!",
                         "reply_markup" => [
@@ -71,6 +71,7 @@ class WebhookController extends Controller
                             ],
                         ]
                     ]);
+                    Log::critical($resp);
                 }
                 else if ($request["callback_query"]["data"] == "admin_settings_datacollection_phone_accept") {
                     utils::updateSettings("require_phone", true);
