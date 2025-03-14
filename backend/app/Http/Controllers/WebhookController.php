@@ -62,14 +62,14 @@ class WebhookController extends Controller
                     utils::answerData("Вы успешно отказались от добавления ФИО", $request, $user);
                     utils::sendMessage($user->telegram_id, "Все данные успешно добавлены");
 
-                    $resp = Http::post($url, [
+                    $resp = Http::post($sendurl, [
                         'chat_id' => $user->telegram_id,
                         'text' => "Успешная регистрация. Спасибо, что Вы с нами!",
-                        "reply_markup" => [
+                        "reply_markup" => json_encode([
                             "inline_keyboard" => [
                                 [["text" => "Открыть приложение", "web_app" => ["url" => "https://exobloom.ru"]]]
                             ],
-                        ]
+                        ])
                     ]);
                     Log::critical($resp);
                 }
@@ -1022,14 +1022,15 @@ class WebhookController extends Controller
 
                 $user->save();
                 utils::sendMessage($user->telegram_id, "ФИО было успешно добавлено!");
+                $url = "https://api.telegram.org/bot$token/sendMessage";
                 Http::post($url, [
                     'chat_id' => $user->telegram_id,
                     'text' => "Успешная регистрация. Спасибо, что Вы с нами!",
-                    "reply_markup" => [
+                    "reply_markup" => json_encode([
                         "inline_keyboard" => [
                             [["text" => "Открыть приложение", "web_app" => ["url" => "https://exobloom.ru"]]]
                         ],
-                    ]
+                    ])
                 ]);
 
                 return response()->json(["status" => "ok"], 200);
