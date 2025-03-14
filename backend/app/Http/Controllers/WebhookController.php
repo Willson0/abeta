@@ -1011,6 +1011,15 @@ class WebhookController extends Controller
 
                 $user->save();
                 utils::sendMessage($user->telegram_id, "ФИО было успешно добавлено!");
+                Http::post($url, [
+                    'chat_id' => $user->telegram_id,
+                    'text' => "Успешная регистрация. Спасибо, что Вы с нами!",
+                    "reply_markup" => [
+                        "inline_keyboard" => [
+                            [["text" => "Открыть приложение", "web_app" => ["url" => "https://exobloom.ru"]]]
+                        ],
+                    ]
+                ]);
 
                 return response()->json(["status" => "ok"], 200);
             }
