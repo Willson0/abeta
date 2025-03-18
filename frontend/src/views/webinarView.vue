@@ -77,6 +77,7 @@ export default {
         async sendData() {
             alert (this.fields);
             for (let field in this.fields) {
+                alert (this.fields[field]);
                 alert (field);
                 if (!field) return document.querySelector(".webinar_registration_error").classList.add("active");
             }
