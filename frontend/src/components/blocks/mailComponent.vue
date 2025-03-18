@@ -37,7 +37,7 @@ export default {
 </script>
 
 <template>
-    <div v-show="!user.expert_mailing" class="feed_newsletter">
+    <div v-if="!user.expert_mailing" class="feed_newsletter">
         <div class="feed_newsletter_image">
             <img src="/img/mail.svg" alt="">
         </div>
