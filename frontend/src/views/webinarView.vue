@@ -197,7 +197,7 @@ export default {
             </div>
         </div>
         <future-events-component :webinars="feed.upcoming_events"/>
-        <mail-component  user="user"/>
+        <mail-component :user="user"/>
     </div>
 </template>
 
