@@ -61,7 +61,7 @@ export default {
 <template>
     <div class="nav old_events">
         <div>
-            <div @click="selectedFilter = filter"
+            <div style="z-index: 9990" @click="selectedFilter = filter"
                  :class="selectedFilter === filter ? 'active' : ''"
                  v-for="filter in ['Все', 'Предстоящие', 'В записи']">
                 <p>{{filter}}</p>
