@@ -75,8 +75,11 @@ export default {
         formatDate,
 
         async sendData() {
-            for (let field in this.fields)
+            alert (this.fields);
+            for (let field in this.fields) {
+                alert (field);
                 if (!field) return document.querySelector(".webinar_registration_error").classList.add("active");
+            }
             document.querySelector(".webinar_registration_error").classList.remove("active");
 
             await fetch (config.backend + "webinar/" + this.$route.params.id + "/registration", {
