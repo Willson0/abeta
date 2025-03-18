@@ -77,9 +77,9 @@ export default {
         async sendData() {
             alert (this.fields);
             for (let field in this.fields) {
-                alert (this.fields[field]);
-                alert (field);
-                if (!field) return document.querySelector(".webinar_registration_error").classList.add("active");
+                if (!this.fields[field]) return document.querySelector(".webinar_registration_error").classList.add("active");
+                if (field.toLocaleLowerCase() === "телефон" && !/^(\+7|8)?[ ]?\(?\d{3}\)?[ ]?\d{3}[- ]?\d{2}[- ]?\d{2}$/.test(this.fields[field])) return alert ("Неправильный формат номера телефона");
+                if ((field.toLocaleLowerCase() === "имя" || field.toLocaleLowerCase() === "фио") && !/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+)?(?: [А-ЯЁ][а-яё]+)?$/.test(this.fields[field])) return alert ("Неправильный формат ФИО");
             }
             document.querySelector(".webinar_registration_error").classList.remove("active");
 
