@@ -39,7 +39,7 @@ export default {
                 return response.json();
             }).then((response) => {
                 this.fields = response;
-                this.fields.forEach((el) => this.selectedFields.push(el));
+                for (let el in this.fields) this.selectedFields.push(this.fields[el]);
                 removeLoading();
             })
         },
@@ -111,9 +111,8 @@ export default {
             if (!this.name) return alert ("Insert 'NAME' please");
             if (!this.link) return alert ("Insert 'Ссылка' please");
             if (!this.date) return alert ("Insert 'Дата' please");
-            if (new Date(this.date) <= new Date()) return alert ("Дата должна быть новее сегодняшней");
             if (this.images.length === 0) return alert ("Count of images must be bigger 0!");
-            if (this.selectedFields === 0) return alert ("Количество полей должно быть больше 0");
+            // if (this.selectedFields.length === 0) return alert ("Количество полей должно быть больше 0");
 
             formData.append("title", this.name);
             formData.append("description", document.querySelector(".admin_addproduct_main_textarea").innerHTML);

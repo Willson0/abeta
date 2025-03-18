@@ -101,13 +101,16 @@ class WebinarController extends Controller
         $newFile = "webinars/webinar_" . $time . ".$ext";
         Storage::disk("public")->putFileAs("webinars", $data["image"], "webinar_" . $time . ".$ext");
 
+        $fields = [];
+        if ($request->has("fields")) $fields = $data["fields"];
+
         $web = Webinar::create([
             "title" => $data["title"],
             "description" => $data["description"],
             "link" => $data["link"],
             "image" => $newFile,
             "date" => $data["date"],
-            "fields" => json_encode($data["fields"]),
+            "fields" => json_encode($fields),
         ]);
 
         return response()->json($web);
@@ -122,13 +125,16 @@ class WebinarController extends Controller
         $newFile = "webinars/webinar_" . $time . ".$ext";
         Storage::disk("public")->putFileAs("webinars", $data["image"], "webinar_" . $time . ".$ext");
 
+        $fields = [];
+        if ($request->has("fields")) $fields = $data["fields"];
+
         $webinar->update([
             "title" => $data["title"],
             "description" => $data["description"],
             "link" => $data["link"],
             "image" => $newFile,
             "date" => $data["date"],
-            "fields" => json_encode($data["fields"]),
+            "fields" => json_encode($fields),
         ]);
 
         if (isset($data["record_link"])) $webinar->record_link = $data["record_link"];
