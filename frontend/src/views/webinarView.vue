@@ -114,7 +114,7 @@ export default {
                     let el = document.querySelector(".webinar_links_calendar_button");
                     el.classList.add("active");
                     setTimeout(() => el.classList.remove("active"), 3000);
-                }
+                } else alert ("У вас не привязан аккаунт Calendly! Используйте /calendly");
             })
         }
     },
