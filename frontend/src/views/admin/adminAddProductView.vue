@@ -112,7 +112,7 @@ export default {
             if (!this.link) return alert ("Insert 'Ссылка' please");
             if (!this.date) return alert ("Insert 'Дата' please");
             if (this.images.length === 0) return alert ("Count of images must be bigger 0!");
-            // if (this.selectedFields.length === 0) return alert ("Количество полей должно быть больше 0");
+            if (this.selectedFields.length === 0) return alert ("Количество полей должно быть больше 0");
 
             formData.append("title", this.name);
             formData.append("description", document.querySelector(".admin_addproduct_main_textarea").innerHTML);
