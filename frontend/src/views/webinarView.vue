@@ -177,8 +177,7 @@ export default {
                     {{ webinar.title }}
                 </div>
                 <div class="webinar_registration_info_date">
-                    <div>7 февраля</div>
-                    <div>18:00 мск</div>
+                    <div>{{ formatDate(webinar.date) }}</div>
                 </div>
             </div>
             <div class="form_policy">
