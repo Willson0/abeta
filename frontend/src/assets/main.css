@@ -1463,7 +1463,7 @@ font-weight:500;
 }
 
 .services_popup_title {
-    margin-top:24px;
+    margin-top:16px;
     font-weight:600;
     font-size:32px;
     line-height:40px;
@@ -1474,6 +1474,7 @@ font-weight:500;
     font-weight: 400;
     font-family: 'inter', serif;
     line-height: 24px;
+    font-size: 16px;
 }
 
 .services_popup_button {
