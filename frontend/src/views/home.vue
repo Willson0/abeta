@@ -150,10 +150,10 @@
     <div class="main">
         <div class="header">
             <div class="header_logo">
-                <img src="/img/logo.svg" alt="" @click="selectedCategory = 'Все'">
+                <img src="/img/logo.svg" alt="" @click="$router.push({ query: { s: 'Все' } })">
             </div>
             <div class="header_profile">
-                <img @click="selectedCategory = 'Профиль'" :src="tg.initDataUnsafe?.user.photo_url" alt="">
+                <img @click="$router.push({ query: { s: 'Профиль' } })" :src="tg.initDataUnsafe?.user.photo_url" alt="">
                 <div class="header_profile_notification"></div>
             </div>
         </div>

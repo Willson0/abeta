@@ -38,7 +38,6 @@ export default {
 
 <template>
     <div v-if="!user.expert_mailing" class="feed_newsletter">
-        {{user.expert_mailing}}
         <div class="feed_newsletter_image">
             <img src="/img/mail.svg" alt="">
         </div>
