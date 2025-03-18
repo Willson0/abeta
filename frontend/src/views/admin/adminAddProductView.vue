@@ -39,6 +39,7 @@ export default {
                 return response.json();
             }).then((response) => {
                 this.fields = response;
+                this.fields.forEach((el) => this.selectedFields.push(el));
                 removeLoading();
             })
         },
@@ -120,6 +121,7 @@ export default {
             formData.append("date", this.date);
             formData.append("image", this.images[0]);
             this.selectedFields.forEach((el) => formData.append("fields[]", el));
+            // if (this.selectedFields.length === 0) formData.append("fields[]", "");
 
             await fetch (config.backend + "webinar", {
                 method: "POST",

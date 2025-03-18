@@ -24,7 +24,7 @@ class WebinarStoreRequest extends FormRequest
         return [
             "title" => "required|string",
             "description" => "required|string",
-            "fields" => "required|array|min:1",
+            "fields" => "array|min:1",
             "image" => "required|image|mimes:jpeg,png,jpg,gif,svg",
             "link" => "required|string",
             "date" => "required|date",
