@@ -65,6 +65,7 @@ export default {
             return response.json();
         }).then((response) => {
             this.user = response;
+            alert (this.user.expert_mailing);
         })
 
         await fetch (config.backend + "feed/all").then((response) => {
