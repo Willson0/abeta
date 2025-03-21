@@ -52,17 +52,15 @@ export default {
 
         await fetch (config.backend + "profile", {
             method: "POST",
+            body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
             headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                "initData": window.Telegram.WebApp.initData,
-            })
+                "Content-Type": "application/json",
+            }
         }).then((response) => {
             return response.json();
         }).then((response) => {
             this.user = response;
-        })
+        });
 
         await fetch (config.backend + "feed/all").then((response) => {
             return response.json();
@@ -166,7 +164,7 @@ export default {
                 <button>Зарегистрироваться</button>
             </form>
             <div class="form_policy">
-                Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a>
+                Нажимая на кнопку, вы соглашаетесь <a @click="window.Telegram.WebApp.openLink('https://abeta.org/politics')">с политикой конфиденциальности</a>
             </div>
         </div>
         <div v-if="webinar.registered && isActual" class="webinar_registration form active">

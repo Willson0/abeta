@@ -42,7 +42,7 @@ export default {
     <div class="feed_others_events" v-if="webinars?.length">
         <div class="feed_others_events_title">Смотреть сейчас</div>
         <div class="feed_others_events_slider">
-            <div v-for="web in webinars" class="feed_others_events_slider_webinar">
+            <div v-for="web in webinars" @click="this.$router.push('/webinars/' + web.id + '?s=' + $route.query.s)" class="feed_others_events_slider_webinar">
                 <div class="feed_others_future_events_slider_webinar_type">Вебинар</div>
                 <div class="feed_others_events_slider_webinar_title">{{web.title}}</div>
                 <div class="feed_others_events_slider_webinar_description">{{web.description}}</div>

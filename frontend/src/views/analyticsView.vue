@@ -143,7 +143,7 @@ export default {
                 <button>Получить доступ</button>
             </form>
             <div class="form_policy">
-                Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a>
+                Нажимая на кнопку, вы соглашаетесь <a @click="window.Telegram.WebApp.openLink('https://abeta.org/politics')">с политикой конфиденциальности</a>
             </div>
         </div>
         <other-analytics-component :analytics="feed?.analytics"/>
