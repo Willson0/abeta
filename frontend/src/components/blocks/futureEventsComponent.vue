@@ -36,7 +36,7 @@ export default {
     <div class="feed_others_future_events" v-if="webinars?.length">
         <div class="feed_others_events_title">Другие<br>предстоящие ивенты</div>
         <div class="feed_others_events_slider">
-            <div @click="this.$router.push('/webinars/' + web.id + '?s=' + $route.query.s)" v-for="(web, key) in webinars" class="feed_others_events_slider_webinar"
+            <div @click="this.$router.push('/webinar/' + web.id + '?s=' + $route.query.s)" v-for="(web, key) in webinars" class="feed_others_events_slider_webinar"
             :style="'background-color: ' + colors[key]">
                 <div class="feed_others_future_events_slider_webinar_type" :style="'color:' + colors[key]">Вебинар</div>
                 <div class="feed_others_events_slider_webinar_title">{{web.title}}</div>
