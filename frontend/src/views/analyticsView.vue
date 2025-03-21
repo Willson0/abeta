@@ -65,11 +65,13 @@ export default {
             this.user = response;
         });
 
-        await fetch (config.backend + "feed/all").then((response) => {
+        await fetch (config.backend + "feed/all", {
+            method: "GET",
+        }).then((response) => {
             return response.json();
         }).then((response) => {
             this.feed = response;
-        })
+        });
     },
     methods: {
         formatDate,
