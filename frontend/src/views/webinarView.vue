@@ -164,7 +164,7 @@ export default {
                 <button>Зарегистрироваться</button>
             </form>
             <div class="form_policy">
-                Нажимая на кнопку, вы соглашаетесь <a @click="window.Telegram.WebApp.openLink('https://abeta.org/politics')">с политикой конфиденциальности</a>
+                Нажимая на кнопку, вы соглашаетесь <a @click="window.location.href = 'https://abeta.org/politics'">с политикой конфиденциальности</a>
             </div>
         </div>
         <div v-if="webinar.registered && isActual" class="webinar_registration form active">
