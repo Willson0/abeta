@@ -55,18 +55,15 @@ export default {
 
         await fetch (config.backend + "profile", {
             method: "POST",
+            body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
             headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                "initData": window.Telegram.WebApp.initData,
-            })
+                "Content-Type": "application/json",
+            }
         }).then((response) => {
             return response.json();
         }).then((response) => {
             this.user = response;
-            alert (this.user.expert_mailing);
-        })
+        });
 
         await fetch (config.backend + "feed/all").then((response) => {
             return response.json();
