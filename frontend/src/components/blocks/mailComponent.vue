@@ -38,7 +38,6 @@ export default {
 
 <template>
     <div v-if="!user.expert_mailing" class="feed_newsletter">
-        {{user.expert_mailing}}
         <div class="feed_newsletter_image">
             <img src="/img/mail.svg" alt="">
         </div>
@@ -46,7 +45,7 @@ export default {
             Экспертная рассылка от ABETA Capital
         </div>
         <div class="feed_newsletter_description">
-            Аналитика, инсайды и свежие идеи — в вашей почте. Только важное, без лишнего
+            Аналитика, инсайды и свежие идеи — в вашей почте. Только важное, без лишнего {{user.expert_mailing}}
         </div>
         <button @click="sendData" class="feed_newsletter_button">
             <p :class="!user.expert_mailing ? 'active' : ''">Подписаться</p>
