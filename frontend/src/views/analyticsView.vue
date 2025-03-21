@@ -149,7 +149,6 @@ export default {
             </div>
         </div>
         <other-analytics-component :analytics="feed?.analytics"/>
-        {{feed}}
         <consultation-experts-component />
         <mail-component :user="user"/>
     </div>
