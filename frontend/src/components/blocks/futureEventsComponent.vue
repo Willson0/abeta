@@ -6,7 +6,7 @@ export default {
     methods: {
         formatDate, generateSoftRandomColor,
         redirect (id) {
-            window.location.href = "/webinar/" + id;
+            window.location.href = "/webinar/" + id + "?s=" + this.$route.query.s;
         }
     },
     data () {
@@ -37,7 +37,7 @@ export default {
         <div class="feed_others_events_title">Другие<br>предстоящие ивенты</div>
         <div class="feed_others_events_slider">
             <div v-for="(web, key) in webinars" class="feed_others_events_slider_webinar"
-            :style="'background-color: ' + colors[key]" @click="this.$router.push('/webinar/' + web.id + '?s=' + $route.query.s)">
+            :style="'background-color: ' + colors[key]" @click="redirect(web.id)">
                 <div class="feed_others_future_events_slider_webinar_type" :style="'color:' + colors[key]">Вебинар</div>
                 <div class="feed_others_events_slider_webinar_title">{{web.title}}</div>
                 <hr>

@@ -6,6 +6,11 @@ export default {
             type: Array,
             required: true,
         }
+    },
+    methods: {
+        redirect (id) {
+            window.location.href = "/analytics/" + id + "?s=" + this.$route.query.s;
+        }
     }
 }
 </script>
@@ -14,7 +19,7 @@ export default {
     <div class="feed_others_future_events">
         <div class="feed_others_events_title">Еще больше аналитических материалов</div>
         <div class="feed_others_events_slider">
-            <div style="background-color:#191919" @click="$router.push('/analytics/' + analytic.id + '?s=' + $route.query.s)"
+            <div style="background-color:#191919" @click="redirect(analytic.id)"
                  v-for="analytic in analytics" class="feed_others_events_slider_analytics">
                 <div class="feed_others_events_slider_analytics_header">Аналитика &middot; {{analytic.time}} минут чтения</div>
                 <hr>
