@@ -71,6 +71,7 @@ export default {
             return response.json();
         }).then((response) => {
             this.feed = response;
+            alert (JSON.stringify(this.feed));
         });
     },
     methods: {
