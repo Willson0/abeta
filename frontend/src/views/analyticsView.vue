@@ -46,7 +46,6 @@ export default {
             return response.json();
         }).then((response) => {
             this.analytic = response;
-            alert (JSON.stringify(this.analytic));
             if (this.analytic.fields)
                 for (let field of JSON.parse(this.analytic.fields)) {
                     const fixedEncoded = field.replace(/u([0-9A-Fa-f]{4})/g, '\\u$1');
@@ -65,7 +64,6 @@ export default {
             return response.json();
         }).then((response) => {
             this.user = response;
-            alert (JSON.stringify(this.user));
         });
 
         await fetch (config.backend + "feed/all", {
@@ -74,7 +72,6 @@ export default {
             return response.json();
         }).then((response) => {
             this.feed = response;
-            alert (JSON.stringify(this.feed));
         });
     },
     methods: {
