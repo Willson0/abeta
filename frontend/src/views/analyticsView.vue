@@ -47,11 +47,12 @@ export default {
         }).then((response) => {
             this.analytic = response;
             alert (JSON.stringify(this.analytic));
-            for (let field of JSON.parse(this.analytic.fields)) {
-                const fixedEncoded = field.replace(/u([0-9A-Fa-f]{4})/g, '\\u$1');
-                const decoded = JSON.parse('"' + fixedEncoded + '"');
-                this.fields[decoded] = "";
-            }
+            if (this.analytic.fields)
+                for (let field of JSON.parse(this.analytic.fields)) {
+                    const fixedEncoded = field.replace(/u([0-9A-Fa-f]{4})/g, '\\u$1');
+                    const decoded = JSON.parse('"' + fixedEncoded + '"');
+                    this.fields[decoded] = "";
+                }
         })
 
         await fetch (config.backend + "profile", {
