@@ -28,7 +28,8 @@ export default {
         <img class="consultation_support_tg" src="/img/Telegram.svg" alt="">
         <div class="consultation_support_title">Чат поддержки АВЕТА</div>
         <div class="consultation_support_description">Экспертная помощь, разбор стратегий и рекомендации по вашим запросам</div>
-        <button class="consultation_support_button" @click="sendData">Связаться</button>
+<!--        <button class="consultation_support_button" @click="sendData">Связаться</button>-->
+        <a class="consultation_support_button" href="https://t.me/abeta_clients">Связаться</a>
     </div>
 </template>
 

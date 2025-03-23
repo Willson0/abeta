@@ -146,7 +146,7 @@ export default {
                 <button>Получить доступ</button>
             </form>
             <div class="form_policy">
-                Нажимая на кнопку, вы соглашаетесь <a @click="window.location.href = 'https://abeta.org/politics'">с политикой конфиденциальности</a>
+                Нажимая на кнопку, вы соглашаетесь <a href="https://abeta.org/politics" target="_blank">с политикой конфиденциальности</a>
             </div>
         </div>
         <other-analytics-component :analytics="feed?.analytics"/>
