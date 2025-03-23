@@ -665,6 +665,16 @@
     transition:0.2s;
 }
 
+.consultation_support_button {
+    display:flex;
+}
+
+.consultation_support_button>a {
+    text-decoration:none;
+    color:black;
+    margin:auto;
+}
+
 .consultation_support_button.active {
     background-color:gray;
 }
