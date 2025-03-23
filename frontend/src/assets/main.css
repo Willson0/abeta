@@ -647,7 +647,7 @@
     line-height:20px;
 }
 
-.consultation_support>button, .consultation_venture>button {
+.consultation_support_button, .consultation_venture>button {
     padding:8px 0;
     font-family: 'inter', serif;
     font-size:18px;
@@ -659,13 +659,10 @@
     cursor:pointer;
 }
 
-.consultation_support>button {
+.consultation_support_button {
     background-color: #FF734C;
     color:white;
     transition:0.2s;
-}
-
-.consultation_support_button {
     display:flex;
 }
 
