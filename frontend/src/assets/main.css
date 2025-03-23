@@ -664,10 +664,11 @@
     color:white;
     transition:0.2s;
     display:flex;
+    text-decoration:none !important;
 }
 
 .consultation_support_button>div {
-    text-decoration:none;
+    text-decoration:none !important;
     color:white;
     margin:auto;
 }
