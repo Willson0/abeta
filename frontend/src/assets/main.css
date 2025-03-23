@@ -666,7 +666,7 @@
     display:flex;
 }
 
-.consultation_support_button>a {
+.consultation_support_button>div {
     text-decoration:none;
     color:white;
     margin:auto;

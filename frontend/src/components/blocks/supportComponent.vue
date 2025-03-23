@@ -29,9 +29,9 @@ export default {
         <div class="consultation_support_title">Чат поддержки АВЕТА</div>
         <div class="consultation_support_description">Экспертная помощь, разбор стратегий и рекомендации по вашим запросам</div>
 <!--        <button class="consultation_support_button" @click="sendData">Связаться</button>-->
-        <div class="consultation_support_button">
-            <a href="https://t.me/abeta_clients">Связаться</a>
-        </div>
+        <a href="https://t.me/abeta_clients" class="consultation_support_button">
+            <div>Связаться</div>
+        </a>
     </div>
 </template>
 
