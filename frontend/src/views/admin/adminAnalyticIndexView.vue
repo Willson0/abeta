@@ -48,8 +48,8 @@ export default {
                 this.description = response.description;
                 document.querySelector(".admin_addproduct_main_textarea").innerHTML = this.description;
                 this.date = response.date;
-                this.selectedFields = JSON.parse(response.fields).map(str => str.replace(/u([0-9a-fA-F]{4})/g, (_, code) => String.fromCharCode(parseInt(code, 16))));;
-                console.log(this.selectedFields);
+                if (response.fields)
+                    this.selectedFields = JSON.parse(response.fields).map(str => str.replace(/u([0-9a-fA-F]{4})/g, (_, code) => String.fromCharCode(parseInt(code, 16))));
                 this.link = response.link;
 
 
