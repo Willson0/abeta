@@ -69,12 +69,6 @@ export default {
 </script>
 
 <template>
-    <div v-if="this.user">{{JSON.stringify({
-        "initData": window.Telegram.WebApp.initData,
-        "fullname": this.user.fullname,
-        "phone": this.user.phone,
-        "bio": document.querySelector("#bio").innerHTML,
-    })}}</div>
     <div class="profile">
         <div class="form">
             <div class="profile_main_header">
