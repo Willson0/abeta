@@ -49,7 +49,7 @@ export default {
                 this.overview = response.overview;
                 this.button = response.button;
                 this.color = response.color;
-
+                this.link = response.link
 
                 fetch (config.backend + "admin/getfile", {
                     method: "POST",
@@ -64,23 +64,8 @@ export default {
                     return res.blob();
                 }).then((res) => {
                     this.images[0] = res;
-                    console.log(this.images[0])
                     this.updImgs();
                 });
-
-
-            })
-
-            let query = config.backend + "admin/fields";
-            await fetch (query, {
-                method: "GET",
-                credentials: "include",
-            }).then((response) => {
-                if (!response.ok) return alert ("error");
-                return response.json();
-            }).then((response) => {
-                this.fields = response;
-                removeLoading();
             })
         },
         formatText () {
@@ -153,12 +138,14 @@ export default {
             if (this.color.length !== 6) return alert ("Неправильный формат цвета");
             if (!this.overview) return alert ("Заполните поле 'краткое описание', пожалуйста");
             if (!this.button) return alert ("Заполните поле 'кнопка', пожалуйста");
+            if (!this.link) return alert ("Заполните поле 'ссылка', пожалуйста");
 
             formData.append("title", this.name);
             formData.append("description", document.querySelector(".admin_addproduct_main_textarea").innerHTML);
             formData.append("overview", this.overview);
             formData.append("button", this.button);
             formData.append("color", this.color);
+            formData.append("link", this.link);
             formData.append("image", this.images[0]);
 
             for (const [key, value] of formData.entries()) {
@@ -399,6 +386,10 @@ export default {
                         <div>
                             <h3>Текст</h3>
                             <input v-model="button" type="text">
+                        </div>
+                        <div>
+                            <h3>Ссылка</h3>
+                            <input v-model="link" type="text">
                         </div>
                     </div>
                 </div>

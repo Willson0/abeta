@@ -27,6 +27,7 @@ class ServiceStoreReqeust extends FormRequest
             "overview" => "required|string",
             "color" => "required|string",
             "button" => "required|string",
+            "link" => "required|string",
             "image" => "required|image|mimes:jpeg,png,jpg,gif,svg",
         ];
     }

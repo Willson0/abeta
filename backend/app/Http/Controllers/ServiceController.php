@@ -71,6 +71,7 @@ class ServiceController extends Controller
             "overview" => $data["overview"],
             "button" => $data["button"],
             "color" => $data["color"],
+            "link" => $data["link"],
             "image" => $newFile,
         ]);
 
@@ -92,6 +93,7 @@ class ServiceController extends Controller
             "overview" => $data["overview"],
             "button" => $data["button"],
             "color" => $data["color"],
+            "link" => $data["link"],
             "image" => $newFile,
         ]);
 
