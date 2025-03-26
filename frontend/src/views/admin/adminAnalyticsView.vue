@@ -276,11 +276,11 @@ export default {
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <div @click="downloadexport()" class="admin_users_main_header_buttons_el_title">
-                            <i class="fa-solid fa-file-excel"></i> Export
-                        </div>
-                    </div>
+<!--                    <div>-->
+<!--                        <div @click="downloadexport()" class="admin_users_main_header_buttons_el_title">-->
+<!--                            <i class="fa-solid fa-file-excel"></i> Export-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </div>
             <div class="admin_users_main_main">
