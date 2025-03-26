@@ -65,6 +65,7 @@ export default {
                 }).then((res) => {
                     this.images[0] = res;
                     this.updImgs();
+                    removeLoading();
                 });
             })
         },
