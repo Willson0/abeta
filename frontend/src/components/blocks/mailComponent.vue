@@ -45,7 +45,7 @@ export default {
             Экспертная рассылка от ABETA Capital
         </div>
         <div class="feed_newsletter_description">
-            Аналитика, инсайды и свежие идеи — в вашей почте. Только важное, без лишнего {{user.expert_mailing}}
+            Аналитика, инсайды и свежие идеи — в вашей почте. Только важное, без лишнего
         </div>
         <button @click="sendData" class="feed_newsletter_button">
             <p :class="!user.expert_mailing ? 'active' : ''">Подписаться</p>

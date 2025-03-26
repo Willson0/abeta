@@ -47,43 +47,46 @@ export function getYearWord(years) {
 }
 
 export function getRelativeDate(inputDateStr) {
-    // Парсим входную дату
     const inputDate = new Date(inputDateStr);
-    const now = new Date(); // Текущая дата, в твоём случае 2025-02-22
+    const now = new Date();
 
-    // Устанавливаем начало дня для корректного сравнения
+    // Устанавливаем начало дня
     const today = new Date(now.setHours(0, 0, 0, 0));
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
     const dayAfterTomorrow = new Date(today);
     dayAfterTomorrow.setDate(today.getDate() + 2);
 
-    // Начало и конец текущей недели (неделя начинается с понедельника)
+    // Определяем начало и конец текущей недели (понедельник - начало)
     const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1));
+    startOfWeek.setDate(today.getDate() - (today.getDay() === 0 ? 6 : today.getDay() - 1));
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(startOfWeek.getDate() + 6);
-    const nextWeekEnd = new Date(endOfWeek);
-    nextWeekEnd.setDate(endOfWeek.getDate() + 7);
 
-    // Начало и конец текущего месяца
+    // Определяем конец следующей недели
+    const nextWeekStart = new Date(endOfWeek);
+    nextWeekStart.setDate(endOfWeek.getDate() + 1);
+    const nextWeekEnd = new Date(nextWeekStart);
+    nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+
+    // Определяем начало и конец месяца
     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
     const endOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
 
-    // Начало и конец текущего года
+    // Определяем начало и конец года
     const startOfYear = new Date(today.getFullYear(), 0, 1);
     const endOfYear = new Date(today.getFullYear(), 11, 31);
     const endOfNextYear = new Date(today.getFullYear() + 1, 11, 31);
 
-    // Сравниваем даты
+    // Логика проверки
     if (inputDate.toDateString() === tomorrow.toDateString()) {
         return "Завтра";
     } else if (inputDate.toDateString() === dayAfterTomorrow.toDateString()) {
         return "Послезавтра";
     } else if (inputDate >= startOfWeek && inputDate <= endOfWeek) {
-        return "На этой неделе";
-    } else if (inputDate > endOfWeek && inputDate <= nextWeekEnd) {
+        return "На этой неделе"; // Теперь 30-е марта корректно попадает в эту категорию
+    } else if (inputDate >= nextWeekStart && inputDate <= nextWeekEnd) {
         return "На следующей неделе";
     } else if (inputDate >= startOfMonth && inputDate <= endOfMonth) {
         return "В этом месяце";
@@ -94,9 +97,10 @@ export function getRelativeDate(inputDateStr) {
     } else if (inputDate > endOfYear && inputDate <= endOfNextYear) {
         return "В следующем году";
     } else {
-        return ""; // Ничего, если дата дальше следующего года
+        return "";
     }
 }
+
 
 export function generateSoftRandomColor() {
     // Генерируем случайные значения RGB с ограничением, чтобы избежать слишком ярких цветов
