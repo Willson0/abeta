@@ -16,7 +16,7 @@ class UserController extends Controller
 
         if (!$user) abort (404);
 
-        if (Support::where("user_id", $user["id"])->exists()) $user["support"] = true;
+        if (Support::where("user_id", $user["id"])->where("closed", 0)->exists()) $user["support"] = true;
         else $user["support"] = false;
 
         return $user;
