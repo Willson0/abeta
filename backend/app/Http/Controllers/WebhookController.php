@@ -1000,6 +1000,10 @@ class WebhookController extends Controller
                 ]);
             }
             else if ($user->step === "send_phone") {
+                if (preg_match('/^\+?[1-9]\d{6,14}$/', $message["text"])) {
+                    utils::sendMessage($user->telegram_id, "❌ / Используйте кнопку для привязки номера телефона!");
+                    return response()->json(["status" => "ok"], 200);
+                }
                 if (isset($message["contact"])) {
                     $user->phone = $message["contact"]["phone_number"];
                     $user->step = "enter_full_name";
