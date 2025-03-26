@@ -91,7 +91,7 @@ export default {
                     <label for="phone">Телефон</label>
                     <input type="text" name="phone">
                 </div>
-                <button>Выбрать удобное время</button>
+                <button>Записаться на консультацию</button>
             </form>
             <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a></div>
         </div>
