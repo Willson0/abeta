@@ -46,7 +46,7 @@ export default {
                     "bio": document.querySelector("#bio").innerHTML,
                 })
             }).then((response) => {
-                alert (response);
+                alert (response.toString());
                 return response.json();
             }).then((response) => {
                 alert (JSON.stringify(response));
