@@ -50,42 +50,42 @@ export function getRelativeDate(inputDateStr) {
     const inputDate = new Date(inputDateStr);
     const now = new Date();
 
-    // Устанавливаем начало дня
+    // Обнуляем время для корректных сравнений
     const today = new Date(now.setHours(0, 0, 0, 0));
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
     const dayAfterTomorrow = new Date(today);
     dayAfterTomorrow.setDate(today.getDate() + 2);
 
-    // Определяем начало и конец текущей недели (понедельник - начало)
+    // Определяем начало и конец текущей недели (с понедельника по воскресенье)
     const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - (today.getDay() === 0 ? 6 : today.getDay() - 1));
+    startOfWeek.setDate(today.getDate() - (today.getDay() === 0 ? 6 : today.getDay() - 1)); // Понедельник
     const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // Воскресенье
 
-    // Определяем конец следующей недели
+    // Определяем границы следующей недели (с понедельника по воскресенье)
     const nextWeekStart = new Date(endOfWeek);
-    nextWeekStart.setDate(endOfWeek.getDate() + 1);
+    nextWeekStart.setDate(endOfWeek.getDate() + 1); // Следующий понедельник
     const nextWeekEnd = new Date(nextWeekStart);
-    nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+    nextWeekEnd.setDate(nextWeekStart.getDate() + 6); // Следующее воскресенье
 
-    // Определяем начало и конец месяца
+    // Определяем границы месяцев
     const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
     const endOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
 
-    // Определяем начало и конец года
+    // Определяем границы года
     const startOfYear = new Date(today.getFullYear(), 0, 1);
     const endOfYear = new Date(today.getFullYear(), 11, 31);
     const endOfNextYear = new Date(today.getFullYear() + 1, 11, 31);
 
-    // Логика проверки
+    // Логика определения
     if (inputDate.toDateString() === tomorrow.toDateString()) {
         return "Завтра";
     } else if (inputDate.toDateString() === dayAfterTomorrow.toDateString()) {
         return "Послезавтра";
     } else if (inputDate >= startOfWeek && inputDate <= endOfWeek) {
-        return "На этой неделе"; // Теперь 30-е марта корректно попадает в эту категорию
+        return "На этой неделе"; // Теперь воскресенье правильно считается этой неделей
     } else if (inputDate >= nextWeekStart && inputDate <= nextWeekEnd) {
         return "На следующей неделе";
     } else if (inputDate >= startOfMonth && inputDate <= endOfMonth) {
