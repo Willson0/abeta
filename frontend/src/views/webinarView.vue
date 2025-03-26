@@ -133,12 +133,12 @@ export default {
             </div>
             <img :src="config.storage + webinar.image" alt="">
         </div>
-        <div class="webinar_record" v-if="webinar.record_link">
+        <a :href="webinar.record_link" target="_blank" class="webinar_record" v-if="webinar.record_link">
             <div>
                 <img src="/img/play.svg" alt="">
                 <div>Посмотреть запись</div>
             </div>
-        </div>
+        </a>
         <div class="webinar_main">
             <div class="webinar_date">Вебинар &middot; {{ formatDate(webinar.date) }}</div>
             <div class="webinar_title">{{webinar.title}}</div>

@@ -1295,6 +1295,7 @@ font-weight:500;
     padding: 16px 0;
     display:flex;
     cursor:pointer;
+    text-decoration: none;
 }
 
 .analytics .webinar_record {
