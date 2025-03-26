@@ -46,7 +46,7 @@ export function getYearWord(years) {
     return 'лет';
 }
 
-export function getRelativeDate(inputDateStr) {
+export function getRelativeDate(eventDateStr) {
     const now = new Date();
     const moscowOffset = 3 * 60; // Смещение Москвы в минутах (UTC+3)
     const localOffset = now.getTimezoneOffset(); // Локальное смещение в минутах
