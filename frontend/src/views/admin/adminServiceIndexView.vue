@@ -389,7 +389,7 @@ export default {
                             <input v-model="button" type="text">
                         </div>
                         <div>
-                            <h3>Ссылка</h3>
+                            <h3>Ссылка (обязательно с http(s)://)</h3>
                             <input v-model="link" type="text">
                         </div>
                     </div>
