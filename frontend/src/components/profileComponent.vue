@@ -48,6 +48,7 @@ export default {
             }).then((response) => {
                 return response.json();
             }).then((response) => {
+                alert (JSON.stringify(response));
                 let button = document.querySelector(".profile_main_form>button");
 
                 let oldHTML = button.innerHTML;
