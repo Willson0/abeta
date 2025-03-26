@@ -901,6 +901,10 @@ class WebhookController extends Controller
                     }
 
                     if (isset($message["new_chat_member"])) {
+                        $newuser = User::where("telegram_id", $message["new_chat_member"]["id"])->first();
+                        $newuser->chat_request = 0;
+                        $newuser->save();
+
                         GroupLog::create ([
                             "telegram_id" => $message["new_chat_member"]["id"],
                             "blocking" => 0,

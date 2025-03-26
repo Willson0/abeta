@@ -457,8 +457,8 @@ export default {
                     </div>
                 </div>
                 <div class="admin_addproduct_main_buttons">
-                    <button @click="sendDataAll">Отправить всем</button>
-                    <button @click="sendData" class="admin_addproduct_main_buttons_add">Отправить</button>
+                    <button title="Отправить всем пользователям, игнорируя фильтры" @click="sendDataAll">Отправить всем пользователям</button>
+                    <button title="Отправить только выбранным пользователям" @click="sendData" class="admin_addproduct_main_buttons_add">Отправить</button>
                 </div>
             </div>
         </div>

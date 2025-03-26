@@ -59,7 +59,7 @@ export default {
                 <img @click="closePopup" src="/img/close.svg" alt="">
             </div>
             <div class="services_popup_title">{{selectedService.title}}</div>
-            <div class="services_popup_description">{{selectedService.description}}</div>
+            <div class="services_popup_description" v-if="selectedService" v-html="selectedService.description"></div>
             <button @click="sendData" class="services_popup_button">{{selectedService.button}}</button>
         </div>
     </div>
