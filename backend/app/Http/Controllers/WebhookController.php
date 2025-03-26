@@ -932,11 +932,11 @@ class WebhookController extends Controller
                     "reply_markup" => [
                         "keyboard" => [
                             [["text" => "📞 Поделиться номером", "request_contact" => true,]]
-                        ]
+                        ],
+                        "resize_keyboard" => true,
                     ]
                 ]);
 
-                // TODO: проверить работоспособность
                 if (!utils::getSettings()["require_phone"])
                     Http::post($url, [
                         'chat_id' => $user->telegram_id,
