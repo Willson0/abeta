@@ -201,21 +201,21 @@ export default {
                             <i class="fa-solid fa-sort"></i> <p>Sort by</p>
                         </div>
                         <div class="admin_users_main_header_buttons_sort_main">
-                            <h4>Sort by</h4>
+                            <h4>Сортировка</h4>
                             <hr>
-                            <h5>Date</h5>
+                            <h5>По дате</h5>
                             <div>
                                 <div @click="dateasc = true; nameasc=null" :class="dateasc ? 'active' : ''">
                                     <div></div>
-                                    <p>Ascending</p>
+                                    <p>Сначала старые</p>
                                 </div>
                                 <div @click="dateasc = false; nameasc=null" :class="dateasc === false ? 'active' : ''">
                                     <div></div>
-                                    <p>Descending</p>
+                                    <p>Сначала новые</p>
                                 </div>
                             </div>
                             <hr>
-                            <h5>Name</h5>
+                            <h5>По названию</h5>
                             <div>
                                 <div @click="nameasc = true; dateasc=null" :class="nameasc ? 'active' : ''">
                                     <div></div>
