@@ -34,13 +34,6 @@ export default {
             })
         },
         async sendData () {
-            alert (JSON.stringify({
-                "initData": window.Telegram.WebApp.initData,
-                "fullname": this.user.fullname,
-                "phone": this.user.phone,
-                "bio": document.querySelector("#bio").innerHTML,
-            }));
-
             await fetch (config.backend + "auth", {
                 method: "POST",
                 headers: {
@@ -53,6 +46,7 @@ export default {
                     "bio": document.querySelector("#bio").innerHTML,
                 })
             }).then((response) => {
+                alert (response);
                 return response.json();
             }).then((response) => {
                 alert (JSON.stringify(response));
@@ -75,6 +69,12 @@ export default {
 </script>
 
 <template>
+    {{JSON.stringify({
+    "initData": window.Telegram.WebApp.initData,
+    "fullname": this.user.fullname,
+    "phone": this.user.phone,
+    "bio": document.querySelector("#bio").innerHTML,
+})}}
     <div class="profile">
         <div class="form">
             <div class="profile_main_header">
