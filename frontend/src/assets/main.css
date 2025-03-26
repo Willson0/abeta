@@ -1493,12 +1493,18 @@ font-weight:500;
     padding:24px;
     width:100%;
     background-color:#FF734C;
+    transition:0.2s;
+    text-decoration: none;
+    display:flex;
+}
+
+.services_popup_button>div {
     font-family: 'inter', serif;
     font-weight:700;
     font-size:18px;
     line-height:24px;
     color:white;
-    transition:0.2s;
+    margin:auto;
 }
 
 .services_popup_button.active {

@@ -60,7 +60,7 @@ export default {
             </div>
             <div class="services_popup_title">{{selectedService.title}}</div>
             <div class="services_popup_description" v-if="selectedService" v-html="selectedService.description"></div>
-            <button @click="sendData" class="services_popup_button">{{selectedService.button}}</button>
+            <a :href="selectedService.link" target="_blank" @click="sendData" class="services_popup_button"><div>{{selectedService.button}}</div></a>
         </div>
     </div>
     <div class="services">
