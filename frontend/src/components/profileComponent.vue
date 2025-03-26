@@ -36,15 +36,15 @@ export default {
         async sendData () {
             await fetch (config.backend + "auth", {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
                     "initData": window.Telegram.WebApp.initData,
                     "fullname": this.user.fullname,
                     "phone": this.user.phone,
                     "bio": document.querySelector("#bio").innerHTML,
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
+                })
             }).then((response) => {
                 return response.json();
             }).then((response) => {
