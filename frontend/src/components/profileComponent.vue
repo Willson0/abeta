@@ -34,6 +34,13 @@ export default {
             })
         },
         async sendData () {
+            alert (JSON.stringify({
+                "initData": window.Telegram.WebApp.initData,
+                "fullname": this.user.fullname,
+                "phone": this.user.phone,
+                "bio": document.querySelector("#bio").innerHTML,
+            }));
+
             await fetch (config.backend + "auth", {
                 method: "POST",
                 headers: {
