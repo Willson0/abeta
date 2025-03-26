@@ -1001,7 +1001,17 @@ class WebhookController extends Controller
             }
             else if ($user->step === "send_phone") {
                 if (preg_match('/^\+?[1-9]\d{6,14}$/', $message["text"])) {
-                    utils::sendMessage($user->telegram_id, "❌ / Используйте кнопку для привязки номера телефона!");
+                    $url = "https://api.telegram.org/bot$token/sendMessage";
+                    Http::post($url, [
+                        'chat_id' => $user->telegram_id,
+                        'text' => "❌ / Используйте кнопку для привязки номера телефона!",
+                        "reply_markup" => [
+                            "keyboard" => [
+                                [["text" => "📞 Поделиться номером", "request_contact" => true,]]
+                            ],
+                            "resize_keyboard" => true,
+                        ]
+                    ]);
                     return response()->json(["status" => "ok"], 200);
                 }
                 if (isset($message["contact"])) {
