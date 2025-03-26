@@ -11,7 +11,7 @@ class VentureController extends Controller
     public function store(Request $request) {
         $user = User::where("telegram_id", $request["initData"]["user"]["id"])->first();
 
-        if (VentureDeal::where("user_id", $user->id)->exists()) abort(400,"Заявка уже была отправлена");
+        if (VentureDeal::where("user_id", $user->id)->where("processed", 0)->exists()) abort(400,"Заявка уже была отправлена");
         $venture = VentureDeal::create([
             "user_id" => $user->id,
         ]);
@@ -22,6 +22,6 @@ class VentureController extends Controller
     public function status (Request $request) {
         $user = User::where("telegram_id", $request["initData"]["user"]["id"])->first();
 
-        return response()->json(VentureDeal::where("user_id", $user->id)->exists());
+        return response()->json(VentureDeal::where("user_id", $user->id)->where("processed", 0)->exists());
     }
 }
