@@ -16,7 +16,7 @@ class LoggingMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        Log::info('Запрос: ' . $request->method() . ' ' . $request->fullUrl());
+        Log::info('Запрос: ' . $request->method() . ' ' . $request->fullUrl() . ' ALL: ' . $request->all());
         return $next($request);
     }
 }
