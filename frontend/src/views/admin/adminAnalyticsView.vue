@@ -255,23 +255,8 @@ export default {
                                 </div>
                             </div>
                             <hr>
-                            <div class="admin_users_main_header_buttons_filter_main_title">
-                                <h5>Status</h5>
-                                <p @click="blocked=false">Reset</p>
-                            </div>
-                            <div>
-                                <div @click="blocked = false" :class="!blocked ? 'active' : ''">
-                                    <div></div>
-                                    <p>Normal</p>
-                                </div>
-                                <div @click="blocked = true" :class="blocked ? 'active' : ''">
-                                    <div></div>
-                                    <p>Blocked</p>
-                                </div>
-                            </div>
-                            <hr>
                             <div class="admin_users_main_header_buttons_sort_buttons">
-                                <button @click="nameasc=true; dateasc=true">Reset</button>
+                                <button @click="fromdate = ''; todate = ''">Reset</button>
                                 <button @click="showfilter(); fetchproducts()">Apply now</button>
                             </div>
                         </div>
