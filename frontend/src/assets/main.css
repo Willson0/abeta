@@ -1490,7 +1490,7 @@ font-weight:500;
     margin-top:40px;
     cursor:pointer;
     border-radius:24px;
-    padding:24px;
+    padding:24px 0;
     width:100%;
     background-color:#FF734C;
     transition:0.2s;
