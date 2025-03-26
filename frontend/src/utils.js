@@ -47,57 +47,70 @@ export function getYearWord(years) {
 }
 
 export function getRelativeDate(inputDateStr) {
-    const inputDate = new Date(inputDateStr);
     const now = new Date();
+    const moscowOffset = 3 * 60; // Смещение Москвы в минутах (UTC+3)
+    const localOffset = now.getTimezoneOffset(); // Локальное смещение в минутах
+    now.setMinutes(now.getMinutes() + localOffset + moscowOffset);
 
-    // Обнуляем время для корректных сравнений
-    const today = new Date(now.setHours(0, 0, 0, 0));
-    const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1);
-    const dayAfterTomorrow = new Date(today);
-    dayAfterTomorrow.setDate(today.getDate() + 2);
+    // Дата события
+    const eventDate = new Date(eventDateStr);
+    eventDate.setMinutes(eventDate.getMinutes() + localOffset + moscowOffset);
 
-    // Определяем начало и конец текущей недели (с понедельника по воскресенье)
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - (today.getDay() === 0 ? 6 : today.getDay() - 1)); // Понедельник
+    // Разница в миллисекундах
+    const diffMs = eventDate - now;
+    if (diffMs < 0) return "Событие уже прошло";
+
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+    // Определяем начало и конец текущей недели (неделя начинается с понедельника)
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - (now.getDay() || 7) + 1);
+    startOfWeek.setHours(0, 0, 0, 0);
+
     const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6); // Воскресенье
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
 
-    // Определяем границы следующей недели (с понедельника по воскресенье)
-    const nextWeekStart = new Date(endOfWeek);
-    nextWeekStart.setDate(endOfWeek.getDate() + 1); // Следующий понедельник
-    const nextWeekEnd = new Date(nextWeekStart);
-    nextWeekEnd.setDate(nextWeekStart.getDate() + 6); // Следующее воскресенье
+    const startOfNextWeek = new Date(endOfWeek);
+    startOfNextWeek.setDate(endOfWeek.getDate() + 1);
 
-    // Определяем границы месяцев
-    const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-    const endOfNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+    const endOfNextWeek = new Date(startOfNextWeek);
+    endOfNextWeek.setDate(startOfNextWeek.getDate() + 6);
 
-    // Определяем границы года
-    const startOfYear = new Date(today.getFullYear(), 0, 1);
-    const endOfYear = new Date(today.getFullYear(), 11, 31);
-    const endOfNextYear = new Date(today.getFullYear() + 1, 11, 31);
+    // Определяем границы месяца и года
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    endOfMonth.setHours(23, 59, 59, 999);
 
-    // Логика определения
-    if (inputDate.toDateString() === tomorrow.toDateString()) {
+    const startOfNextMonth = new Date(endOfMonth);
+    startOfNextMonth.setDate(endOfMonth.getDate() + 1);
+    const endOfNextMonth = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+
+    const endOfYear = new Date(now.getFullYear(), 11, 31);
+    endOfYear.setHours(23, 59, 59, 999);
+
+    // Логика определения периода
+    if (diffHours < 24 && diffDays === 0) {
+        return "Сегодня";
+    } else if (diffDays === 1) {
         return "Завтра";
-    } else if (inputDate.toDateString() === dayAfterTomorrow.toDateString()) {
+    } else if (diffDays === 2) {
         return "Послезавтра";
-    } else if (inputDate >= startOfWeek && inputDate <= endOfWeek) {
-        return "На этой неделе"; // Теперь воскресенье правильно считается этой неделей
-    } else if (inputDate >= nextWeekStart && inputDate <= nextWeekEnd) {
+    } else if (eventDate >= startOfWeek && eventDate <= endOfWeek) {
+        return "На этой неделе";
+    } else if (eventDate >= startOfNextWeek && eventDate <= endOfNextWeek) {
         return "На следующей неделе";
-    } else if (inputDate >= startOfMonth && inputDate <= endOfMonth) {
+    } else if (eventDate >= startOfMonth && eventDate <= endOfMonth) {
         return "В этом месяце";
-    } else if (inputDate > endOfMonth && inputDate <= endOfNextMonth) {
+    } else if (eventDate >= startOfNextMonth && eventDate <= endOfNextMonth) {
         return "В следующем месяце";
-    } else if (inputDate >= startOfYear && inputDate <= endOfYear) {
+    } else if (eventDate.getFullYear() === now.getFullYear()) {
         return "В этом году";
-    } else if (inputDate > endOfYear && inputDate <= endOfNextYear) {
+    } else if (eventDate.getFullYear() === now.getFullYear() + 1) {
         return "В следующем году";
     } else {
-        return "";
+        return "Более чем через год";
     }
 }
 
