@@ -190,7 +190,7 @@ export default {
                 <img src="/img/zoom.svg" alt="">
                 <div class="webinar_links_zoom_title">Зум-cсылка на вебинар:</div>
                 <div class="webinar_links_zoom_link"><a>{{webinar.link}}</a></div>
-                <button @click="copyLink" class="webinar_links_zoom_button">Скопировать</button>
+                <a :href="webinar.link" target="_blank" class="webinar_links_zoom_button"><div>Присоединиться</div></a>
             </div>
             <div class="webinar_links_calendar">
                 <img src="/img/calendar.svg" alt="">

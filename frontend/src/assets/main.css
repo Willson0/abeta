@@ -1263,7 +1263,7 @@ font-weight:500;
     cursor:pointer;
 }
 
-.webinar_links_zoom_button, .webinar_links_calendar_button {
+.webinar_links_calendar_button {
     margin-top:auto;
     background-color:#FF734C;
     border-radius:12px;
@@ -1277,6 +1277,28 @@ font-weight:500;
     cursor:pointer;
     transition:0.2s;
 }
+
+.webinar_links_zoom_button {
+    margin-top:auto;
+    background-color:#FF734C;
+    border-radius:12px;
+    padding: 8px 0;
+    width:100%;
+    color:white;
+    cursor:pointer;
+    transition:0.2s;
+    text-decoration: none;
+    display:flex;
+}
+
+.webinar_links_zoom_button>div {
+    font-family: 'inter', serif;
+    font-weight:700;
+    font-size:18px;
+    line-height:24px;
+    margin:auto;
+}
+
 .webinar_links_calendar_button.active {
     background-color: gray;
 }
