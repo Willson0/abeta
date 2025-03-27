@@ -16,6 +16,7 @@ export default {
             config: config,
             feed: {},
             fields: {},
+            googlelink: "",
         }
     },
     async mounted () {
@@ -30,6 +31,20 @@ export default {
             this.$router.push('/?s=' + this.$route.query.s);
             backbutton.hide();
         })
+
+        await fetch (config.backend + "google/link", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "initData": window.Telegram.WebApp.initData,
+            })
+        }).then((response) => {
+            return response.json();
+        }).then((response) => {
+            this.googlelink = response.link;
+        });
 
         await fetch (config.backend + `webinar/` + this.$route.params.id, {
             method: "POST",
@@ -103,20 +118,34 @@ export default {
             navigator.clipboard.writeText(this.webinar.link);
         },
         async calendar () {
-            await fetch (config.backend + "webinar/" + this.$route.params.id + "/calendar", {
+            // await fetch (config.backend + "webinar/" + this.$route.params.id + "/calendar", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify({
+            //         "initData": window.Telegram.WebApp.initData,
+            //     })
+            // }).then((response) => {
+            //     if (response.ok) {
+            //         let el = document.querySelector(".webinar_links_calendar_button");
+            //         el.classList.add("active");
+            //         setTimeout(() => el.classList.remove("active"), 3000);
+            //     } else alert ("У вас не привязан аккаунт Calendly! Используйте /calendly");
+            // })
+            await fetch (config.backend + "google/event", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     "initData": window.Telegram.WebApp.initData,
+                    "id": this.webinar.id,
                 })
             }).then((response) => {
-                if (response.ok) {
-                    let el = document.querySelector(".webinar_links_calendar_button");
-                    el.classList.add("active");
-                    setTimeout(() => el.classList.remove("active"), 3000);
-                } else alert ("У вас не привязан аккаунт Calendly! Используйте /calendly");
+                return response.json();
+            }).then((response) => {
+                alert ("Вебинар успешно добавлен в ваш Google-календарь!");
             })
         }
     },
@@ -195,7 +224,8 @@ export default {
             <div class="webinar_links_calendar">
                 <img src="/img/calendar.svg" alt="">
                 <div class="webinar_links_calendar_title">Добавьте событие в календарь, чтобы не забыть</div>
-                <button class="webinar_links_calendar_button" @click="calendar">Добавить в календарь</button>
+                <button class="webinar_links_calendar_button" @click="calendar" v-if="user.google_access_token">Добавить в календарь</button>
+                <a class="webinar_links_calendar_button" :href="googlelink" v-else>Привязать Google</a>
             </div>
         </div>
         <future-events-component :webinars="feed.upcoming_events"/>

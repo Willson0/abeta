@@ -24,7 +24,7 @@ class GoogleController extends Controller
         $client->setAccessType('offline'); // Обязательно для получения refresh_token
         $client->setPrompt('consent');
 
-        return response($client->createAuthUrl());
+        return response()->json(["link" => $client->createAuthUrl()]);
     }
 
     public function callback (Request $request) {
@@ -71,7 +71,7 @@ class GoogleController extends Controller
         $service = new \Google_Service_Calendar($client);
 
         $event = new \Google_Service_Calendar_Event([
-            'summary' => $request->title,
+            'summary' => $webinar->title,
             'start' => [
                 'dateTime' => \Carbon\Carbon::parse($webinar->date)->toRfc3339String(),
                 'timeZone' => 'Europe/Moscow',
