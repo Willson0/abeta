@@ -224,8 +224,8 @@ export default {
             <div class="webinar_links_calendar">
                 <img src="/img/calendar.svg" alt="">
                 <div class="webinar_links_calendar_title">Добавьте событие в календарь, чтобы не забыть</div>
-                <button class="webinar_links_calendar_button" @click="calendar" v-if="user.google_access_token">Добавить в календарь</button>
-                <a class="webinar_links_calendar_button" :href="googlelink" v-else>Привязать Google</a>
+                <div class="webinar_links_calendar_button" @click="calendar" v-if="user.google_access_token"><div>Добавить в календарь</div></div>
+                <a class="webinar_links_calendar_button" target="_blank" :href="googlelink" v-else><div>Привязать Google</div></a>
             </div>
         </div>
         <future-events-component :webinars="feed.upcoming_events"/>

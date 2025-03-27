@@ -1267,15 +1267,20 @@ font-weight:500;
     margin-top:auto;
     background-color:#FF734C;
     border-radius:12px;
+    padding: 8px 0;
+    width:100%;
+    cursor:pointer;
+    transition:0.2s;
+    text-decoration:none;
+}
+
+.webinar_links_calendar_button>div {
+    margin:auto;
     font-family: 'inter', serif;
     font-weight:700;
     font-size:18px;
     line-height:24px;
-    padding: 8px 0;
-    width:100%;
     color:white;
-    cursor:pointer;
-    transition:0.2s;
 }
 
 .webinar_links_zoom_button {
