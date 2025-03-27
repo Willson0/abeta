@@ -71,11 +71,11 @@ class GoogleController extends Controller
         $event = new \Google_Service_Calendar_Event([
             'summary' => $request->title,
             'start' => [
-                'dateTime' => \Carbon\Carbon::parse($webinar->date)->toRfc3339String(),,
+                'dateTime' => \Carbon\Carbon::parse($webinar->date)->toRfc3339String(),
                 'timeZone' => 'Europe/Moscow',
             ],
             'end' => [
-                'dateTime' => \Carbon\Carbon::parse($webinar->date)->toRfc3339String(),,
+                'dateTime' => \Carbon\Carbon::parse($webinar->date)->toRfc3339String(),
                 'timeZone' => 'Europe/Moscow',
             ],
         ]);
