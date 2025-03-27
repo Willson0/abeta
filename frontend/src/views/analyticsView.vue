@@ -106,7 +106,7 @@ export default {
             </div>
             <img :src="config.storage + analytic.image" alt="">
         </div>
-        <a :href="analytic.link" target="_blank" class="webinar_record" v-if="analytic.link">
+        <a :href="analytic.link" target="_blank" class="webinar_record" v-if="analytic.link && !analytic.locked">
             <div>
                 <img src="/img/play.svg" alt="">
                 <div>Посмотреть</div>
