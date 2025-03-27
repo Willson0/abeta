@@ -21,6 +21,8 @@ class GoogleController extends Controller
         $client->setRedirectUri(env("GOOGLE_REDIRECT_URI"));
         $client->setState($auth_code);
         $client->addScope('https://www.googleapis.com/auth/calendar');
+        $client->setAccessType('offline'); // Обязательно для получения refresh_token
+        $client->setPrompt('consent');
 
         return response($client->createAuthUrl());
     }
