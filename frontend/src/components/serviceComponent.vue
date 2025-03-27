@@ -65,7 +65,8 @@ export default {
     </div>
     <div class="services">
         <div :style="'background-color: #' + service.color" v-for="service in feed.services" class="service">
-            <img src="/img/example_service.svg" alt="">
+<!--            <img src="/img/example_service.svg" alt="">-->
+            <img :src="service.image" alt="">
             <div class="service_title">{{service.title}}</div>
             <div class="service_overview">{{service.overview}}</div>
             <button class="service_button" @click="popup(service)" :style="'color: #' + service.color">Подробнее</button>
