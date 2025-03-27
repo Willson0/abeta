@@ -125,7 +125,6 @@ export default {
 
             if (this.link) formData.append("link", this.link);
             if (this.pdf) formData.append("pdf", this.pdf);
-            return alert(this.pdf instanceof File);
 
             for (const [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
