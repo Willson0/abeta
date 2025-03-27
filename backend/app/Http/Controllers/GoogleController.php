@@ -47,8 +47,9 @@ class GoogleController extends Controller
         return view("calendly");
     }
 
-    public function createEvent(Request $request, Webinar $webinar)
+    public function createEvent(Request $request)
     {
+        $webinar = Webinar::find($request->id);
         $user = User::where("telegram_id", $request["initData"]["user"]["id"])->first();
 
         $client = new \Google_Client();
