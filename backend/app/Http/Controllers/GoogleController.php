@@ -17,7 +17,8 @@ class GoogleController extends Controller
         $client = new \Google_Client();
         $client->setClientId(env("GOOGLE_CLIENT_ID"));
         $client->setClientSecret(env("GOOGLE_CLIENT_SECRET"));
-        $client->setRedirectUri(env("GOOGLE_REDIRECT_URI") . "?auth_code=$auth_code");
+        $client->setRedirectUri(env("GOOGLE_REDIRECT_URI"));
+        $client->setState($auth_code);
         $client->addScope('https://www.googleapis.com/auth/calendar');
 
         return response($client->createAuthUrl());
@@ -27,7 +28,7 @@ class GoogleController extends Controller
         $client = new \Google_Client();
         $client->setClientId(env("GOOGLE_CLIENT_ID"));
         $client->setClientSecret(env("GOOGLE_CLIENT_SECRET"));
-        $client->setRedirectUri(env("GOOGLE_REDIRECT_URI") . "?auth_code=" . $request["auth_code"]);
+        $client->setRedirectUri(env("GOOGLE_REDIRECT_URI"));
 
         $token = $client->fetchAccessTokenWithAuthCode($request->code);
 
@@ -35,7 +36,7 @@ class GoogleController extends Controller
             return response(['error' => 'Google auth failed'], 400);
         }
 
-        $auth_code = $request->auth_code;
+        $auth_code = $request->state;
         $user = User::where('auth_code', $auth_code)->first();
         $user->google_access_token = $token['access_token'];
         $user->google_refresh_token = $token['refresh_token'] ?? null;
