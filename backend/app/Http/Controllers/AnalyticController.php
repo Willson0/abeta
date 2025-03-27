@@ -37,7 +37,7 @@ class AnalyticController extends Controller
 
         if (isset($data["pdf"])) {
             $pdf = "analytics/pdf/analytics_" . $time . ".pdf";
-            Storage::disk("public")->putFileAs("analytics/pdf", $data["image"], "analytics_" . $time . ".pdf");
+            Storage::disk("public")->putFileAs("analytics/pdf", $data["pdf"], "analytics_" . $time . ".pdf");
 
             $web->pdf = $pdf;
         }
@@ -108,7 +108,7 @@ class AnalyticController extends Controller
         if (isset($data["pdf"])) {
             if (isset($analytic->pdf)) Storage::disk("public")->delete($analytic["pdf"]);
             $pdf = "analytics/pdf/analytics_" . $time . ".pdf";
-            Storage::disk("public")->putFileAs("analytics/pdf", $data["image"], "analytics_" . $time . ".pdf");
+            Storage::disk("public")->putFileAs("analytics/pdf", $data["pdf"], "analytics_" . $time . ".pdf");
 
             $analytic->pdf = $pdf;
         }
