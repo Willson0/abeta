@@ -30,6 +30,7 @@ class AnalyticController extends Controller
             "description" => $data["description"],
             "image" => $newFile,
             "fields" => json_encode($data["fields"]),
+            "locked" => 1,
         ]);
 
         if (isset($data["link"])) $web->link = $data["link"];
