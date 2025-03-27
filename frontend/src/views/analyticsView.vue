@@ -106,12 +106,12 @@ export default {
             </div>
             <img :src="config.storage + analytic.image" alt="">
         </div>
-        <div class="webinar_record" v-if="analytic.link">
+        <a :href="analytic.link" target="_blank" class="webinar_record" v-if="analytic.link">
             <div>
                 <img src="/img/play.svg" alt="">
                 <div>Посмотреть</div>
             </div>
-        </div>
+        </a>
         <div class="analytics_main">
             <div class="analytics_date">Аналитика <span>&middot; {{formatDate(analytic.created_at)}}</span></div>
             <div class="webinar_title">{{ analytic.title }}</div>
