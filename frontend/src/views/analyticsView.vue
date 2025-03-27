@@ -100,13 +100,13 @@ export default {
 <template>
     <div class="analytics">
         <div class="feed_webinar_image">
-            <div class="feed_webinar_image_tags" v-if="analytic.video">
+            <div class="feed_webinar_image_tags" v-if="analytic.link">
                 <div style="background-color:#EB2026">Youtube</div>
-                <div style="background-color:#FF734C">1:15:24</div>
+<!--                <div style="background-color:#FF734C">1:15:24</div>-->
             </div>
             <img :src="config.storage + analytic.image" alt="">
         </div>
-        <div class="webinar_record" v-if="analytic.video">
+        <div class="webinar_record" v-if="analytic.link">
             <div>
                 <img src="/img/play.svg" alt="">
                 <div>Посмотреть</div>
