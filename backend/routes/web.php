@@ -41,8 +41,9 @@ Route::group (["prefix" => "api"], function () {
         Route::get("/google", [GoogleController::class, "callback"]);
     });
 
-    Route::group (["prefix" => "google"], function () {
-       Route::post("link", [GoogleController::class, "getLink"])->middleware(CheckTelegram::class);
+    Route::group (["prefix" => "google", "middleware" => CheckTelegram::class], function () {
+       Route::post("link", [GoogleController::class, "getLink"]);
+       Route::post("event", [GoogleController::class, "createEvent"]);
     });
 
     Route::group(["prefix" => "webinar"], function () {
