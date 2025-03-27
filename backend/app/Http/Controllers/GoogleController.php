@@ -73,12 +73,12 @@ class GoogleController extends Controller
         $event = new \Google_Service_Calendar_Event([
             'summary' => $webinar->title,
             'start' => [
-                'dateTime' => \Carbon\Carbon::parse($webinar->date)->toRfc3339String(),
-                'timeZone' => 'Europe/Moscow',
+                'dateTime' => \Carbon\Carbon::parse($webinar->date)->subHours(3)->toRfc3339String(),
+                'timeZone' => 'UTC',
             ],
             'end' => [
-                'dateTime' => \Carbon\Carbon::parse($webinar->date)->toRfc3339String(),
-                'timeZone' => 'Europe/Moscow',
+                'dateTime' => \Carbon\Carbon::parse($webinar->date)->subHours(3)->toRfc3339String(),
+                'timeZone' => 'UTC',
             ],
         ]);
 

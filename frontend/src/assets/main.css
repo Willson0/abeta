@@ -1272,6 +1272,7 @@ font-weight:500;
     cursor:pointer;
     transition:0.2s;
     text-decoration:none;
+    display:flex;
 }
 
 .webinar_links_calendar_button>div {
