@@ -5,6 +5,7 @@ use App\Http\Controllers\AnalyticController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CalendlyController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MailingController;
 use App\Http\Controllers\ServiceController;
@@ -37,6 +38,11 @@ Route::group (["prefix" => "api"], function () {
     Route::group (["prefix" => "webhook"], function () {
         Route::post("/tg", [WebhookController::class, "tgmessage"]);
         Route::get("/calendly", [CalendlyController::class, "callback"]);
+        Route::get("/google", [GoogleController::class, "callback"]);
+    });
+
+    Route::group (["prefix" => "google"], function () {
+       Route::post("link", [GoogleController::class, "getLink"])->middleware(CheckTelegram::class);
     });
 
     Route::group(["prefix" => "webinar"], function () {
