@@ -63,6 +63,11 @@ export default {
                 const decoded = JSON.parse('"' + fixedEncoded + '"');
                 this.fields[decoded] = "";
             }
+            let loading = document.querySelector(".loading")
+            loading.style.opacity = "0";
+            setTimeout(() => {
+                loading.style.display = "none"
+            }, 200);
         })
 
         await fetch (config.backend + "profile", {
@@ -95,7 +100,7 @@ export default {
             document.querySelector(".webinar_registration_error").classList.remove("active");
             for (let field in this.fields) {
                 if (!this.fields[field]) return document.querySelector(".webinar_registration_error").classList.add("active");
-                if (field.toLocaleLowerCase() === "телефон" && !/^(\+7|8)?[ ]?\(?\d{3}\)?[ ]?\d{3}[- ]?\d{2}[- ]?\d{2}$/.test(this.fields[field])) return alert ("Неправильный формат номера телефона");
+                if (field.toLocaleLowerCase() === "телефон" && !/^\+?[1-9]\d{1,14}$/.test(this.fields[field])) return alert ("Неправильный формат номера телефона");
                 if ((field.toLocaleLowerCase() === "имя" || field.toLocaleLowerCase() === "фио") && !/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+)?(?: [А-ЯЁ][а-яё]+)?$/.test(this.fields[field])) return alert ("Неправильный формат ФИО");
             }
 
@@ -158,6 +163,7 @@ export default {
 </script>
 
 <template>
+    <div class="loading"></div>
     <div class="webinar">
         <div class="feed_webinar_image">
             <div class="feed_webinar_image_tags">

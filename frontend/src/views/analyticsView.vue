@@ -52,6 +52,11 @@ export default {
                     const decoded = JSON.parse('"' + fixedEncoded + '"');
                     this.fields[decoded] = "";
                 }
+            let loading = document.querySelector(".loading")
+            loading.style.opacity = "0";
+            setTimeout(() => {
+                loading.style.display = "none"
+            }, 200);
         })
 
         await fetch (config.backend + "profile", {
@@ -98,6 +103,7 @@ export default {
 </script>
 
 <template>
+    <div class="loading"></div>
     <div class="analytics">
         <div class="feed_webinar_image">
             <div class="feed_webinar_image_tags" v-if="analytic.link">

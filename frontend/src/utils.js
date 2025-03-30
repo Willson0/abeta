@@ -58,7 +58,7 @@ export function getRelativeDate(eventDateStr) {
 
     // Разница в миллисекундах
     const diffMs = eventDate - now;
-    if (diffMs < 0) return "Событие уже прошло";
+    if (diffMs < 0) return "";
 
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
