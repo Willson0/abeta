@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminCookie;
 use App\Models\User;
+use App\Models\Webinar;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Http;
 
@@ -172,8 +173,14 @@ class utils
         if ($request->has('offset')) $query->offset($request->offset);
         if ($request->has('namesort')) $query->orderby('title', $request->namesort);
         if ($request->has('blocked')) $query->whereNotNull("blocked_at");
-        if ($request->has("datefrom")) $query->whereDate('created_at', ">=", $request->datefrom);
-        if ($request->has("dateto")) $query->whereDate('created_at', "<=", $request->dateto);
+        if ($request->has("datefrom")) {
+            if ($class === Webinar::class) $query->whereDate('date', ">=", $request->datefrom);
+            else $query->whereDate('created_at', ">=", $request->datefrom);
+        }
+        if ($request->has("dateto")) {
+            if ($class === Webinar::class) $query->whereDate('date', "<=", $request->datefrom);
+            else $query->whereDate('created_at', "<=", $request->dateto);
+        }
         if ($request->has("ip")) $query->where("ip", $request->ip);
         if ($request->has("user")) {
             $userids = User::where("id", $request->user)
