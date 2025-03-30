@@ -43,7 +43,8 @@ export default {
 </script>
 
 <template>
-    <div class="feed_chat" v-if="!user.chat_request">
+    <div v-if="user.in_chat"></div>
+    <div class="feed_chat" v-else-if="!user.chat_request">
         <div class="feed_chat_image">
             <img src="/img/closed_chat.svg" alt="">
         </div>

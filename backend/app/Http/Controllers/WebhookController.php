@@ -893,6 +893,10 @@ class WebhookController extends Controller
             if (isset($message["chat"])) {
                 if (in_array ($message["chat"]["type"], ["group", "supergroup"])) {
                     if (isset($message["left_chat_member"])) {
+                        $newuser = User::where("telegram_id", $message["left_chat_member"]["id"])->first();
+                        $newuser->in_chat = 0;
+                        $newuser->save();
+
                         if ($message["left_chat_member"]["id"] != $message["from"]["id"])
                             GroupLog::create([
                                 "telegram_id" => $message["left_chat_member"]["id"],
@@ -903,6 +907,7 @@ class WebhookController extends Controller
                     if (isset($message["new_chat_member"])) {
                         $newuser = User::where("telegram_id", $message["new_chat_member"]["id"])->first();
                         $newuser->chat_request = 0;
+                        $newuser->in_chat = 1;
                         $newuser->save();
 
                         GroupLog::create ([
