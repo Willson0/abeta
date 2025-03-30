@@ -2741,6 +2741,7 @@ body.no-scroll {
     padding:4px 10px;
     font-size:14px;
     cursor:pointer;
+    transition: 0.2s;
 }
 
 
