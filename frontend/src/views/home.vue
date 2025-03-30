@@ -134,6 +134,12 @@
                     return response.json();
                 }).then((response) => {
                     this.feed = response;
+
+                    let loading = document.querySelector(".loading")
+                    loading.style.opacity = "0";
+                    setTimeout(() => {
+                        loading.style.display = "none"
+                    }, 200);
                 });
             } catch {
 
@@ -146,6 +152,7 @@
 </script>
 
 <template>
+    <div class="loading"></div>
     <div class="forbiddenPopup" style="display:none"><div>Для продолжения пройдите регистрацию в боте (/start).</div></div>
     <div class="main">
         <div class="header">
