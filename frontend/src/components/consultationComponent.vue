@@ -13,8 +13,6 @@ export default {
         }
     },
     async mounted () {
-        this.name = this.user.fullname;
-        this.phone = this.user.phone;
 
         await fetch (config.backend + "venture/status", {
             method: "POST",
@@ -90,11 +88,11 @@ export default {
             <form @submit.prevent="sendData">
                 <div class="form_input">
                     <label for="name">Имя</label>
-                    <input type="text" name="name">
+                    <input type="text" name="name" :value="user.fullname">
                 </div>
                 <div class="form_input">
                     <label for="phone">Телефон</label>
-                    <input type="text" name="phone">
+                    <input type="text" name="phone" :value="user.phone">
                 </div>
                 <button>Записаться на консультацию</button>
             </form>
