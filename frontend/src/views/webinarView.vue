@@ -151,7 +151,7 @@ export default {
                 return response.json();
             }).then((response) => {
                 alert ("Вебинар успешно добавлен в ваш Google-календарь!");
-                this.webinar.calendar_added = 1;
+                this.webinar.added_calendar = 1;
             })
         }
     },
