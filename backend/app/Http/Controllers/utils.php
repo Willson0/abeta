@@ -170,7 +170,7 @@ class utils
         if ($request->has("sort")) $query->orderby("id", $request->sort);
         if ($request->has('datesort')) $query->orderby('id', $request->datesort);
         if ($request->has('offset')) $query->offset($request->offset);
-        if ($request->has('namesort')) $query->orderby('name', $request->namesort);
+        if ($request->has('namesort')) $query->orderby('title', $request->namesort);
         if ($request->has('blocked')) $query->whereNotNull("blocked_at");
         if ($request->has("datefrom")) $query->whereDate('created_at', ">=", $request->datefrom);
         if ($request->has("dateto")) $query->whereDate('created_at', "<=", $request->dateto);
