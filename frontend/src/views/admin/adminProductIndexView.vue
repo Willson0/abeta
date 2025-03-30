@@ -151,7 +151,7 @@ export default {
             if (!this.name) return alert("Insert 'NAME' please");
             if (!this.link) return alert("Insert 'Ссылка' please");
             if (!this.date) return alert("Insert 'Дата' please");
-            if (this.images.length === 0) return alert("Count of images must be bigger 0!");
+            if (this.images.length === 0) return alert("Добавьте картинку для вебинара!");
             if (this.selectedFields.length === 0) return alert("Количество полей должно быть больше 0");
 
             formData.append("title", this.name);
