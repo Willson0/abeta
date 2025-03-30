@@ -4227,4 +4227,5 @@ input[type="number"]::-webkit-inner-spin-button {
     top:0;
     background-color: #F3F4F6;
     transition:0.2s;
+    z-index: 999999999;
 }
