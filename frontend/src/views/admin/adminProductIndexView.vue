@@ -177,6 +177,7 @@ export default {
                 else if (!response.ok) return alert("Error");
                 return response.json();
             }).then((response) => {
+                alert ("Успешно сохранено!");
                 this.$router.push("/admin/webinars/" + response.id);
             });
         },
