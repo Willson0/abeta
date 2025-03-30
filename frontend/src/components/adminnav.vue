@@ -77,28 +77,28 @@ export default {
             </div>
         </div>
         <div class="adminnav_buttons">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <i class="fa-solid fa-envelopes-bulk"></i>
-            <div class="adminnav_buttons_account">
-                <img @click="showaccount()" :src="config.storage + admin.avatar" alt="">
-                <div class="adminnav_buttons_account_menu">
-                    <div class="adminnav_buttons_account_menu_main_triangle"></div>
-                    <div class="adminnav_buttons_account_menu_main">
-                        <div>
-                            <div class="adminnav_buttons_account_menu_main_button">
-                                <p>Profile</p>
-                            </div>
-                            <div class="adminnav_buttons_account_menu_main_button">
-                                <p>Settings</p>
-                            </div>
-                        </div>
-                        <div class="adminnav_buttons_account_menu_main_line"></div>
-                        <div @click="logout()" class="adminnav_buttons_account_menu_main_button">
-                            <p>Logout</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--            <i class="fa-solid fa-magnifying-glass"></i>-->
+<!--            <i class="fa-solid fa-envelopes-bulk"></i>-->
+<!--            <div class="adminnav_buttons_account">-->
+<!--                <img @click="showaccount()" :src="config.storage + admin.avatar" alt="">-->
+<!--                <div class="adminnav_buttons_account_menu">-->
+<!--                    <div class="adminnav_buttons_account_menu_main_triangle"></div>-->
+<!--                    <div class="adminnav_buttons_account_menu_main">-->
+<!--                        <div>-->
+<!--                            <div class="adminnav_buttons_account_menu_main_button">-->
+<!--                                <p>Profile</p>-->
+<!--                            </div>-->
+<!--                            <div class="adminnav_buttons_account_menu_main_button">-->
+<!--                                <p>Settings</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="adminnav_buttons_account_menu_main_line"></div>-->
+<!--                        <div @click="logout()" class="adminnav_buttons_account_menu_main_button">-->
+<!--                            <p>Logout</p>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </header>
     <div class="adminnav_main">
