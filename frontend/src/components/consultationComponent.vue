@@ -8,9 +8,14 @@ export default {
     data () {
         return {
             venture: false,
+            name: "",
+            phone: "",
         }
     },
     async mounted () {
+        this.name = this.user.fullname;
+        this.phone = this.user.phone;
+
         await fetch (config.backend + "venture/status", {
             method: "POST",
             headers: {
@@ -23,7 +28,7 @@ export default {
             return response.json();
         }).then((response) => {
             this.venture = response;
-        })
+        });
     },
     props: {
       user: {
