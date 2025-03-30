@@ -178,7 +178,7 @@ class utils
             else $query->whereDate('created_at', ">=", $request->datefrom);
         }
         if ($request->has("dateto")) {
-            if ($class === Webinar::class) $query->whereDate('date', "<=", $request->datefrom);
+            if ($class === Webinar::class) $query->whereDate('date', "<=", $request->dateto);
             else $query->whereDate('created_at', "<=", $request->dateto);
         }
         if ($request->has("ip")) $query->where("ip", $request->ip);
