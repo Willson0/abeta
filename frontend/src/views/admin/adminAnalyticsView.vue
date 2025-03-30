@@ -298,7 +298,7 @@ export default {
                     </tbody>
                 </table>
                 <div class="admin_users_main_main_foo">
-                    <div v-show="page !== 1" @click="changepage(page-1)" class="admin_users_main_main_foot_button">
+                    <div :style="page === 1 ? 'background-color:gray' : ''" @click="changepage(page-1)" class="admin_users_main_main_foot_button">
                         <i class="fa-solid fa-arrow-left"></i>
                         Previous
                     </div>
@@ -310,7 +310,7 @@ export default {
                     <div class="admin_users_main_main_foot_paginator" v-else>
                         <div @click="changepage(i)" v-for="i in countpage" :class="i === page ? 'active' : ''">{{i}}</div>
                     </div>
-                    <div v-show="page !== countpage" @click="changepage(page+1)" class="admin_users_main_main_foot_button">
+                    <div :style="page === countpage ? 'background-color:gray' : ''" @click="changepage(page+1)" class="admin_users_main_main_foot_button">
                         Next
                         <i class="fa-solid fa-arrow-right"></i>
                     </div>
