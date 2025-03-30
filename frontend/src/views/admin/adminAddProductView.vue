@@ -113,6 +113,7 @@ export default {
             if (!this.date) return alert ("Insert 'Дата' please");
             if (this.images.length === 0) return alert ("Добавьте картинку для вебинара!");
             if (this.selectedFields.length === 0) return alert ("Количество полей должно быть больше 0");
+            if (document.querySelector(".admin_addproduct_main_textarea").innerHTML.length < 10) return alert ("Длина описания вебинара должна быть более 10 символов!");
 
             formData.append("title", this.name);
             formData.append("description", document.querySelector(".admin_addproduct_main_textarea").innerHTML);
