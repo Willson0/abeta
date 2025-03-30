@@ -71,9 +71,6 @@ class WebinarController extends Controller
 
         $response = Http::withToken($user->calendly_access_token)->get("https://api.calendly.com/users/me");
         if ($response->successful()) {
-            $userweb = UserWebinar::where("user_id", $user->id)->where("webinar_id", $webinar->id)->first();
-            $userweb->added_calendar = 1;
-            $userweb->save();
 
             $data = $response->json();
             $uri = $data["resource"]["uri"];

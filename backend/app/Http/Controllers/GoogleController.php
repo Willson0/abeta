@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserWebinar;
 use App\Models\Webinar;
 use Google\Client;
 use Illuminate\Http\Request;
@@ -84,6 +85,10 @@ class GoogleController extends Controller
 
         $calendarId = 'primary';
         $event = $service->events->insert($calendarId, $event);
+
+        $userweb = UserWebinar::where("user_id", $user->id)->where("webinar_id", $webinar->id)->first();
+        $userweb->added_calendar = 1;
+        $userweb->save();
 
         return response()->json(['success' => true, 'event' => $event->id]);
     }
