@@ -227,7 +227,7 @@ export default {
                 <div class="webinar_links_zoom_link"><a>{{webinar.link}}</a></div>
                 <a :href="webinar.link" target="_blank" class="webinar_links_zoom_button"><div>Присоединиться</div></a>
             </div>
-            <div class="webinar_links_calendar">
+            <div class="webinar_links_calendar" v-if="!webinar.added_calendar">
                 <img src="/img/calendar.svg" alt="">
                 <div class="webinar_links_calendar_title">Добавьте событие в календарь, чтобы не забыть</div>
                 <div class="webinar_links_calendar_button" @click="calendar" v-if="user.google_access_token"><div>Добавить в календарь</div></div>

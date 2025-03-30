@@ -32,8 +32,10 @@ class WebinarController extends Controller
             $data["user"] = json_decode($data["user"], true);
 
             $user = User::where("telegram_id", $data["user"]["id"])->first();
-            if (UserWebinar::where("webinar_id", $id)->where("user_id", $user->id)->exists())
+            if (UserWebinar::where("webinar_id", $id)->where("user_id", $user->id)->exists()) {
                 $webinar["registered"] = true;
+                $webinar["added_calendar"] = UserWebinar::where("webinar_id", $id)->where("user_id", $user->id)->first()->added_calendar;
+            }
         }
         if (!$webinar["registered"] && !$request->cookie("admin")) unset($webinar["link"]);
 
@@ -68,10 +70,11 @@ class WebinarController extends Controller
         if ($user->calendly_access_token == null) abort (401, "Аккаунт calendly не привязан");
 
         $response = Http::withToken($user->calendly_access_token)->get("https://api.calendly.com/users/me");
-        Log::critical($response);
-        Log::critical($user->calendly_access_token);
-
         if ($response->successful()) {
+            $userweb = UserWebinar::where("user_id", $user->id)->where("webinar_id", $webinar->id)->first();
+            $userweb->added_calendar = 1;
+            $userweb->save();
+
             $data = $response->json();
             $uri = $data["resource"]["uri"];
             $resp = Http::withToken($user->calendly_access_token)
@@ -88,8 +91,6 @@ class WebinarController extends Controller
                         "end_date" => Carbon::parse($webinar->date)->toDateString()
                     ]
                 ]);
-
-            Log::critical($resp);
         }
     }
 
