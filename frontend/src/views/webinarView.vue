@@ -235,7 +235,7 @@ export default {
                 <a class="webinar_links_calendar_button" target="_blank" :href="googlelink" v-else><div>Привязать Google</div></a>
             </div>
         </div>
-        <future-events-component :webinars="feed.upcoming_events"/>
+        <future-events-component :webinars="feed.upcoming_events.filter(event => event.id !== webinar.id)"/>
         <mail-component :user="user"/>
     </div>
 </template>
