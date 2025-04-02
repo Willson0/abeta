@@ -155,7 +155,7 @@ export default {
                 Нажимая на кнопку, вы соглашаетесь <a href="https://abeta.org/politics" target="_blank">с политикой конфиденциальности</a>
             </div>
         </div>
-        <other-analytics-component :analytics="feed?.analytics"/>
+        <other-analytics-component :analytics="feed?.analytics?.filter(el => el.id !== analytic.id)"/>
         <consultation-experts-component />
         <mail-component :user="user"/>
     </div>
