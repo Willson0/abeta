@@ -1051,7 +1051,7 @@ class WebhookController extends Controller
                     'text' => "Успешная регистрация. Спасибо, что Вы с нами!",
                     "reply_markup" => json_encode([
                         "inline_keyboard" => [
-                            [["text" => "Открыть приложение", "web_app" => ["url" => "https://exobloom.ru"]]]
+                            [["text" => "Открыть приложение", "web_app" => ["url" => "https://abeta.app"]]]
                         ],
                     ])
                 ]);
