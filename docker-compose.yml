@@ -11,9 +11,8 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - ./backend:/var/www/laravel
       - ./frontend/dist:/var/www/vue
-      - ./certs/domain.key:/etc/ssl/private/domain.key
-      # Опционально, если есть CA-сертификат:
-      - ./certs/fullchain.crt:/etc/ssl/certs/fullchain.crt
+      - /etc/letsencrypt/live/abeta.app/privkey.pem:/etc/ssl/private/privkey.pem
+      - /etc/letsencrypt/live/abeta.app/fullchain.pem:/etc/ssl/certs/fullchain.pem
     depends_on:
       - php
       - frontend
@@ -27,6 +26,7 @@ services:
       - ./backend:/var/www/laravel
     depends_on:
       - mysql
+    command: ["sh", "-c", "cron && php-fpm"]
 
   mysql:
     image: mysql:latest
