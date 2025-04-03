@@ -94,7 +94,7 @@ export default {
                     <label for="phone">Телефон</label>
                     <input type="text" name="phone" :value="user.phone">
                 </div>
-                <button>Записаться на консультацию</button>
+                <button class="feed_consultation_button">Записаться на консультацию</button>
             </form>
             <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a></div>
         </div>
