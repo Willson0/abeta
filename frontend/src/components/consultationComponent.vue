@@ -48,7 +48,7 @@ export default {
                 return response.json();
             }).then((response) => {
                 this.venture = true;
-            })
+                     })
         },
         async sendData () {
             await fetch (config.backend + "support", {
@@ -58,11 +58,11 @@ export default {
                     "Content-Type": "application/json",
                 }
             }).then((response) => {
-                if (response.ok) {
+              
                     let el = document.querySelector(".feed_consultation_button");
                     el.classList.add("active");
                     setTimeout(() => {el.classList.remove("active"); location.reload()}, 3000);
-                }
+               
             })
         }
     }

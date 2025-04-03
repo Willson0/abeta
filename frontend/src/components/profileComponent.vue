@@ -34,6 +34,8 @@ export default {
             })
         },
         async sendData () {
+            let bio = document.querySelector("#bio").innerHTML
+            
             await fetch (config.backend + "auth", {
                 method: "POST",
                 headers: {
