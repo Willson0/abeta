@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string("bio")->after("patronymic")->default(" ");
+            $table->string("bio")->nullable()->after("patronymic")->default(" ");
         });
     }
 
