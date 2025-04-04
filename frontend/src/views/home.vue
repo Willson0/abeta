@@ -179,7 +179,7 @@
                     <div class="nav_notification"></div>
                     <p>{{'Консультация'}}</p>
                 </div>
-                <a v-if="user.in_chat" href="https://t.me/+JwIJbj5rPPMwZDZi">
+                <a v-if="user?.in_chat" href="https://t.me/+JwIJbj5rPPMwZDZi">
                     <p>{{'Чат'}}</p>
                 </a>
                 <div v-else @click="$router.push({ query: { s: 'Чат' } });"
