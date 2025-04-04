@@ -77,7 +77,7 @@ export default {
         },
         notify (text, error) {
             let notifyContainer = document.querySelector(".notification_container");
-            let navHeight = document.querySelector(".nav").clientHeight;
+            let navHeight = document.querySelector(".nav").getBoundingClientRect().height;
             notifyContainer.style.top = navHeight + "px";
 
             let div = document.createElement("div");
