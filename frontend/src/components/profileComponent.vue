@@ -34,8 +34,11 @@ export default {
             })
         },
         async sendData () {
-            let bio = document.querySelector("#bio").innerHTML
-            
+            if (!/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+){0,2}$/.test(this.user.fullname))
+                this.notify("Неправильный формат ФИО!", 1);
+            if (this.user.phone && !/^\+?[1-9]\d{1,14}$/.test(this.user.phone))
+                this.notify("Неправильный формат номера телефона!", 1);
+
             await fetch (config.backend + "auth", {
                 method: "POST",
                 headers: {
@@ -52,6 +55,7 @@ export default {
             }).then((response) => {
                 let button = document.querySelector(".profile_main_form>button");
 
+                this.notify("Настройки профиля успешно сохранены")
                 let oldHTML = button.innerHTML;
                 button.innerHTML = "Профиль обновлен";
                 button.classList.add("active");
@@ -63,12 +67,53 @@ export default {
 
                 this.$emit("updateUser", response);
             })
-        }
+        },
+        notify (text, error) {
+            let notifyContainer = document.querySelector(".notification_container");
+            let div = document.createElement("div");
+
+            if (error) {
+                div.innerHTML = `<div class="notification error">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    <div>
+                                        ${text}
+                                    </div>
+                                </div>`
+            } else {
+                div.innerHTML = `<div class="notification success">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <div>
+                                        ${text}
+                                    </div>
+                                </div>`
+            }
+            notifyContainer.appendChild(div);
+
+            let height = div.querySelector(".notification").getBoundingClientRect().height + 10;
+            div.style.visibility = "visible";
+            div.style.transform = `translateY(-${height}px)`;
+
+            requestAnimationFrame(() => {
+                div.style.transition = "0.2s";
+                div.style.transform = "";
+                div.style.height = height + "px";
+            });
+
+            setTimeout(() => {
+                div.style.opacity = '0';
+                setTimeout (() => {
+                    div.remove();
+                }, 200);
+            }, 5000);
+        },
     }
 }
 </script>
 
 <template>
+    <div class="notification_container">
+
+    </div>
     <div class="profile">
         <div class="form">
             <div class="profile_main_header">
