@@ -583,6 +583,7 @@
     font-weight:700;
     font-size:18px;
     line-height:24px;
+    transition:0.2s;
 }
 
 .form>form>button {
@@ -4241,7 +4242,7 @@ input[type="number"]::-webkit-inner-spin-button {
     left:50%;
     transform: translateX(-50%);
     width:50%;
-    z-index:999999;
+    z-index:999;
 }
 
 .notification_container>div {
@@ -4263,6 +4264,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .notification.success {
     background-color: #4caf50;
+    border: 1px solid #439c47;
 }
 .notification.error {
     background-color: #f44336;

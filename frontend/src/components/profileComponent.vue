@@ -34,10 +34,17 @@ export default {
             })
         },
         async sendData () {
-            if (!/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+){0,2}$/.test(this.user.fullname))
+            document.querySelector("#name").style.border = "";
+            document.querySelector("#phone").style.border = "";
+
+            if (!/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+){0,2}$/.test(this.user.fullname)) {
+                document.querySelector("#name").style.border = "1px solid #f44336";
                 this.notify("Неправильный формат ФИО!", 1);
-            if (this.user.phone && !/^\+?[1-9]\d{1,14}$/.test(this.user.phone))
+            }
+            if (this.user.phone && !/^\+?[1-9]\d{1,14}$/.test(this.user.phone)) {
+                document.querySelector("#phone").style.border = "1px solid #f44336";
                 this.notify("Неправильный формат номера телефона!", 1);
+            }
 
             await fetch (config.backend + "auth", {
                 method: "POST",
@@ -70,6 +77,9 @@ export default {
         },
         notify (text, error) {
             let notifyContainer = document.querySelector(".notification_container");
+            let navHeight = document.querySelector(".nav").clientHeight;
+            notifyContainer.style.top = navHeight + "px";
+
             let div = document.createElement("div");
 
             if (error) {
@@ -129,7 +139,7 @@ export default {
             <form @submit.prevent="sendData" action="" class="profile_main_form">
                 <div class="form_input">
                     <label for="name">Имя</label>
-                    <input v-model="user.fullname" type="text" name="name">
+                    <input v-model="user.fullname" type="text" id="name" name="name">
                 </div>
                 <div class="form_input">
                     <label for="about">Обо мне</label>
@@ -137,7 +147,7 @@ export default {
                 </div>
                 <div class="form_input">
                     <label for="phone">Телефон</label>
-                    <input v-model="user.phone" type="text" name="phone">
+                    <input v-model="user.phone" type="text" id="phone" name="phone">
                 </div>
                 <button style="background-color:#36B251">
                     Сохранить
