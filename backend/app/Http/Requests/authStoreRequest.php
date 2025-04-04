@@ -25,7 +25,7 @@ class authStoreRequest extends FormRequest
             "fullname" => 'regex:/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+){0,2}$/u',
             "bio" => "string|nullable",
             "phone" => [
-                "nullable|regex:/^\+?[1-9]\d{1,14}$/"
+                "sometimes|nullable|regex:/^\+?[1-9]\d{1,14}$/"
             ],
             "notifications" => "boolean",
             "expert_mailing" => "boolean",
