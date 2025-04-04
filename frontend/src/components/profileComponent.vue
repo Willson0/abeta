@@ -34,7 +34,7 @@ export default {
             })
         },
         async sendData () {
-            document.querySelector("#name").style.border = "";
+            document.querySelector("#name").style.outline = "";
             document.querySelector("#phone").style.outline = "";
 
             if (!/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+){0,2}$/.test(this.user.fullname)) {
