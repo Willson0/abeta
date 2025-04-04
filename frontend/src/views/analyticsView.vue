@@ -69,6 +69,10 @@ export default {
             return response.json();
         }).then((response) => {
             this.user = response;
+            for (let field in this.fields) {
+                if (field.toLocaleLowerCase() === "телефон") this.fields[field] = this.user.phone;
+                if (field.toLocaleLowerCase() === "имя") this.fields[field] = this.user.fullname;
+            }
         });
 
         await fetch (config.backend + "feed/all", {

@@ -432,7 +432,7 @@ export default {
                 </div>
                 <div class="admin_addproduct_main_buttons">
                     <button @click="discard">Discard</button>
-                    <button @click="sendData" class="admin_addproduct_main_buttons_add">Add webinar</button>
+                    <button @click="sendData" class="admin_addproduct_main_buttons_add">Save analytic</button>
                 </div>
             </div>
         </div>
