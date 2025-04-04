@@ -88,7 +88,7 @@
     column-gap:8px;
 }
 
-.nav>div>div {
+.nav>div>div, .nav>div>a {
     padding:4px 8px;
     background-color: white;
     border-radius:8px;
@@ -97,12 +97,12 @@
     height:fit-content;
 }
 
-.nav>div>div.active {
+.nav>div>div.active, .nav>div>a {
     color: white;
     background-color: black;
 }
 
-.nav>div>div>p {
+.nav>div>div>p, .nav>div>a>p {
     font-weight:600;
     font-size:18px;
     line-height:24px;

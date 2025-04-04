@@ -174,11 +174,22 @@
                 </div>
             </div>
             <div>
-                <div @click="$router.push({ query: { s: category } });"
-                     :class="$route.query.s === category ? 'active' : ''"
-                     v-for="category in ['Консультация', 'Чат', 'Профиль']">
-                    <div v-if="category === 'Консультация'" class="nav_notification"></div>
-                    <p>{{category}}</p>
+                <div @click="$router.push({ query: { s: 'Консультация' } });"
+                     :class="$route.query.s === 'Консультация' ? 'active' : ''">
+                    <div class="nav_notification"></div>
+                    <p>{{'Консультация'}}</p>
+                </div>
+                <a v-if="user.in_chat" href="https://t.me/+JwIJbj5rPPMwZDZi">
+                    <p>{{'Чат'}}</p>
+                </a>
+                <div v-else @click="$router.push({ query: { s: 'Чат' } });"
+                     :class="$route.query.s === 'Чат' ? 'active' : ''">
+                    <p>{{'Чат'}}</p>
+                </div>
+                <div @click="$router.push({ query: { s: 'Профиль' } });"
+                     :class="$route.query.s === 'Профиль' ? 'active' : ''">
+                    <div v-if="'Профиль' === 'Консультация'" class="nav_notification"></div>
+                    <p>{{'Профиль'}}</p>
                 </div>
             </div>
         </div>
