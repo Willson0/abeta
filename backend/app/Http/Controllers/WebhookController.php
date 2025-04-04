@@ -1024,7 +1024,10 @@ class WebhookController extends Controller
                     return response()->json(["status" => "ok"], 200);
                 }
                 if (isset($message["contact"])) {
-                    $user->phone = $message["contact"]["phone_number"];
+                    $phone = $message["contact"]["phone_number"];
+                    if ($phone[0] == "7") $phone = "+" . $phone;
+
+                    $user->phone = $phone;
                     $user->step = "enter_full_name";
                     $user->save();
 
