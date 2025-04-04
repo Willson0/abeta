@@ -100,7 +100,7 @@
 }
 
 .nav>div>div.active, .nav>div>a.active {
-    color: white;
+    color: white !important;
     background-color: black;
 }
 
