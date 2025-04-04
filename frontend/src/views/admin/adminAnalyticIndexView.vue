@@ -281,10 +281,10 @@ export default {
             Object.assign(this.$data, this.$options.data.call(this));
             this.updImgs();
         },
-        async delete () {
+        delete () {
             let result = confirm("Вы уверены, что хотите удалить аналитику?");
             if (result) {
-                await fetch (config.backend + "analytic/" + this.webinar.id, {
+                fetch (config.backend + "analytic/" + this.webinar.id, {
                     method: "DELETE",
                     credentials: "include",
                 }).then((response) => {
@@ -443,7 +443,6 @@ export default {
                 </div>
                 <div class="admin_addproduct_main_buttons">
                     <button @click="discard">Discard</button>
-                    <button @click="delete">Delete</button>
                     <button @click="sendData" class="admin_addproduct_main_buttons_add">Save analytic</button>
                 </div>
             </div>
