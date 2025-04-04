@@ -281,6 +281,17 @@ export default {
             Object.assign(this.$data, this.$options.data.call(this));
             this.updImgs();
         },
+        async delete () {
+            let result = confirm("Вы уверены, что хотите удалить аналитику?");
+            if (result) {
+                await fetch (config.backend + "analytic/" + this.webinar.id, {
+                    method: "DELETE",
+                    credentials: "include",
+                }).then((response) => {
+                    if (response.ok) this.$router.push("/admin/analytics");
+                })
+            }
+        },
         saveSelection () {
             const selection = window.getSelection();
             if (selection.rangeCount > 0) {
@@ -432,6 +443,7 @@ export default {
                 </div>
                 <div class="admin_addproduct_main_buttons">
                     <button @click="discard">Discard</button>
+                    <button @click="delete">Delete</button>
                     <button @click="sendData" class="admin_addproduct_main_buttons_add">Save analytic</button>
                 </div>
             </div>

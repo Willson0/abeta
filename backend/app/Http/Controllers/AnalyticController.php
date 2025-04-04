@@ -116,4 +116,9 @@ class AnalyticController extends Controller
 
         return response()->json($analytic);
     }
+
+    public function destroy ($id) {
+        Analytic::find($id)->delete();
+        return response()->json($id);
+    }
 }

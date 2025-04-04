@@ -62,6 +62,7 @@ Route::group (["prefix" => "api"], function () {
         Route::post("/", [AnalyticController::class, "store"])->middleware(CheckAdminMiddleware::class);
         Route::post("/{analytic}/edit", [AnalyticController::class, "update"])->middleware(CheckAdminMiddleware::class);
         Route::post("/{id}", [AnalyticController::class, "show"]);
+        Route::delete("/{id}", [AnalyticController::class, "destroy"])->middleware(CheckAdminMiddleware::class);
         Route::post("/{id}/getaccess", [AnalyticController::class, "getAccess"])
             ->middleware(CheckTelegram::class);
     });
