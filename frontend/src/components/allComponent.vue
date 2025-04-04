@@ -69,7 +69,7 @@ export default {
         <analytic-component v-for="analytic in feed.analytics?.slice(0,1)" :analytic="analytic" />
         <analytic-component v-for="analytic in feed.analytics?.slice(1,2)" :size="1" :analytic="analytic" />
         <analytic-component v-for="analytic in feed.analytics?.slice(2,3)" :analytic="analytic" />
-        <chat-block-component />
+        <chat-block-component :user="user"/>
         <analytic-component v-for="analytic in feed.analytics?.slice(3,5)" :analytic="analytic" />
         <analytic-component v-for="analytic in feed.analytics?.slice(5,7)" :size="1" :analytic="analytic" />
         <analytic-component v-for="analytic in feed.analytics?.slice(7,9)" :analytic="analytic" />

@@ -5,7 +5,6 @@ export default {
     data () {
       return {
           ok: false,
-          user: {},
       }
     },
     methods: {
@@ -27,18 +26,24 @@ export default {
 
     },
     async mounted () {
-        await fetch (config.backend + "profile", {
-            method: "POST",
-            body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
-            headers: {
-                "Content-Type": "application/json",
-            }
-        }).then((response) => {
-            return response.json();
-        }).then((response) => {
-            this.user = response;
-        });
-    }
+        // await fetch (config.backend + "profile", {
+        //     method: "POST",
+        //     body: JSON.stringify({"initData": window.Telegram.WebApp.initData}),
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //     }
+        // }).then((response) => {
+        //     return response.json();
+        // }).then((response) => {
+        //     this.user = response;
+        // });
+    },
+    props: {
+        user: {
+            type: Object,
+            required: true,
+        }
+    },
 }
 </script>
 
