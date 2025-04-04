@@ -26,7 +26,7 @@ services:
       - ./backend:/var/www/laravel
     depends_on:
       - mysql
-    command: ["sh", "-c", "cron && php-fpm"]
+    command: ["sh", "-c", "php-fpm && cron -f"]
 
   mysql:
     image: mysql:latest
