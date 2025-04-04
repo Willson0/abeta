@@ -4237,8 +4237,10 @@ input[type="number"]::-webkit-inner-spin-button {
     display:flex;
     flex-direction:column-reverse;
     position:fixed;
+    top:0;
     left:50%;
     transform: translateX(-50%);
+    width:50%;
     z-index:999999;
 }
 
@@ -4249,7 +4251,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .notification {
-    width:50%;
+    width:100%;
     display:flex;
     flex-direction:row;
     padding:10px;
