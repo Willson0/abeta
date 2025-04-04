@@ -35,14 +35,14 @@ export default {
         },
         async sendData () {
             document.querySelector("#name").style.border = "";
-            document.querySelector("#phone").style.border = "";
+            document.querySelector("#phone").style.outline = "";
 
             if (!/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+){0,2}$/.test(this.user.fullname)) {
-                document.querySelector("#name").style.border = "1px solid #f44336";
+                document.querySelector("#name").style.outline = "2px solid #f44336";
                 this.notify("Неправильный формат ФИО!", 1);
             }
             if (this.user.phone && !/^\+?[1-9]\d{1,14}$/.test(this.user.phone)) {
-                document.querySelector("#phone").style.border = "1px solid #f44336";
+                document.querySelector("#phone").style.outline = "2px solid #f44336";
                 this.notify("Неправильный формат номера телефона!", 1);
             }
 
