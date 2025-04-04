@@ -95,9 +95,10 @@
     cursor:pointer;
     display:flex;
     height:fit-content;
+    text-decoration: none;
 }
 
-.nav>div>div.active, .nav>div>a {
+.nav>div>div.active, .nav>div>a.active {
     color: white;
     background-color: black;
 }
