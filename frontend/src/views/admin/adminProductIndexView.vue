@@ -294,7 +294,18 @@ export default {
                 selection.removeAllRanges();
                 selection.addRange(this.selection);
             }
-        }
+        },
+        destroy () {
+            let result = confirm("Вы уверены, что хотите удалить вебинар?");
+            if (result) {
+                fetch (config.backend + "webinar/" + this.webinar.id, {
+                    method: "DELETE",
+                    credentials: "include",
+                }).then((response) => {
+                    if (response.ok) this.$router.push("/admin/webinars");
+                })
+            }
+        },
     },
     components: {
         adminnav,
@@ -455,7 +466,7 @@ export default {
                     </div>
                 </div>
                 <div class="admin_addproduct_main_buttons">
-                    <button @click="discard">Discard</button>
+                    <button @click="destroy">Delete</button>
                     <button @click="sendData" class="admin_addproduct_main_buttons_add">Save webinar</button>
                 </div>
             </div>

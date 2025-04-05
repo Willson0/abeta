@@ -284,7 +284,7 @@ export default {
             Object.assign(this.$data, this.$options.data.call(this));
             this.updImgs();
         },
-        delete () {
+        destroy () {
             let result = confirm("Вы уверены, что хотите удалить аналитику?");
             if (result) {
                 fetch (config.backend + "analytic/" + this.webinar.id, {
@@ -449,7 +449,7 @@ export default {
                     </div>
                 </div>
                 <div class="admin_addproduct_main_buttons">
-                    <button @click="discard">Discard</button>
+                    <button @click="destroy">Delete</button>
                     <button @click="sendData" class="admin_addproduct_main_buttons_add">Save analytic</button>
                 </div>
             </div>

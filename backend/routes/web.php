@@ -53,6 +53,8 @@ Route::group (["prefix" => "api"], function () {
         Route::post("/{webinar}/edit", [WebinarController::class, "update"])->middleware(CheckAdminMiddleware::class);
         Route::post("/{id}/registration", [WebinarController::class, "registration"])
             ->middleware(CheckTelegram::class);
+        Route::delete("/{id}", [WebinarController::class, "destroy"])
+            ->middleware(CheckAdminMiddleware::class);
         Route::post("/{id}/calendar", [WebinarController::class, "calendar"])
             ->middleware(CheckTelegram::class);
     });
@@ -62,7 +64,8 @@ Route::group (["prefix" => "api"], function () {
         Route::post("/", [AnalyticController::class, "store"])->middleware(CheckAdminMiddleware::class);
         Route::post("/{analytic}/edit", [AnalyticController::class, "update"])->middleware(CheckAdminMiddleware::class);
         Route::post("/{id}", [AnalyticController::class, "show"]);
-        Route::delete("/{id}", [AnalyticController::class, "destroy"])->middleware(CheckAdminMiddleware::class);
+        Route::delete("/{id}", [AnalyticController::class, "destroy"])
+            ->middleware(CheckAdminMiddleware::class);
         Route::post("/{id}/getaccess", [AnalyticController::class, "getAccess"])
             ->middleware(CheckTelegram::class);
     });
@@ -99,6 +102,8 @@ Route::group (["prefix" => "api"], function () {
         Route::get("/", [ServiceController::class, "index"]);
         Route::post("/", [ServiceController::class, "store"]);
         Route::post("/{id}", [ServiceController::class, "show"]);
+        Route::delete("/{id}", [ServiceController::class, "destroy"])
+            ->middleware(CheckAdminMiddleware::class);
         Route::post("/{service}/edit", [ServiceController::class, "update"]);
     });
 

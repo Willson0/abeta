@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\WebinarStoreRequest;
+use App\Models\Analytic;
 use App\Models\User;
 use App\Models\UserWebinar;
 use App\Models\Webinar;
@@ -139,5 +140,10 @@ class WebinarController extends Controller
         $webinar->save();
 
         return response()->json($webinar);
+    }
+
+    public function destroy ($id) {
+        Webinar::find($id)->delete();
+        return response()->json($id);
     }
 }
