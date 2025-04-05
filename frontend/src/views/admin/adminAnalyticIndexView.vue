@@ -20,6 +20,8 @@ export default {
             fields: [],
             selectedFields: [],
             pdf: "",
+            webinar: {},
+            config:config,
         }
     },
     async mounted () {
@@ -403,6 +405,11 @@ export default {
                 <div>
                     <h2>ПДФ</h2>
                     <div>
+                        <div>
+                            <h3>Нынешнее пдф</h3>
+                            <a v-if="webinar.pdf" :href="config.storage + webinar.pdf">Ссылка на ПДФ</a>
+                            <div>Отсутствует</div>
+                        </div>
                         <div>
                             <h3>Изменить пдф</h3>
                             <input @change="pdfChange" type="file">
