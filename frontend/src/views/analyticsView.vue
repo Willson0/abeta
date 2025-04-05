@@ -31,7 +31,7 @@ export default {
 
         let s = this.$route.query.s;
         backbutton.onClick((s) => {
-            this.$router.push('/?s=' + s);
+            this.$router.push('/?s=' + "Все");
             backbutton.hide();
         })
 
