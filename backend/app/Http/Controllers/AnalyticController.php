@@ -68,8 +68,8 @@ class AnalyticController extends Controller
         if ($cookieparam) {
             $cookie = AdminCookie::where("cookie", $cookieparam)->first();
             if ($cookie) {
-                $user = $cookie->user;
-                if ($user) $request->attributes->add(["user" => $user]);
+                $admin = $cookie->user;
+                if ($admin) $analytic["locked"] = 0;
             }
         }
 
