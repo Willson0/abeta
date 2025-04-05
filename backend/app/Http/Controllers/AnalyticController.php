@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AnalyticStoreRequest;
+use App\Models\AdminCookie;
 use App\Models\Analytic;
 use App\Models\AnalyticUser;
 use App\Models\User;
 use App\Models\UserWebinar;
 use App\Models\Webinar;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 
 class AnalyticController extends Controller
@@ -60,6 +63,14 @@ class AnalyticController extends Controller
             $user = User::where("telegram_id", $data["user"]["id"])->first();
             if (AnalyticUser::where("analytic_id", $id)->where("user_id", $user->id)->exists())
                 $analytic["locked"] = 0;
+        }
+        $cookieparam = Cookie::get("admin");
+        if ($cookieparam) {
+            $cookie = AdminCookie::where("cookie", $cookieparam)->first();
+            if ($cookie) {
+                $user = $cookie->user;
+                if ($user) $request->attributes->add(["user" => $user]);
+            }
         }
 
         if ($analytic->locked == true) {
