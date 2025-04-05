@@ -179,7 +179,8 @@ export default {
                 return response.json();
             }).then((response) => {
                 alert ("Успешно сохранено!");
-                this.$router.push("/admin/analytics/" + response.id);
+                // this.$router.push("/admin/analytics/" + response.id);
+                location.reload();
             });
         },
         addimg (ev) {
@@ -405,10 +406,9 @@ export default {
                 <div>
                     <h2>ПДФ</h2>
                     <div>
-                        <div>
+                        <div v-if="webinar.pdf">
                             <h3>Нынешнее пдф</h3>
-                            <a v-if="webinar.pdf" :href="config.storage + webinar.pdf">Ссылка на ПДФ</a>
-                            <div>Отсутствует</div>
+                            <a target="_blank" style="color:white" :href="config.storage + webinar.pdf">Ссылка на ПДФ</a>
                         </div>
                         <div>
                             <h3>Изменить пдф</h3>
