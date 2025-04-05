@@ -29,8 +29,9 @@ export default {
 
         backbutton.show();
 
-        backbutton.onClick(() => {
-            this.$router.push('/?s=' + this.$route.query.s);
+        let s = this.$route.query.s;
+        backbutton.onClick((s) => {
+            this.$router.push('/?s=' + s);
             backbutton.hide();
         })
 
