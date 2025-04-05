@@ -29,9 +29,8 @@ export default {
 
         backbutton.show();
 
-        let s = this.$route.query.s;
-        backbutton.onClick((s) => {
-            this.$router.push('/?s=' + "Все");
+        backbutton.onClick(() => {
+            this.$router.push('/?s=' + this.$route.query.s);
             backbutton.hide();
         })
 
@@ -142,7 +141,7 @@ export default {
                     <a href="https://abeta.app/">https://abeta.app/</a>
                 </div>
                 <div v-if="!analytic.locked && analytic.pdf">
-                    <a target="_blank" download :href="config.storage + analytic.pdf">Скачать ПДФ-конспект встречи</a>
+                    <a target="_blank" :href="config.storage + analytic.pdf">Скачать ПДФ-конспект встречи</a>
                 </div>
             </div>
         </div>
