@@ -74,9 +74,11 @@ export function getRelativeDate(eventDateStr) {
 
     const startOfNextWeek = new Date(endOfWeek);
     startOfNextWeek.setDate(endOfWeek.getDate() + 1);
+    startOfNextWeek.setHours(0, 0, 0, 0);
 
     const endOfNextWeek = new Date(startOfNextWeek);
     endOfNextWeek.setDate(startOfNextWeek.getDate() + 6);
+    endOfNextWeek.setHours(23, 59, 59, 999);
 
     // Определяем границы месяца и года
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
