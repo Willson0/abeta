@@ -35,13 +35,13 @@ export default {
         </div>
         <div class="feed_webinar_date">Вебинар &middot; {{new Date() > new Date(webinar.date) ? 'В записи' : formatDate(webinar.date)}}</div>
         <div class="feed_webinar_title">{{webinar.title}}</div>
-        <div class="feed_webinar_description">{{webinar.description}}</div>
+        <div class="feed_webinar_description" v-html="webinar.description"></div>
     </div>
     <div @click="$router.push('/webinar/' + webinar.id + '?s=' + $route.query.s)" :style="'background-color:' + generateSoftRandomColor()"
          v-if="size === 1" class="feed_others_events_slider_webinar feed_webinar feed_web">
         <div class="feed_others_future_events_slider_webinar_type" v-if="getRelativeDate(webinar.date)">{{ getRelativeDate(webinar.date) }}</div>
         <div class="feed_others_events_slider_webinar_title">{{webinar.title}}</div>
-        <div class="feed_others_events_slider_webinar_description">{{webinar.description}}</div>
+        <div class="feed_others_events_slider_webinar_description" v-html="webinar.description"></div>
         <hr>
         <div class="feed_others_events_slider_webinar_date">Вебинар &middot; {{ formatDate(webinar.date) }}</div>
     </div>
@@ -50,14 +50,14 @@ export default {
         <div class="feed_webinar_alt_date" style="color:white">Вебинар &middot; {{new Date() > new Date(webinar.date) ? 'В записи' : formatDate(webinar.date)}}</div>
         <hr style="background-color: white">
         <div class="feed_webinar_alt_title">{{ webinar.title }}</div>
-        <div class="feed_webinar_alt_description">{{ webinar.description }}</div>
+        <div class="feed_webinar_alt_description" v-html="webinar.description"></div>
     </div>
     <div v-if="size === 3" @click="this.$router.push('/webinar/' + webinar.id + '?s=' + $route.query.s)" class="feed_webinar_alt feed_web"
     style="background-color:white; color:black;">
         <div class="feed_webinar_alt_date" style="color:#FF734C">Вебинар &middot; {{new Date() > new Date(webinar.date) ? 'В записи' : formatDate(webinar.date)}}</div>
         <hr style="background-color:#FF734C">
         <div class="feed_webinar_alt_title">{{ webinar.title }}</div>
-        <div style="color:black;" class="feed_webinar_alt_description">{{ webinar.description }}</div>
+        <div style="color:black;" class="feed_webinar_alt_description" v-html="webinar.description"></div>
     </div>
 </template>
 

@@ -126,7 +126,7 @@ export default {
             <div class="analytics_date">Аналитика <span>&middot; {{formatDate(analytic.created_at)}}</span></div>
             <div class="webinar_title">{{ analytic.title }}</div>
             <div class="webinar_description">
-                {{analytic.description}}
+                <span v-html="analytic.description"></span>
                 <div class="analytics_description_blur" v-if="analytic.locked"></div>
                 <div class="analytics_description_lock" v-if="analytic.locked">
                     <img src="/img/door_lock.svg" alt="">

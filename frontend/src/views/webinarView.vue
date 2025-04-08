@@ -182,7 +182,7 @@ export default {
         <div class="webinar_main">
             <div class="webinar_date">Вебинар &middot; {{ formatDate(webinar.date) }}</div>
             <div class="webinar_title">{{webinar.title}}</div>
-            <div class="webinar_description">{{webinar.description}}</div>
+            <div class="webinar_description" v-html="webinar.description"></div>
         </div>
         <div v-if="!webinar.registered && isActual" class="webinar_registration form">
             <div class="form_title">Регистрация<br>на вебинар</div>
