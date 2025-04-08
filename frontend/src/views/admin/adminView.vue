@@ -1,7 +1,7 @@
 <script>
-import adminnav from "../ABETA/frontend/src/components/adminnav.vue"
-import config from "../ABETA/frontend/src/components/config.json"
-import {formatDate, notify, removeLoading, togglePopup} from "../ABETA/frontend/src/assets/utils.js";
+import config from "@/components/config.json"
+import adminnav from "@/components/adminnav.vue";
+import {formatDate, notify, removeLoading, togglePopup} from "@/assets/utils.js";
 export default {
     name: "adminView",
     data () {
