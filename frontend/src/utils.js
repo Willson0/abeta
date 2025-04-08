@@ -121,11 +121,11 @@ export function getRelativeDate(eventDateStr) {
         "июл", "авг", "сен", "окт", "ноя", "дек"
     ];
 
-    const day = date.getDate();
-    const month = date.getMonth();
-    const year = date.getFullYear();
+    let day = date.getDate();
+    let month = date.getMonth();
+    let year = date.getFullYear();
 
-    return `${day.padStart(2, "0")}.${month.padStart(2, "0")}.${year.padStart(2, "0")}`;
+    return `${day.toString().padStart(2, "0")}.${month.toString().padStart(2, "0")}.${year.toString().padStart(2, "0")}`;
 
 }
 
