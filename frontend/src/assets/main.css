@@ -182,6 +182,7 @@
 .feed_webinar_description {
     margin:16px 0 !important;
     font-family: "inter", serif !important;
+    font-weight:400 !important;
     font-size:14px !important;
     line-height:20px !important;
     opacity:70% !important;
@@ -3751,19 +3752,20 @@ input[type="number"]::-webkit-inner-spin-button {
 .admin_addproduct_main_textarea,
 .admin_addproduct_main_categories>div>div
 {
-    font-size:16px;
-    width:100%;
-    background-color:transparent;
-    border: 1px solid #1E1E2F;
-    border-bottom:2px solid #1E1E2F;
-    border-radius:6px;
-    outline:none;
-    color:white;
-    padding:6px 12px;
-    box-sizing: border-box;
-    resize:none;
-    transition:0.2s;
-    word-break: break-word;
+    font-size:16px !important;
+    font-weight:400 !important;
+    color:white !important;
+    width:100% !important;
+    background-color:transparent !important;
+    border: 1px solid #1E1E2F !important;
+    border-bottom:2px solid #1E1E2F !important;
+    border-radius:6px; !important
+    outline:none !important;
+    padding:6px 12px !important;
+    box-sizing: border-box !important;
+    resize:none !important;
+    transition:0.2s !important;
+    word-break: break-word !important;
 }
 
 .admin_addproduct_main>div>div>div>div>input:focus,
