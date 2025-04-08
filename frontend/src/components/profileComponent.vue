@@ -41,7 +41,7 @@ export default {
                 document.querySelector("#name").style.outline = "2px solid #f44336";
                 this.notify("Неправильный формат ФИО!", 1);
             }
-            if (this.user.phone && !/^\+?[1-9]\d{1,14}$/.test(this.user.phone)) {
+            if (this.user.phone && !/(?:\D*\d){10,15}/.test(this.user.phone)) {
                 document.querySelector("#phone").style.outline = "2px solid #f44336";
                 this.notify("Неправильный формат номера телефона!", 1);
             }
