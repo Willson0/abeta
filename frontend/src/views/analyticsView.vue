@@ -142,10 +142,10 @@ export default {
                 </div>
             </div>
             <div class="analytics_addition">
-                <div>
-                    <div>Ссылка на инвестиционный инструмент:</div>
-                    <a href="https://abeta.app/">https://abeta.app/</a>
-                </div>
+<!--                <div>-->
+<!--                    <div>Ссылка на инвестиционный инструмент:</div>-->
+<!--                    <a href="https://abeta.app/">https://abeta.app/</a>-->
+<!--                </div>-->
                 <div v-if="!analytic.locked && analytic.pdf">
                     <a target="_blank" :href="config.storage + analytic.pdf">Скачать ПДФ-конспект встречи</a>
                 </div>
