@@ -48,7 +48,7 @@ export default {
             <div v-for="web in webinars" @click="redirect(web.id)" class="feed_others_events_slider_webinar">
                 <div class="feed_others_future_events_slider_webinar_type">Вебинар</div>
                 <div class="feed_others_events_slider_webinar_title">{{web.title}}</div>
-                <div class="feed_others_events_slider_webinar_description">{{web.description}}</div>
+                <div class="feed_others_events_slider_webinar_description" v-html="web.description"></div>
             </div>
         </div>
     </div>

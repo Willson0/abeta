@@ -259,15 +259,15 @@
 }
 
 .feed_others_events_slider_webinar_description {
-    font-family: 'inter', serif;
-    font-size:14px;
-    line-height:20px;
-    font-weight:500;
-    overflow:hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    font-family: 'inter', serif !important;
+    font-size:14px !important;
+    line-height:20px !important;
+    font-weight:500 !important;
+    overflow:hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
 }
 
 .feed_webinar .feed_others_events_slider_webinar_description{
@@ -1196,15 +1196,15 @@ font-weight:500;
 }
 
 .feed_others_events_slider_analytics_description {
-    margin-top:16px;
-    font-family: 'inter', serif;
-    font-weight:500;
-    font-size:14px;
-    line-height:20px;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    overflow:hidden;
+    margin-top:16px !important;
+    font-family: 'inter', serif !important;
+    font-weight:500 !important;
+    font-size:14px !important;
+    line-height:20px !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 3 !important;
+    overflow:hidden !important;
 }
 
 .analytics>.feed_newsletter {

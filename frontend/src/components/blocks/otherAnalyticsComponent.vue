@@ -24,7 +24,7 @@ export default {
                 <div class="feed_others_events_slider_analytics_header">Аналитика &middot; {{analytic.time}} минут чтения</div>
                 <hr>
                 <div class="feed_others_events_slider_analytics_title">{{analytic.title}}</div>
-                <div class="feed_others_events_slider_analytics_description">{{analytic.description}}</div>
+                <div class="feed_others_events_slider_analytics_description" v-html="analytic.description"></div>
             </div>
         </div>
     </div>
