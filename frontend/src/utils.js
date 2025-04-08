@@ -122,10 +122,10 @@ export function getRelativeDate(eventDateStr) {
     ];
 
     const day = date.getDate();
-    const month = months[date.getMonth()];
+    const month = date.getMonth();
     const year = date.getFullYear();
 
-    return `${day}.${date.getMonth()}.${year}`;
+    return `${day.padStart(2, "0")}.${month.padStart(2, "0")}.${year.padStart(2, "0")}`;
 
 }
 
