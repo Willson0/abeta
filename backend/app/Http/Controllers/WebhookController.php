@@ -1063,7 +1063,7 @@ class WebhookController extends Controller
             }
             if ($message["text"] == "/admin") {
                 if (!Admin::where("telegram_id", $requestUser["id"])->exists())
-                    utils::sendMessage($requestUser["id"], "Отказано в доступе.");
+                    return utils::sendMessage($requestUser["id"], "Отказано в доступе.");
 
                 $user["step"] = "admin_menu";
                 $user->save();
@@ -1391,6 +1391,10 @@ class WebhookController extends Controller
             else if ($user->step == "admin_settings_group_chat_link") {
                 utils::updateSettings("group_link", $message["text"]);
                 utils::returnToAdmin($menu, $user, "Ссылка на группу успешно изменена");
+            }
+            else if (Admin::where("telegram_id", $user->telegram_id)->exists() AND $message["text"] === "Назад") {
+                utils::returnToAdmin($menu, $user, "🔙 Возврат в меню");
+                return response()->json();
             }
 
 
