@@ -125,7 +125,7 @@ export function getRelativeDate(eventDateStr) {
     const month = months[date.getMonth()];
     const year = date.getFullYear();
 
-    return `${day} ${month} ${year}`;
+    return `${day}.${date.getMonth()}.${year}`;
 
 }
 
