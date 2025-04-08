@@ -22,7 +22,7 @@ class authStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "fullname" => 'regex:/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+){0,2}$/u',
+            "fullname" => 'regex:/^[A-Z][a-z]+(?: [A-Z][a-z]+){0,2}$/u',
             "bio" => "string|nullable",
             "phone" => [
                 "regex:/^(?:\D*\d){10,15}$/",

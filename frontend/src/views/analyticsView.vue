@@ -89,7 +89,7 @@ export default {
             for (let field in this.fields) {
                 if (!this.fields[field]) return alert("Заполните все поля!");
                 if (field.toLocaleLowerCase() === "телефон" && (!/(?:\D*\d){10,15}/.test(this.fields[field]) || this.fields[field].length > 15)) return alert ("Неправильный формат номера телефона");
-                if ((field.toLocaleLowerCase() === "имя" || field.toLocaleLowerCase() === "фио") && !/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+)?(?: [А-ЯЁ][а-яё]+)?$/.test(this.fields[field])) return alert ("Неправильный формат ФИО");
+                if ((field.toLocaleLowerCase() === "имя" || field.toLocaleLowerCase() === "фио") && !/^[A-Z][a-z]+(?: [A-Z][a-z]+){0,2}$/u.test(this.fields[field])) return alert ("Неправильный формат ФИО");
             }
 
             await fetch (config.backend + "analytic/" + this.$route.params.id +
