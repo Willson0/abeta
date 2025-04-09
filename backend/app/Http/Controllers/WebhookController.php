@@ -1396,6 +1396,19 @@ class WebhookController extends Controller
                 utils::returnToAdmin($menu, $user, "🔙 Возврат в меню");
                 return response()->json();
             }
+            else if ($user->step === "") {
+                $url = "https://api.telegram.org/bot$token/sendMessage";
+                Http::post($url, [
+                    'chat_id' => $user->telegram_id,
+                    'text' => "Успешная регистрация. Спасибо, что Вы с нами!",
+                    "reply_markup" => json_encode([
+                        "inline_keyboard" => [
+                            [["text" => "Открыть приложение", "web_app" => ["url" => "https://abeta.app"]]]
+                        ],
+                    ])
+                ]);
+                return response()->json([]);
+            }
 
 
             $result = [];
