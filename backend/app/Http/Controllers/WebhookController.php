@@ -1063,6 +1063,7 @@ class WebhookController extends Controller
             else if ($message["text"] === "/start") {
                 $user->step = "";
                 $user->save();
+                $url = "https://api.telegram.org/bot$token/sendMessage";
                 Http::post($url, [
                     'chat_id' => $user->telegram_id,
                     'text' => "Успешная регистрация. Спасибо, что Вы с нами!",
