@@ -37,6 +37,7 @@ export default {
             document.querySelector("#name").style.outline = "";
             document.querySelector("#phone").style.outline = "";
 
+            this.user.fullname = this.user.fullname.trim();
             if (!/^[A-ZА-ЯЁ][a-zа-яё]+(?: [A-ZА-ЯЁ][a-zа-яё]+){0,2}$/u.test(this.user.fullname)) {
                 document.querySelector("#name").style.outline = "2px solid #f44336";
                 this.notify("Неправильный формат ФИО!", 1);
