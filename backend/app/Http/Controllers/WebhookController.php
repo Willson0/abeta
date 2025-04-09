@@ -737,7 +737,7 @@ class WebhookController extends Controller
                     $list = "";
                     foreach ($analytics as $key => $analytic)
                         if (!$analytic->users_count == 0)
-                        $list .= "\n" . ($key+1) . ") $analytic->title ($analytic->downloads)";
+                        $list .= "\n" . ($key+1) . ") $analytic->title ($analytic->users_count)";
 
                     $str = "Топ популярности материалов по регистрациям:\n\n" . $list;
                     $str .= "\n\n*если материал не указан, то кол-во регистраций равно нулю.";
