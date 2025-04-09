@@ -923,7 +923,6 @@ class WebhookController extends Controller
             $requestUser = $message["from"];
             $user = User::where("telegram_id", "=", $requestUser["id"])->first();
 
-
             if (!$user) {
 
                 $user = User::create([
@@ -1060,6 +1059,20 @@ class WebhookController extends Controller
                 ]);
 
                 return response()->json(["status" => "ok"], 200);
+            }
+            else if ($message["text"] === "/start") {
+                $user->step = "";
+                $user->save();
+                Http::post($url, [
+                    'chat_id' => $user->telegram_id,
+                    'text' => "Успешная регистрация. Спасибо, что Вы с нами!",
+                    "reply_markup" => json_encode([
+                        "inline_keyboard" => [
+                            [["text" => "Открыть приложение", "web_app" => ["url" => "https://abeta.app"]]]
+                        ],
+                    ])
+                ]);
+                return response()->json();
             }
             if ($message["text"] == "/admin") {
                 if (!Admin::where("telegram_id", $requestUser["id"])->exists())
