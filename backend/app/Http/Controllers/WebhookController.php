@@ -732,15 +732,15 @@ class WebhookController extends Controller
                 }
                 else if ($request["callback_query"]["data"] == "admin_settings_statistics_toppopular_materials") {
                     utils::answerData("Материалы по популярности", $request, $user);
-                    $analytics = Analytic::orderBy("downloads", "desc")->get();
+                    $analytics = Analytic::withCount("users")->orderBy("users_count", "desc")->get();
 
                     $list = "";
                     foreach ($analytics as $key => $analytic)
-                        if (!$analytic->downloads == 0)
+                        if (!$analytic->users_count == 0)
                         $list .= "\n" . ($key+1) . ") $analytic->title ($analytic->downloads)";
 
-                    $str = "Топ популярности материалов по скачиванию:\n\n" . $list;
-                    $str .= "\n\n*если материал не указан, то количество скачиваний равно нулю.";
+                    $str = "Топ популярности материалов по регистрациям:\n\n" . $list;
+                    $str .= "\n\n*если материал не указан, то кол-во регистраций равно нулю.";
                     utils::returnToAdmin($menu, $user, $str);
                 }
                 else if ($request["callback_query"]["data"] == "admin_settings_statistics_toppopular_events") {
