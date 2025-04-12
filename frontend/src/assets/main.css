@@ -64,8 +64,6 @@
     row-gap:8px;
     padding:16px;
     position:relative;
-    width:100%;
-    overflow:hidden;
 }
 
 .main>.nav {
