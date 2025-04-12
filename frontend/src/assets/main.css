@@ -1462,6 +1462,7 @@ font-weight:500;
     z-index:99999999999999;
     opacity:0;
     display:none;
+    overflow-y:auto;
 }
 
 .services_popup.active {

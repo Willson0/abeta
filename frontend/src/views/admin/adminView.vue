@@ -229,7 +229,9 @@ export default {
                 this.togglePopup("admin_main_tasks_popup");
                 this.notify("New Task successfully created!")
             })
-
+        },
+        toOnlyText (html) {
+            return DOMParser().parseFromString(html, 'text/html')
         }
     },
     async mounted() {
@@ -383,7 +385,7 @@ export default {
                                 <span>{{ el.title }}</span>
                             </div>
                             <div class="admin_main_tasks_el_description">
-                                {{ el.description }}
+                                {{ toOnlyText(el.description) }}
                             </div>
                         </div>
                         <div class="admin_main_tasks_el_edit">
@@ -406,7 +408,7 @@ export default {
                                 <span>{{ el.title }}</span>
                             </div>
                             <div class="admin_main_tasks_el_description">
-                                {{ el.description }}
+                                {{ toOnlyText(el.description) }}
                             </div>
                         </div>
                     </div>
