@@ -2245,6 +2245,11 @@ body.no-scroll {
     font-weight:300;
     font-size:14px;
     color:rgba(255, 255, 255, 0.5);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;  /* Ограничение до 3 строк */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .admin_main_tasks_el_edit {
