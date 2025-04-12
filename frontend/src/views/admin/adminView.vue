@@ -231,7 +231,7 @@ export default {
             })
         },
         toOnlyText (html) {
-            return DOMParser().parseFromString(html, 'text/html')
+            return new DOMParser().parseFromString(html, 'text/html')
         }
     },
     async mounted() {
