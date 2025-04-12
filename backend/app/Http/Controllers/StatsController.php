@@ -32,11 +32,14 @@ class StatsController extends Controller
         $usersperday = UserService::where("created_at", ">=", Carbon::now()->subDays(30))->count();
         $logsperday = VentureDeal::where("created_at", ">=", Carbon::now()->subDays(30))->count();
 
-        $analytics = Analytic::orderBy("downloads", "desc")->where("downloads", ">", "0")->get();
+        $analyticsarr = Analytic::withCount("users")->orderBy("users_count", "desc")->get();
         $webinarsarr = Webinar::withCount("users")->orderBy("users_count", "desc")->get();
         $webinars = [];
+        $analytics = [];
         foreach ($webinarsarr as $web)
             if ($web->users_count != 0) $webinars[] = $web;
+        foreach ($analyticsarr as $analytic)
+            if ($analytic->users_count != 0) $analytics[] = $analytic;
 
         return response()->json(["accounts" => $accountarr,
             "money" => $money, "money30" => $money30d, "usersPerDay" => $usersperday,
