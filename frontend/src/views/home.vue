@@ -49,7 +49,7 @@
                 if (nav.getBoundingClientRect().top <= 10 || scrollTop + clientHeight >= scrollHeight-5) {
                     const secondRow = document.querySelector(".main>.nav>div:last-child");
                     const top = secondRow.clientHeight;
-                    const left = document.querySelector(".main>.nav>div:first-child").scrollWidth;
+                    const left = document.querySelector(".main>.nav>div:first-child").clientWidth;
 
                     const oldstatus = nav.classList.contains("active");
                     nav.classList.add("active");
