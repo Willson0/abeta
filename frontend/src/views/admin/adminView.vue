@@ -231,7 +231,7 @@ export default {
             })
         },
         toOnlyText (html) {
-            return new DOMParser().parseFromString(html, 'text/html')
+            return html.replace(/<[^>]*>/g, '');
         }
     },
     async mounted() {
@@ -384,8 +384,7 @@ export default {
                             <div class="admin_main_tasks_el_title">
                                 <span>{{ el.title }}</span>
                             </div>
-                            <div class="admin_main_tasks_el_description">
-                                {{ toOnlyText(el.description) }}
+                            <div v-html="el.description" class="admin_main_tasks_el_description">
                             </div>
                         </div>
                         <div class="admin_main_tasks_el_edit">
@@ -407,8 +406,7 @@ export default {
                             <div class="admin_main_tasks_el_title">
                                 <span>{{ el.title }}</span>
                             </div>
-                            <div class="admin_main_tasks_el_description">
-                                {{ toOnlyText(el.description) }}
+                            <div v-html="el.description" class="admin_main_tasks_el_description">
                             </div>
                         </div>
                     </div>

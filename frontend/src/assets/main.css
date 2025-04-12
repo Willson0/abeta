@@ -2248,9 +2248,10 @@ body.no-scroll {
     font-size:14px;
     color:rgba(255, 255, 255, 0.5);
     display: -webkit-box;
+    max-height:80px;
+    overflow:hidden;
     -webkit-line-clamp: 3;  /* Ограничение до 3 строк */
     -webkit-box-orient: vertical;
-    overflow: hidden;
     text-overflow: ellipsis;
 }
 
