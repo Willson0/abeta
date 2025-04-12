@@ -1478,7 +1478,9 @@ font-weight:500;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     width:100%;
+    max-height:100vh;
     box-sizing: border-box;
+    overflow:scroll;
 }
 
 .services_popup.active>.services_popup_main {

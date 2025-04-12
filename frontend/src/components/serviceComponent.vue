@@ -22,12 +22,14 @@ export default {
     },
     methods: {
         popup (serv) {
+            document.body.style.overflow="hidden";
             this.selectedService = serv;
             let popup = document.querySelector(".services_popup");
             popup.style.display = "flex";
             requestAnimationFrame(() => popup.classList.add("active"));
         },
         closePopup () {
+            document.body.style.overflow="";
             let popup = document.querySelector(".services_popup");
             popup.classList.remove("active");
             setTimeout(() => popup.style.display = "", 200);
