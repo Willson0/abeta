@@ -45,10 +45,8 @@ export default {
                     initData: window.Telegram.WebApp.initData,
                 }),
             }).then((response) => {
-                return response.json();
-            }).then((response) => {
-                this.venture = true;
-                     })
+                this.venture = 0;
+            })
         },
         async sendData () {
             await fetch (config.backend + "support", {
