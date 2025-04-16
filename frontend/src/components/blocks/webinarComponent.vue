@@ -33,7 +33,7 @@ export default {
             </div>
             <img :src="config.storage + webinar.image" alt="">
         </div>
-        <div class="feed_webinar_date">Вебинар &middot; {{new Date() > new Date(webinar.date) ? 'В записи' : formatDate(webinar.date)}}</div>
+        <div class="feed_webinar_date">Вебинар &middot; {{new Date(new Date().setHours(new Date().getHours() + 3)) > new Date(webinar.date.replace(' ', 'T') + "Z") ? 'В записи' : formatDate(webinar.date)}}</div>
         <div class="feed_webinar_title">{{webinar.title}}</div>
         <div class="feed_webinar_description" v-html="webinar.description"></div>
     </div>
