@@ -122,7 +122,7 @@ export function getRelativeDate(eventDateStr) {
     ];
 
     let day = date.getDate();
-    let month = date.getMonth();
+    let month = date.getMonth() + 1;
     let year = date.getFullYear();
 
     return `${day.toString().padStart(2, "0")}.${month.toString().padStart(2, "0")}.${year.toString().padStart(2, "0")}`;

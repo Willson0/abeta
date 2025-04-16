@@ -111,6 +111,12 @@ export default {
                 this.analytic = response;
             })
         },
+        scrollToLock () {
+            const element = document.getElementById('#reg_form');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' }); // Плавный скролл
+            }
+        }
     }
 }
 </script>
@@ -137,9 +143,9 @@ export default {
             <div class="webinar_description">
                 <span v-html="analytic.description"></span>
                 <div class="analytics_description_blur" v-if="analytic.locked"></div>
-                <div class="analytics_description_lock" v-if="analytic.locked">
+                <div @click="scrollToLock" class="analytics_description_lock" v-if="analytic.locked">
                     <img src="/img/door_lock.svg" alt="">
-                    <div class="webinar_description_lock_text">
+                    <div class="webinar_description_lock_text" >
                         Доступ по запросу
                     </div>
                 </div>
@@ -154,7 +160,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="webinar_registration form" v-if="analytic.locked">
+        <div id="reg_form" class="webinar_registration form" v-if="analytic.locked">
             <div class="form_free">Бесплатно</div>
             <div class="form_title">Доступ к закрытым материалам</div>
             <form @submit.prevent="sendData" class="webinar_registration_form">

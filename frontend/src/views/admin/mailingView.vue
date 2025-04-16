@@ -63,6 +63,14 @@ export default {
                 notify("Рассылка успешно отправлена!")
             });
         },
+        handlePaste(event) {
+            event.preventDefault();
+            const clipboardData = event.clipboardData || window.clipboardData;
+            const text = clipboardData.getData('text/plain'); // Только чистый текст
+
+            // Вставка текста в курсор (вставка внутрь contenteditable)
+            document.execCommand('insertText', false, text);
+        },
         async searchUser () {
             if (this.userSearch.length > 3) {
                 await fetch (config.backend + "user?s=" + this.userSearch , {
@@ -404,7 +412,7 @@ export default {
                         <div>
                             <h3>Текст сообщения</h3>
                             <div @mouseup="saveSelection(); formatText()" class="admin_addproduct_main_textarea"
-                                 spellcheck="false" contenteditable="true" @keyup="saveSelection()">
+                                 spellcheck="false"  contenteditable="true" @paste.prevent="handlePaste" @keyup="saveSelection()">
                             </div>
                         </div>
                     </div>

@@ -217,7 +217,8 @@ export default {
                     {{ webinar.title }}
                 </div>
                 <div class="webinar_registration_info_date">
-                    <div>{{ formatDate(webinar.date) }}</div>
+                    <div>{{ formatDate(webinar.date).split("·")[0] }}</div>
+                    <div>{{ formatDate(webinar.date).split("·")[1] }}</div>
                 </div>
             </div>
             <div class="form_policy">

@@ -14,13 +14,13 @@ class FeedController extends Controller
     public function all (Request $request) {
         $response = [];
 
-        $response["upcoming_events"] = Webinar::where("date", ">", Carbon::now())
+        $response["upcoming_events"] = Webinar::where("date", ">", Carbon::now("Europe/Moscow"))
             ->orderBy("date", "asc")->get();
 
-        $response["old_events"] = Webinar::where("date", "<", Carbon::now())
+        $response["old_events"] = Webinar::where("date", "<", Carbon::now("Europe/Moscow"))
             ->orderBy("date", "desc")->limit(20)->get();
 
-        $response["analytics"] = Analytic::limit(15)->get();
+        $response["analytics"] = Analytic::orderBy('id', 'desc')->limit(15)->get();
         $response["services"] = Service::all();
         foreach ($response["analytics"] as $event) {
             $event->time();
@@ -35,7 +35,7 @@ class FeedController extends Controller
     }
 
     public function analytics (Request $request) {
-        $response = Analytic::offset($request->offset)->limit(15)->get();
+        $response = Analytic::orderBy('id', 'desc')->offset($request->offset)->limit(15)->get();
         foreach ($response as $event) {
             $event->time();
 

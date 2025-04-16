@@ -301,6 +301,14 @@ export default {
                 this.selection = selection.getRangeAt(0);
             }
         },
+        handlePaste(event) {
+            event.preventDefault();
+            const clipboardData = event.clipboardData || window.clipboardData;
+            const text = clipboardData.getData('text/plain'); // Только чистый текст
+
+            // Вставка текста в курсор (вставка внутрь contenteditable)
+            document.execCommand('insertText', false, text);
+        },
         restoreSelection () {
             const selection = window.getSelection();
             if (this.selection) {
@@ -398,7 +406,7 @@ export default {
                         <div>
                             <h3>Business Description</h3>
                             <div @mouseup="saveSelection(); formatText()" class="admin_addproduct_main_textarea"
-                                 spellcheck="false" contenteditable="true" @keyup="saveSelection()">
+                                 spellcheck="false" contenteditable="true" @paste.prevent="handlePaste" @keyup="saveSelection()">
                             </div>
                         </div>
                     </div>
