@@ -22,7 +22,7 @@ class UserController extends Controller
         } else if (Support::where("user_id", $user["id"])->where("closed", 1)->exists()) {
             $user["support"] = 1;
 
-            $sup = Support::where("user_id", $user["id"])->where("closed", 0)->latest()->first();
+            $sup = Support::where("user_id", $user["id"])->where("closed", 1)->latest()->first();
             if (Carbon::parse($sup->created_at) > Carbon::now()->subDay()) $user["support"] = -1;
         }
         else $user["support"] = 1;
