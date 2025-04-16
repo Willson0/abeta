@@ -51,11 +51,11 @@ class WebinarController extends Controller
         if (UserWebinar::where("user_id", $user->id)->where("webinar_id", $webinar->id)->exists())
             abort (409, "Вы уже подавали заявку на регистрацию");
 
-        $userWebinar = UserWebinar::create([
-            "user_id" => $user->id,
-            "webinar_id" => $webinar->id,
-            "data" => json_encode($request->data),
-        ]);
+//        $userWebinar = UserWebinar::create([
+//            "user_id" => $user->id,
+//            "webinar_id" => $webinar->id,
+//            "data" => json_encode($request->data),
+//        ]);
 
         $webinar["registered"] = true;
 
