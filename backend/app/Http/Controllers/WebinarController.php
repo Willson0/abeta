@@ -61,10 +61,10 @@ class WebinarController extends Controller
 
         $uni = new UnisenderApi(env("UNISENDER_API"));
         Log::critical($uni->getLists());
-        $lists = json_decode($uni->getLists())["result"];
+        $lists = json_decode($uni->getLists());
 
         $id = null;
-        foreach ($lists as $item) {
+        foreach ($lists["result"] as $item) {
             if ($item['title'] === $webinar->title) {
                 $foundId = $item['id'];
                 break;
