@@ -43,6 +43,7 @@ export default {
 
 <template>
 <!--    // 1 - можно подавать заявку. 0 - не закрыта старая; -1 - идет кд-->
+    {{user.support}}
     <div class="feed_consultation" v-if="user.support !== -1">
         <div class="feed_consultation_photos" v-if="user.support === 1">
             <img v-for="(img, key) in ['/img/avatar1.png', '/img/avatar2.png', '/img/avatar3.png']"
