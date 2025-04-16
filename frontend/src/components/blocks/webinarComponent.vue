@@ -47,14 +47,14 @@ export default {
     </div>
     <div v-if="size === 2" @click="this.$router.push('/webinar/' + webinar.id + '?s=' + $route.query.s)" class="feed_webinar_alt feed_web"
     :style="'background-color:' + generateSoftRandomColor()">
-        <div class="feed_webinar_alt_date" style="color:white">Вебинар &middot; {{(new Date()).setHours(new Date().getHours() + 3) > new Date(webinar.date) ? 'В записи' : formatDate(webinar.date)}}</div>
+        <div class="feed_webinar_alt_date" style="color:white">Вебинар &middot; {{new Date(new Date().setHours(new Date().getHours() + 3)) > new Date(webinar.date.replace(' ', 'T') + "Z") ? 'В записи' : formatDate(webinar.date)}}</div>
         <hr style="background-color: white">
         <div class="feed_webinar_alt_title">{{ webinar.title }}</div>
         <div class="feed_webinar_alt_description" v-html="webinar.description"></div>
     </div>
     <div v-if="size === 3" @click="this.$router.push('/webinar/' + webinar.id + '?s=' + $route.query.s)" class="feed_webinar_alt feed_web"
     style="background-color:white; color:black;">
-        <div class="feed_webinar_alt_date" style="color:#FF734C">Вебинар &middot; {{(new Date()).setHours(new Date().getHours() + 3) > new Date(webinar.date) ? 'В записи' : formatDate(webinar.date)}}</div>
+        <div class="feed_webinar_alt_date" style="color:#FF734C">Вебинар &middot; {{new Date(new Date().setHours(new Date().getHours() + 3)) > new Date(webinar.date.replace(' ', 'T') + "Z") ? 'В записи' : formatDate(webinar.date)}}</div>
         <hr style="background-color:#FF734C">
         <div class="feed_webinar_alt_title">{{ webinar.title }}</div>
         <div style="color:black;" class="feed_webinar_alt_description" v-html="webinar.description"></div>
