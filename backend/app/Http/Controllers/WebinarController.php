@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Unisender\ApiWrapper\UnisenderApi;
 
 class WebinarController extends Controller
 {
@@ -57,6 +58,26 @@ class WebinarController extends Controller
         ]);
 
         $webinar["registered"] = true;
+
+        $uni = new UnisenderApi(env("UNISENDER_API"));
+        $lists = json_decode($uni->getLists())["result"];
+
+        $id = null;
+        foreach ($lists as $item) {
+            if ($item['title'] === $webinar->title) {
+                $foundId = $item['id'];
+                break;
+            }
+        }
+        if ($id === null) $id = json_decode($uni->createList(["title" => $webinar->title]))["result"]["id"];
+
+        $uni->subscribe([
+            "list_ids" => [$id],
+            "fields" => [
+                "phone" => $request->data["Телефон"] ?? null,
+                "name" => $request->data["Имя"] ?? null,
+            ]
+        ]);
 
         return response()->json($webinar);
     }
