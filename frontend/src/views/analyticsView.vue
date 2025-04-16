@@ -112,7 +112,7 @@ export default {
             })
         },
         scrollToLock () {
-            const element = document.getElementById('#reg_form');
+            const element = document.getElementById('reg_form');
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' }); // Плавный скролл
             }
