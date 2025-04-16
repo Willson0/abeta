@@ -1,6 +1,6 @@
 <?php
 
-namespace Unisender\ApiWrapper;
+namespace App\Http\Controllers;
 
 /**
  * API UniSender.
