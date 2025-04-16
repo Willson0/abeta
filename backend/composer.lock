@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e9be8445b2f475e8a2fcda04cf82b22",
+    "content-hash": "c697190947fc63733a88004e0d90cfce",
     "packages": [
         {
             "name": "brick/math",
@@ -6081,6 +6081,48 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.3.0"
             },
             "time": "2024-12-21T16:25:41+00:00"
+        },
+        {
+            "name": "unisender/api-wrapper",
+            "version": "v1.6.5",
+            "source": {
+                "type": "git",
+                "url": "https://gitflic.ru/project/unisender/php-api-wrapper.git",
+                "reference": "2c0a932cf95829b4e943a2a248038f119491a15f"
+            },
+            "require": {
+                "ext-iconv": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-openssl": "*",
+                "php": ">=5.6.0"
+            },
+            "suggest": {
+                "ext-bz2": "Allows bzip2 compression"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Unisender\\ApiWrapper\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Unisender developers",
+                    "email": "devs@unisender.com"
+                }
+            ],
+            "description": "Unisender API wrapper",
+            "keywords": [
+                "api",
+                "extension",
+                "unisender"
+            ],
+            "time": "2020-10-16T13:56:12+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
