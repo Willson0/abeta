@@ -108,13 +108,13 @@ export default {
         </div>
 
         <support-component />
-        <div class="consultation_venture" :class="venture ? 'active' : ''">
+        <div class="consultation_venture" v-if="venture !== -1" :class="venture === 0 ? 'active' : ''">
             <img class="consultation_venture_img" src="/img/growing.svg" alt="">
-            <div class="consultation_venture_title" v-if="venture">Ваш запрос получен<br>и обрабатывается</div>
+            <div class="consultation_venture_title" v-if="venture === 0">Ваш запрос получен<br>и обрабатывается</div>
             <div class="consultation_venture_title" v-else>Актуальные<br>венчурные сделки</div>
-            <div class="consultation_venture_description" v-if="venture">Консультант по венчурным сделкам скоро выйдет с вами на связь</div>
+            <div class="consultation_venture_description" v-if="venture === 0">Консультант по венчурным сделкам скоро выйдет с вами на связь</div>
             <div class="consultation_venture_description" v-else>Проверенные инвестиционные возможности в перспективные стартапы и фонды</div>
-            <button @click="sendVenture" v-if="!venture">Запросить</button>
+            <button @click="sendVenture" v-if="venture === 1">Запросить</button>
         </div>
     </div>
 </template>
