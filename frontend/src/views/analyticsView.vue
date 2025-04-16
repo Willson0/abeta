@@ -156,7 +156,7 @@ export default {
 <!--                    <a href="https://abeta.app/">https://abeta.app/</a>-->
 <!--                </div>-->
                 <div v-if="!analytic.locked && analytic.pdf">
-                    <a target="_blank" :href="config.storage + analytic.pdf">Скачать ПДФ-конспект встречи</a>
+                    <a target="_blank" :href="config.storage + analytic.pdf">Скачать PDF</a>
                 </div>
             </div>
         </div>

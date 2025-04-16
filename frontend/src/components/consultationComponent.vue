@@ -82,7 +82,7 @@ export default {
             </ul>
         </div>
 
-        <div class="form" v-if="!user.support">
+        <div class="form" v-if="user.support === 1">
             <div class="form_free">Бесплатно</div>
             <div class="form_title">Консультация c ведущим<br>аналитиком компании</div>
             <form @submit.prevent="sendData">

@@ -42,24 +42,25 @@ export default {
 </script>
 
 <template>
-    <div class="feed_consultation">
-        <div class="feed_consultation_photos" v-if="!user.support">
+<!--    // 1 - можно подавать заявку. 0 - не закрыта старая; -1 - идет кд-->
+    <div class="feed_consultation" v-if="user.support !== -1">
+        <div class="feed_consultation_photos" v-if="user.support === 1">
             <img v-for="(img, key) in ['/img/avatar1.png', '/img/avatar2.png', '/img/avatar3.png']"
                  :src="img" alt="" :style="'right: ' + 8*key + 'px'">
         </div>
-        <div class="feed_consultation_title"  v-if="!user.support">
+        <div class="feed_consultation_title"  v-if="user.support === 1">
             Бесплатная консультация с экспертами ABETA
         </div>
         <div class="feed_consultation_title" v-else>
             Вы записаны на консультацию
         </div>
-        <div class="feed_consultation_description" v-if="!user.support">
+        <div class="feed_consultation_description" v-if="user.support === 1">
             Расширим возможности, подберем инструменты и инвестиционную стратегию
         </div>
         <div class="feed_consultation_description" v-else>
             В скором времени с вами свяжется эксперт
         </div>
-        <button @click="sendData" v-if="!user.support" class="feed_consultation_button">Записаться на консультацию</button>
+        <button @click="sendData" v-if="user.support === 1" class="feed_consultation_button">Записаться на консультацию</button>
     </div>
 </template>
 
