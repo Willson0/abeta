@@ -60,8 +60,9 @@ class WebinarController extends Controller
         $webinar["registered"] = true;
 
         $uni = new UnisenderApi(env("UNISENDER_API"));
-        Log::critical($uni->getLists());
+        dump ($uni);
         $lists = json_decode($uni->getLists());
+        dd ($lists);
 
         $id = null;
         if ($lists)
