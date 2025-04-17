@@ -61,21 +61,9 @@ class WebinarController extends Controller
 
         $uni = new UnisenderApi(env("UNISENDER_API"));
         dump ($uni);
-        $lists = json_decode($uni->getLists());
-        dd ($lists);
-
-        $id = null;
-        if ($lists)
-            foreach ($lists["result"] as $item) {
-                if ($item['title'] === $webinar->title) {
-                    $foundId = $item['id'];
-                    break;
-                }
-            }
-        if ($id === null) $id = json_decode($uni->createList(["title" => $webinar->title]))["result"]["id"];
 
         $uni->subscribe([
-            "list_ids" => [$id],
+            "list_ids" => [env("UNISENDER_LIST_ID")],
             "fields" => [
                 "phone" => $request->data["Телефон"] ?? null,
                 "name" => $request->data["Имя"] ?? null,
