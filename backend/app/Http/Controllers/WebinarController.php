@@ -68,7 +68,8 @@ class WebinarController extends Controller
             "fields" => [
                 "phone" => $request->data["Телефон"] ?? null,
                 "name" => $request->data["Имя"] ?? null,
-            ]
+            ],
+            "double_optin" => 4,
         ]);
         dump ($response);
 
