@@ -63,7 +63,7 @@ class WebinarController extends Controller
         dump ($uni);
 
         $response = $uni->subscribe([
-            "list_ids" => [env("UNISENDER_LIST_ID")],
+            "list_ids" => (string) env("UNISENDER_LIST_ID"),
             "fields" => [
                 "phone" => $request->data["Телефон"] ?? null,
                 "name" => $request->data["Имя"] ?? null,
