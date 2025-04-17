@@ -27,7 +27,7 @@ class FeedController extends Controller
 
             if ($event->locked) {
                 unset($event->pdf);
-                $event->description = substr($event->description, 0, 100) . "...";
+                $event->description = mb_substr($event->description, 0, 100) . "...";
             }
         }
 
