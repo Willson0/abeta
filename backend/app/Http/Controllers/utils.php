@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Admin;
 use App\Models\AdminCookie;
 use App\Models\User;
 use App\Models\Webinar;
@@ -204,5 +205,18 @@ class utils
         $response["count"] = $countpage;
 
         return $response;
+    }
+
+    static function sendAdmin ($message) {
+        $admins = Admin::all();
+        foreach ($admins as $admin) {
+            $token = env("TELEGRAM_BOT_TOKEN"); // Токен бота
+            $url = "https://api.telegram.org/bot$token/sendMessage";
+
+            Http::post($url, [
+                'chat_id' => $admin->telegram_id,
+                'text' => $message,
+            ]);
+        }
     }
 }

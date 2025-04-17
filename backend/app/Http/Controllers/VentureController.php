@@ -18,6 +18,8 @@ class VentureController extends Controller
             "user_id" => $user->id,
         ]);
 
+        utils::sendAdmin("🔔 | Новая заявка на *венчурные сделки*!");
+
         return response()->json($venture);
     }
 

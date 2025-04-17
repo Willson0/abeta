@@ -20,6 +20,8 @@ class SupportController extends Controller
            "text" => $text,
         ]);
 
+        utils::sendAdmin("🔔 | Новое обращение по *консультации*!");
+
         return response()->json($sup);
     }
 }

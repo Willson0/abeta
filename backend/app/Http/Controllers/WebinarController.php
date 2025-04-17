@@ -51,27 +51,28 @@ class WebinarController extends Controller
         if (UserWebinar::where("user_id", $user->id)->where("webinar_id", $webinar->id)->exists())
             abort (409, "Вы уже подавали заявку на регистрацию");
 
-//        $userWebinar = UserWebinar::create([
-//            "user_id" => $user->id,
-//            "webinar_id" => $webinar->id,
-//            "data" => json_encode($request->data),
-//        ]);
+        $userWebinar = UserWebinar::create([
+            "user_id" => $user->id,
+            "webinar_id" => $webinar->id,
+            "data" => json_encode($request->data),
+        ]);
 
         $webinar["registered"] = true;
 
-        $uni = new UnisenderApi(env("UNISENDER_API"));
-        dump ($uni);
-
-        dump ($request->data);
-        $response = $uni->subscribe([
-            "list_ids" => (string) env("UNISENDER_LIST_ID"),
-            "fields" => [
-                "phone" => $request->data["Телефон"] ?? null,
-                "name" => $request->data["Имя"] ?? null,
-            ],
-            "double_optin" => 4,
-        ]);
-        dump ($response);
+//        $uni = new UnisenderApi(env("UNISENDER_API"));
+//        dump ($uni);
+//
+//        dump ($request->data);
+//        $response = $uni->subscribe([
+//            "list_ids" => (string) env("UNISENDER_LIST_ID"),
+//            "fields" => [
+//                "email" =>
+//                "phone" => $request->data["Телефон"] ?? null,
+//                "name" => $request->data["Имя"] ?? null,
+//            ],
+//            "double_optin" => 4,
+//        ]);
+//        dump ($response);
 
         return response()->json($webinar);
     }
