@@ -62,13 +62,14 @@ class WebinarController extends Controller
         $uni = new UnisenderApi(env("UNISENDER_API"));
         dump ($uni);
 
-        $uni->subscribe([
+        $response = $uni->subscribe([
             "list_ids" => [env("UNISENDER_LIST_ID")],
             "fields" => [
                 "phone" => $request->data["Телефон"] ?? null,
                 "name" => $request->data["Имя"] ?? null,
             ]
         ]);
+        dump ($response);
 
         return response()->json($webinar);
     }
