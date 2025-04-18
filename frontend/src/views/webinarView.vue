@@ -205,10 +205,10 @@ export default {
                     <div style="position:relative" v-if="field === 'Размер портфеля'">
                         <img style="position:absolute; top:24px; right:24px; width:16px; height:8px;" src="/img/arrow-down.svg" alt="">
                         <select v-model="fields[field]" name="" id="">
-                            <option value="до $100 тыс."></option>
-                            <option value="от $101 тыс. до $500 тыс."></option>
-                            <option value="от $501 тыс. до $1 млн"></option>
-                            <option value="$1 млн+"></option>
+                            <option value="до $100 тыс.">до $100 тыс.</option>
+                            <option value="от $101 тыс. до $500 тыс.">от $101 тыс. до $500 тыс.</option>
+                            <option value="от $501 тыс. до $1 млн">от $501 тыс. до $1 млн</option>
+                            <option value="$1 млн+">$1 млн+</option>
                         </select>
                     </div>
                     <input v-model="fields[field]" v-else type="text" :name="field">
