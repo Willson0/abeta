@@ -75,6 +75,7 @@ class WebinarController extends Controller
             }
 
             $apiResponse = $uni->getFields();
+            dump ($apiResponse);
             $existingNames = array_column($apiResponse['result'], 'name');
 
             foreach ($data as $key => $value) {
