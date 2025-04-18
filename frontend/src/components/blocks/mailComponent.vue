@@ -21,10 +21,10 @@ export default {
         async sendData () {
             let div = document.createElement("div");
             div.classList.add("services_popup");
-            div.innerHTML = `<div style="padding-bottom:24px; background-color: #191919; color:white;" class="services_popup_main mailPopup">
+            div.innerHTML = `<div style="padding-bottom:24px; background-color: #191919; color:white; overflow:hidden; overflow-y:auto" class="services_popup_main mailPopup">
                                     <div class="form_title">Экспертная рассылка<br>от ABETA Capital</div>
-                                    <img id="closeSubscribe" style="top:16px;right:16px;position:absolute;width:40px;height:40px;filter: brightness(1.5);" src="/img/close.svg" alt="">
-                                    <form @submit.prevent="sendData" class="webinar_registration_form">
+                                    <img id="closeSubscribe" style="top:16px;right:16px;position:absolute;width:40px;height:40px;filter: brightness(1.5);" src="/img/light_close.svg" alt="">
+                                    <div class="webinar_registration_form">
                                         <div class="form_input">
                                             <label>Имя</label>
                                             <input id="input_name" style="color:black" v-model="name" type="text">
@@ -34,7 +34,7 @@ export default {
                                             <input id="input_email" style="color:black" v-model="email" type="text">
                                         </div>
                                         <button id="subscribeButton">Подписаться</button>
-                                    </form>
+                                    </div>
                                     <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a style="color:#FF734C;">с политикой конфиденциальности</a></div>
                                 </div>`
             document.body.appendChild(div);
@@ -70,7 +70,7 @@ export default {
             document.body.style.overflow="";
             let popup = document.querySelector(".services_popup");
             popup.classList.remove("active");
-            setTimeout(() => popup.style.display = "", 200);
+            setTimeout(() => popup.remove(), 200);
         },
         async subscribe () {
             let name = document.querySelector("#input_name").value;
