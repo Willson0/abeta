@@ -43,10 +43,9 @@ export default {
 
             requestAnimationFrame(() => {
                     document.body.style.overflow="hidden";
-                    this.selectedService = serv;
-                    let popup = document.querySelector(".services_popup");
-                    popup.style.display = "flex";
-                    requestAnimationFrame(() => popup.classList.add("active"));
+
+                    div.style.display = "flex";
+                    requestAnimationFrame(() => div.classList.add("active"));
             })
 
             // await fetch (config.backend + "auth", {
