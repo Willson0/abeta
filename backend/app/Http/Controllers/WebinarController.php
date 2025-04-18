@@ -77,7 +77,7 @@ class WebinarController extends Controller
             $response = $uni->subscribe([
                 "list_ids" => (string) env("UNISENDER_LIST_ID"),
                 "fields" => $fields,
-                "double_optin" => 4,
+                "double_optin" => 3,
             ]);
             dump ($response);
         }
