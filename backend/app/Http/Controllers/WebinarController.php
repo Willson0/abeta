@@ -74,9 +74,9 @@ class WebinarController extends Controller
                 $fields[utils::transliterate($key)] = $el;
             }
 
-            $apiResponse = $uni->getFields();
+            $apiResponse = json_decode($uni->getFields());
             dump ($apiResponse);
-            $existingNames = array_column($apiResponse['result'], 'name');
+            $existingNames = array_column($apiResponse["result"], 'name');
 
             foreach ($data as $key => $value) {
                 $translated = utils::transliterate($key);
