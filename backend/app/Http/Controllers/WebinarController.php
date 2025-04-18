@@ -61,14 +61,15 @@ class WebinarController extends Controller
 
         if (isset($request->data["Почта"])) {
             $uni = new UnisenderApi(env("UNISENDER_API"));
+            $data = $request->data;
 
             $fields = [
-                "email" => $request->data["Почта"],
-                "phone" => $request->data["Телефон"] ?? null,
-                "name" => $request->data["Имя"] ?? null,
+                "email" => $data["Почта"],
+                "phone" => $data["Телефон"] ?? null,
+                "name" => $data["Имя"] ?? null,
             ];
-            unset ($request->data["Телефон"], $request->data["Почта"], $request->data["Имя"]);
-            foreach ($request->data as $key => $el) {
+            unset($data["Телефон"], $data["Почта"], $data["Имя"]);
+            foreach ($data as $key => $el) {
                 $fields[$key] = $el;
             }
 
