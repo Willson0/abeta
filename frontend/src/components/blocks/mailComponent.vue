@@ -21,9 +21,9 @@ export default {
         async sendData () {
             let div = document.createElement("div");
             div.classList.add("services_popup");
-            div.innerHTML = `<div style="padding-bottom:24px; background-color: #191919; color:white;position:relative;" class="services_popup_main mailPopup">
+            div.innerHTML = `<div style="padding-bottom:24px; background-color: #191919; color:white;" class="services_popup_main mailPopup">
                                     <div class="form_title">Экспертная рассылка<br>от ABETA Capital</div>
-                                    <img @click="closePopup" style="top:16px;right:16px;position:absolute;width:40px;height:40px;" src="/img/close.svg" alt="">
+                                    <img id="closeSubscribe" style="top:16px;right:16px;position:absolute;width:40px;height:40px;filter: brightness(1.5);" src="/img/close.svg" alt="">
                                     <form @submit.prevent="sendData" class="webinar_registration_form">
                                         <div class="form_input">
                                             <label>Имя</label>
@@ -33,12 +33,14 @@ export default {
                                             <label>Почта</label>
                                             <input id="input_email" style="color:black" v-model="email" type="text">
                                         </div>
-                                        <button  @click="subscribe">Подписаться</button>
+                                        <button id="subscribeButton">Подписаться</button>
                                     </form>
                                     <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a style="color:#FF734C;">с политикой конфиденциальности</a></div>
                                 </div>`
             document.body.appendChild(div);
             document.querySelector("#input_name").value = this.user.fullname;
+            document.querySelector("#subscribeButton").onclick = this.subscribe;
+            document.querySelector("#closeSubscribe").onclick = this.closePopup;
 
             requestAnimationFrame(() => {
                 document.body.style.overflow="hidden";
