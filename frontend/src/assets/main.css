@@ -578,7 +578,8 @@
     line-height:20px;
 }
 
-.form_input>input {
+.form_input>input,
+.form_input select {
     padding:16px;
     border-radius:12px;
     font-family: 'inter', serif;
@@ -1116,7 +1117,7 @@
 
 .webinar_registration_form_input>input,
 .form_input_textarea,
-.webinar_registration_form_input>select{
+.webinar_registration_form_input select{
     padding:16px;
     background-color:white;
     border-radius:12px;
