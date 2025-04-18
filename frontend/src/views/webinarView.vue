@@ -98,6 +98,7 @@ export default {
 
         async sendData() {
             document.querySelector(".webinar_registration_error").classList.remove("active");
+            alert (this.fields["Размер портфеля"]);
             for (let field in this.fields) {
                 if (!this.fields[field]) return document.querySelector(".webinar_registration_error").classList.add("active");
                 if (field.toLocaleLowerCase() === "телефон" && (!/(?:\D*\d){10,15}/.test(this.fields[field]) || this.fields[field].length > 15)) return alert ("Неправильный формат номера телефона");
