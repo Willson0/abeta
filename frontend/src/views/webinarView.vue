@@ -208,7 +208,7 @@ export default {
                         <option value="от $501 тыс. до $1 млн"></option>
                         <option value="$1 млн+"></option>
                     </select>
-                    <input v-model="fields[field]" type="text" :name="field">
+                    <input v-model="fields[field]" v-else type="text" :name="field">
                 </div>
                 <button>Зарегистрироваться</button>
             </form>

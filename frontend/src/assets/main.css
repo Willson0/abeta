@@ -1115,7 +1115,8 @@
 }
 
 .webinar_registration_form_input>input,
-.form_input_textarea {
+.form_input_textarea,
+.webinar_registration_form_input>select{
     padding:16px;
     background-color:white;
     border-radius:12px;
