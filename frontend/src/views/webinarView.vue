@@ -202,6 +202,12 @@ export default {
             <form @submit.prevent="sendData" class="webinar_registration_form">
                 <div class="form_input" v-for="(key, field) in fields">
                     <label :for="field">{{ field }}</label>
+                    <select v-model="fields[field]" v-if="key === 'Размер портфеля'" name="" id="">
+                        <option value="до $100 тыс."></option>
+                        <option value="от $101 тыс. до $500 тыс."></option>
+                        <option value="от $501 тыс. до $1 млн"></option>
+                        <option value="$1 млн+"></option>
+                    </select>
                     <input v-model="fields[field]" type="text" :name="field">
                 </div>
                 <button>Зарегистрироваться</button>
