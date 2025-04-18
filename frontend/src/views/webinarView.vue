@@ -203,7 +203,7 @@ export default {
                 <div class="form_input" v-for="(key, field) in fields">
                     <label :for="field">{{ field }}</label>
                     <div style="position:relative" v-if="field === 'Размер портфеля'">
-                        <img style="position:absolute; top:24px; right:24px; width:16px; height:8px;" src="/img/arrow-down.svg" alt="">
+                        <img style="position:absolute; top:22px; right:22px; width:20px; height:12px;" src="/img/arrow-down.svg" alt="">
                         <select v-model="fields[field]" name="" id="">
                             <option value="до $100 тыс.">до $100 тыс.</option>
                             <option value="от $101 тыс. до $500 тыс.">от $101 тыс. до $500 тыс.</option>
