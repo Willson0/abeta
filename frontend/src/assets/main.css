@@ -579,7 +579,8 @@
 }
 
 .form_input>input,
-.form_input select {
+.form_input select,
+.form_input option {
     padding:16px;
     border-radius:12px;
     font-family: 'inter', serif;
@@ -588,6 +589,7 @@
     line-height:24px;
     transition:0.2s;
     box-sizing: border-box;
+    color:black !important;
 }
 
 .form>form>button {
