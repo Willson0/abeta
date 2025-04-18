@@ -21,23 +21,24 @@ export default {
         async sendData () {
             let div = document.createElement("div");
             div.classList.add("services_popup");
-            div.innerHTML = `<div style="padding-bottom:24px; background-color: #191919;" class="services_popup_main mailPopup">
+            div.innerHTML = `<div style="padding-bottom:24px; background-color: #191919; color:white;position:relative;" class="services_popup_main mailPopup">
                                     <div class="form_title">Экспертная рассылка<br>от ABETA Capital</div>
+                                    <img @click="closePopup" style="top:16px;right:16px;position:absolute;width:40px;height:40px;" src="/img/close.svg" alt="">
                                     <form @submit.prevent="sendData" class="webinar_registration_form">
                                         <div class="form_input">
                                             <label>Имя</label>
-                                            <input v-model="name" type="text">
+                                            <input id="input_name" style="color:black" v-model="name" type="text">
                                         </div>
                                         <div class="form_input">
                                             <label>Почта</label>
-                                            <input v-model="email" type="text">
+                                            <input id="input_email" style="color:black" v-model="email" type="text">
                                         </div>
-                                        <button @click="subscribe">Подписаться</button>
+                                        <button  @click="subscribe">Подписаться</button>
                                     </form>
-                                    <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a></div>
+                                    <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a style="color:#FF734C;">с политикой конфиденциальности</a></div>
                                 </div>`
             document.body.appendChild(div);
-            this.name = this.user.fullname;
+            document.querySelector("#input_name").value = this.user.fullname;
 
             requestAnimationFrame(() => {
                 document.body.style.overflow="hidden";
@@ -70,16 +71,19 @@ export default {
             setTimeout(() => popup.style.display = "", 200);
         },
         async subscribe () {
-            if (!this.name) return alert ("Заполните поле \"Имя\"!");
-            if (!this.email) return alert ("Заполните поле \"Почта\"!");
-            if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(this.email)) return alert ("Неправильный формат почты!");
+            let name = document.querySelector("#input_name").value;
+            let email = document.querySelector("#input_email").value;
+
+            if (!name) return alert ("Заполните поле \"Имя\"!");
+            if (!email) return alert ("Заполните поле \"Почта\"!");
+            if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) return alert ("Неправильный формат почты!");
 
             await fetch (config.backend + "auth/subscribe", {
                 method: "POST",
                 body: JSON.stringify({
                     "initData": window.Telegram.WebApp.initData,
-                    "name": this.name,
-                    "email": this.email,
+                    "name": name,
+                    "email": email,
                 }),
                 headers: {
                     "Content-Type": "application/json"

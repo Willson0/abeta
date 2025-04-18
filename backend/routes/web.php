@@ -33,6 +33,7 @@ Route::group (["prefix" => "api"], function () {
 
     Route::group (["prefix" => "auth", "middleware" => CheckTelegram::class], function () {
         Route::post("/", [AuthController::class, "store"]);
+        Route::post("/subscribe", [AuthController::class, "subscribe"]);
     });
 
     Route::group (["prefix" => "webhook"], function () {

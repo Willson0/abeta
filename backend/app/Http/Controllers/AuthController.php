@@ -24,10 +24,10 @@ class AuthController extends Controller
     }
 
     public function subscribe (AuthSubscribeRequest $request) {
+        $user = User::where("telegram_id", $request["initData"]["user"]["id"])->first();
         $data = $request->validated();
 
         $uni = new UnisenderApi(env("UNISENDER_API"));
-        $data = $request->data;
 
         $fields = [
             "email" => $data["email"],
@@ -40,6 +40,9 @@ class AuthController extends Controller
             "double_optin" => 3,
             "tags" => (string) "Рассылка",
         ]);
+
+        $user->expert_mailing = 1;
+        $user->save();
 
         return response()->json($response);
     }
