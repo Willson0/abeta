@@ -39,6 +39,7 @@ export default {
                                     </form>
                                     <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a></div>
                                 </div>`
+            document.body.appendChild(div);
 
             requestAnimationFrame(() => {
                     document.body.style.overflow="hidden";
