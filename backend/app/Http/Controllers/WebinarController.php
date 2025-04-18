@@ -65,9 +65,9 @@ class WebinarController extends Controller
 
             $fields = [
                 "email" => $data["Почта"],
-                "telegram" => $user->telegram_id,
+                "telegram" => "@" . $user->telegram_id,
                 "phone" => $data["Телефон"] ?? null,
-                "name" => $data["Имя"] ?? null,
+                "Name" => $data["Имя"] ?? null,
             ];
             unset($data["Телефон"], $data["Почта"], $data["Имя"]);
             foreach ($data as $key => $el) {
@@ -75,7 +75,6 @@ class WebinarController extends Controller
             }
 
             $apiResponse = json_decode($uni->getFields(), true);
-            dump ($apiResponse);
             $existingNames = array_column($apiResponse["result"], 'name');
 
             foreach ($data as $key => $value) {
@@ -86,18 +85,15 @@ class WebinarController extends Controller
                         "type" => "string",
                         "public_name" => $key
                     ]);
-                    dump ($resp);
                 }
             }
 
-            dump ($fields);
             $response = $uni->subscribe([
                 "list_ids" => (string) env("UNISENDER_LIST_ID"),
                 "fields" => $fields,
                 "double_optin" => 3,
                 "tags" => (string) $webinar->title,
             ]);
-            dump ($response);
         }
 
         return response()->json($webinar);

@@ -95,6 +95,43 @@ class AnalyticController extends Controller
             "data" => json_encode($request->data),
         ]);
 
+        if (isset($request->data["Почта"])) {
+            $uni = new UnisenderApi(env("UNISENDER_API"));
+            $data = $request->data;
+
+            $fields = [
+                "email" => $data["Почта"],
+                "telegram" => "@" . $user->telegram_id,
+                "phone" => $data["Телефон"] ?? null,
+                "Name" => $data["Имя"] ?? null,
+            ];
+            unset($data["Телефон"], $data["Почта"], $data["Имя"]);
+            foreach ($data as $key => $el) {
+                $fields[utils::transliterate($key)] = $el;
+            }
+
+            $apiResponse = json_decode($uni->getFields(), true);
+            $existingNames = array_column($apiResponse["result"], 'name');
+
+            foreach ($data as $key => $value) {
+                $translated = utils::transliterate($key);
+                if (!in_array($translated, $existingNames)) {
+                    $resp = $uni->createField([
+                        "name" => $translated,
+                        "type" => "string",
+                        "public_name" => $key
+                    ]);
+                }
+            }
+
+            $response = $uni->subscribe([
+                "list_ids" => (string) env("UNISENDER_LIST_ID"),
+                "fields" => $fields,
+                "double_optin" => 3,
+                "tags" => (string) $analytic->title,
+            ]);
+        }
+
         $analytic->locked = 0;
         return response()->json($analytic);
     }
