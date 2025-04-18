@@ -71,7 +71,21 @@ class WebinarController extends Controller
             ];
             unset($data["Телефон"], $data["Почта"], $data["Имя"]);
             foreach ($data as $key => $el) {
-                $fields[$key] = $el;
+                $fields[utils::transliterate($key)] = $el;
+            }
+
+            $apiResponse = $uni->getFields();
+            $existingNames = array_column($apiResponse['result'], 'name');
+
+            foreach ($data as $key => $value) {
+                $translated = utils::transliterate($key);
+                if (!in_array($translated, $existingNames)) {
+                    $uni->createField([
+                        "name" => $translated,
+                        "type" => "string",
+                        "public_name" => $key
+                    ]);
+                }
             }
 
             dump ($fields);
@@ -79,6 +93,7 @@ class WebinarController extends Controller
                 "list_ids" => (string) env("UNISENDER_LIST_ID"),
                 "fields" => $fields,
                 "double_optin" => 3,
+                "tags" => (string) $webinar->title,
             ]);
             dump ($response);
         }
