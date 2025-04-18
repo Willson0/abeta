@@ -22,7 +22,7 @@ export default {
             let div = document.createElement("div");
             div.classList.add("services_popup");
             div.innerHTML = `<div style="padding-bottom:24px; background-color: #191919; color:white; overflow:hidden; overflow-y:auto" class="services_popup_main mailPopup">
-                                    <div class="form_title">Экспертная рассылка<br>от ABETA Capital</div>
+                                    <div class="form_title">Экспертная<br>рассылка<br>от ABETA Capital</div>
                                     <img id="closeSubscribe" style="top:16px;right:16px;position:absolute;width:40px;height:40px;filter: brightness(1.5);" src="/img/light_close.svg" alt="">
                                     <div class="webinar_registration_form">
                                         <div class="form_input">
