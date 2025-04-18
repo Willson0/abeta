@@ -59,20 +59,27 @@ class WebinarController extends Controller
 
         $webinar["registered"] = true;
 
-//        $uni = new UnisenderApi(env("UNISENDER_API"));
-//        dump ($uni);
-//
-//        dump ($request->data);
-//        $response = $uni->subscribe([
-//            "list_ids" => (string) env("UNISENDER_LIST_ID"),
-//            "fields" => [
-//                "email" =>
-//                "phone" => $request->data["Телефон"] ?? null,
-//                "name" => $request->data["Имя"] ?? null,
-//            ],
-//            "double_optin" => 4,
-//        ]);
-//        dump ($response);
+        if (isset($request->data["Почта"])) {
+            $uni = new UnisenderApi(env("UNISENDER_API"));
+
+            $fields = [
+                "email" => $request->data["Почта"],
+                "phone" => $request->data["Телефон"] ?? null,
+                "name" => $request->data["Имя"] ?? null,
+            ];
+            unset ($request->data["Телефон"], $request->data["Почта"], $request->data["Имя"]);
+            foreach ($request->data as $key => $el) {
+                $fields[$key] = $el;
+            }
+
+            dump ($fields);
+            $response = $uni->subscribe([
+                "list_ids" => (string) env("UNISENDER_LIST_ID"),
+                "fields" => $fields,
+                "double_optin" => 4,
+            ]);
+            dump ($response);
+        }
 
         return response()->json($webinar);
     }
