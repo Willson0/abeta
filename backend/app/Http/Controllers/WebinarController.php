@@ -81,11 +81,12 @@ class WebinarController extends Controller
             foreach ($data as $key => $value) {
                 $translated = utils::transliterate($key);
                 if (!in_array($translated, $existingNames)) {
-                    $uni->createField([
+                    $resp = $uni->createField([
                         "name" => $translated,
                         "type" => "string",
                         "public_name" => $key
                     ]);
+                    dump ($resp);
                 }
             }
 
