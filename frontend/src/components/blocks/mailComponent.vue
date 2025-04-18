@@ -15,22 +15,57 @@ export default {
         }
     },
     async mounted () {
-
+        let popup = document.querySelector (".services_popup");
+        popup.addEventListener("click", (ev) => {
+            if (ev.target.classList.contains("services_popup")) this.closePopup();
+        });
     },
     methods: {
         async sendData () {
-            await fetch (config.backend + "auth", {
-                method: "POST",
-                body: JSON.stringify({"initData": window.Telegram.WebApp.initData,
-                    "expert_mailing": !this.user.expert_mailing}),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then((response) => {
-                if (response.ok) this.user.expert_mailing = !this.user.expert_mailing;
-            }).then((response) => {
+            let div = document.createElement("div");
+            div.classList.add("services_popup");
+            div.innerHTML = `<div class="services_popup_main mailPopup">
+                                    <div class="form_title">Экспертная рассылка<br>от ABETA Capital</div>
+                                    <form @submit.prevent="sendData" class="webinar_registration_form">
+                                        <div class="form_input">
+                                            <label>Имя</label>
+                                            <input v-model="" type="text">
+                                        </div>
+                                        <div class="form_input">
+                                            <label>Почта</label>
+                                            <input v-model="" type="text">
+                                        </div>
+                                        <button>Подписаться</button>
+                                    </form>
+                                    <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a></div>
+                                </div>`
 
+            requestAnimationFrame(() => {
+                    document.body.style.overflow="hidden";
+                    this.selectedService = serv;
+                    let popup = document.querySelector(".services_popup");
+                    popup.style.display = "flex";
+                    requestAnimationFrame(() => popup.classList.add("active"));
             })
+
+            // await fetch (config.backend + "auth", {
+            //     method: "POST",
+            //     body: JSON.stringify({"initData": window.Telegram.WebApp.initData,
+            //         "expert_mailing": !this.user.expert_mailing}),
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     }
+            // }).then((response) => {
+            //     if (response.ok) this.user.expert_mailing = !this.user.expert_mailing;
+            // }).then((response) => {
+            //
+            // })
+        },
+        async closePopup () {
+            document.body.style.overflow="";
+            let popup = document.querySelector(".services_popup");
+            popup.classList.remove("active");
+            setTimeout(() => popup.style.display = "", 200);
         }
     }
 }

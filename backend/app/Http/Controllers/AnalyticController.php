@@ -74,7 +74,7 @@ class AnalyticController extends Controller
         }
 
         if ($analytic->locked == true) {
-            $analytic->description = substr($analytic->description, 0, 100) . "...";
+            $analytic->description = mb_substr($analytic->description, 0, 100) . "...";
             unset($analytic->pdf);
         }
 
