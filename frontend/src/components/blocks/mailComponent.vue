@@ -35,7 +35,7 @@ export default {
                                         </div>
                                         <button id="subscribeButton">Подписаться</button>
                                     </div>
-                                    <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a style="color:#FF734C;">с политикой конфиденциальности</a></div>
+                                    <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a href="https://abeta.org/politics" target="_blank" style="color:#FF734C;">с политикой конфиденциальности</a></div>
                                 </div>`
             document.body.appendChild(div);
             document.querySelector("#input_name").value = this.user.fullname;
