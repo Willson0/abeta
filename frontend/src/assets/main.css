@@ -591,6 +591,10 @@
     box-sizing: border-box;
     color:black !important;
 }
+.form_input select {
+    width:100%;
+    appearance: none;
+}
 
 .form>form>button {
     margin-top:24px;
