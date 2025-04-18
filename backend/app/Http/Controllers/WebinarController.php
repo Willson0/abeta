@@ -65,6 +65,7 @@ class WebinarController extends Controller
 
             $fields = [
                 "email" => $data["Почта"],
+                "telegram" => $user->telegram_id,
                 "phone" => $data["Телефон"] ?? null,
                 "name" => $data["Имя"] ?? null,
             ];
