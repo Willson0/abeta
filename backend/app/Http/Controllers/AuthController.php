@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\authStoreRequest;
+use App\Http\Requests\AuthSubscribeRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
@@ -20,5 +21,26 @@ class AuthController extends Controller
     public function test (Request $request) {
         $cookie = Cookie::forever("admin", "somecookie");
         return response()->json(123)->withCookie($cookie);
+    }
+
+    public function subscribe (AuthSubscribeRequest $request) {
+        $data = $request->validated();
+
+        $uni = new UnisenderApi(env("UNISENDER_API"));
+        $data = $request->data;
+
+        $fields = [
+            "email" => $data["email"],
+            "Name" => $data["name"],
+        ];
+
+        $response = $uni->subscribe([
+            "list_ids" => (string) env("UNISENDER_LIST_ID"),
+            "fields" => $fields,
+            "double_optin" => 3,
+            "tags" => (string) "Рассылка",
+        ]);
+
+        return response()->json($response);
     }
 }

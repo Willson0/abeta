@@ -5,7 +5,8 @@ export default {
     name: "mailComponent",
     data () {
         return {
-
+            name: "",
+            email: "",
         }
     },
     props: {
@@ -15,37 +16,38 @@ export default {
         }
     },
     async mounted () {
-        let popup = document.querySelector (".services_popup");
-        popup.addEventListener("click", (ev) => {
-            if (ev.target.classList.contains("services_popup")) this.closePopup();
-        });
     },
     methods: {
         async sendData () {
             let div = document.createElement("div");
             div.classList.add("services_popup");
-            div.innerHTML = `<div class="services_popup_main mailPopup">
+            div.innerHTML = `<div style="padding-bottom:24px; background-color: #191919;" class="services_popup_main mailPopup">
                                     <div class="form_title">Экспертная рассылка<br>от ABETA Capital</div>
                                     <form @submit.prevent="sendData" class="webinar_registration_form">
                                         <div class="form_input">
                                             <label>Имя</label>
-                                            <input v-model="" type="text">
+                                            <input v-model="name" type="text">
                                         </div>
                                         <div class="form_input">
                                             <label>Почта</label>
-                                            <input v-model="" type="text">
+                                            <input v-model="email" type="text">
                                         </div>
-                                        <button>Подписаться</button>
+                                        <button @click="subscribe">Подписаться</button>
                                     </form>
                                     <div class="form_policy">Нажимая на кнопку, вы соглашаетесь <a>с политикой конфиденциальности</a></div>
                                 </div>`
             document.body.appendChild(div);
+            this.name = this.user.fullname;
 
             requestAnimationFrame(() => {
-                    document.body.style.overflow="hidden";
+                document.body.style.overflow="hidden";
 
-                    div.style.display = "flex";
-                    requestAnimationFrame(() => div.classList.add("active"));
+                div.style.display = "flex";
+                requestAnimationFrame(() => div.classList.add("active"));
+
+                div.addEventListener("click", (ev) => {
+                    if (ev.target.classList.contains("services_popup")) this.closePopup();
+                });
             })
 
             // await fetch (config.backend + "auth", {
@@ -66,6 +68,26 @@ export default {
             let popup = document.querySelector(".services_popup");
             popup.classList.remove("active");
             setTimeout(() => popup.style.display = "", 200);
+        },
+        async subscribe () {
+            if (!this.name) return alert ("Заполните поле \"Имя\"!");
+            if (!this.email) return alert ("Заполните поле \"Почта\"!");
+            if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(this.email)) return alert ("Неправильный формат почты!");
+
+            await fetch (config.backend + "auth/subscribe", {
+                method: "POST",
+                body: JSON.stringify({
+                    "initData": window.Telegram.WebApp.initData,
+                    "name": this.name,
+                    "email": this.email,
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then((response) => {
+                if (response.ok) this.user.expert_mailing = !this.user.expert_mailing;
+                this.closePopup();
+            })
         }
     }
 }
