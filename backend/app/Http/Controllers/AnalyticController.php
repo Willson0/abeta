@@ -64,8 +64,18 @@ class AnalyticController extends Controller
             if (AnalyticUser::where("analytic_id", $id)->where("user_id", $user->id)->exists())
                 $analytic["locked"] = 0;
 
-            $records = array_merge(AnalyticUser::where('user_id', $user->id)->get()->toArray(), UserWebinar::where('user_id', $user->id)->get()->toArray());
+            $records = UserWebinar::where('user_id', $user->id)->get();
             $foundFields = [];
+
+            foreach ($records as $record) {
+                $data = json_decode($record->data, true);
+
+                if (is_array($data)) {
+                    $foundFields = array_merge($foundFields, array_keys($data));
+                }
+            }
+
+            $records = AnalyticUser::where('user_id', $user->id)->get();
 
             foreach ($records as $record) {
                 $data = json_decode($record->data, true);
