@@ -52,7 +52,7 @@ class WebinarController extends Controller
             $foundFields[] = "Имя";
             if ($user->phone) $foundFields[] = "Телефон";
 
-            $webinar->fields = array_diff($webinar->fields, $foundFields);
+            $webinar->fields = json_encode(array_diff(json_decode($webinar->fields, true), $foundFields));
         }
         if (!$webinar["registered"] && !$request->cookie("admin")) unset($webinar["link"]);
 
