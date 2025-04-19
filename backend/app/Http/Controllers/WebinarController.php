@@ -40,7 +40,7 @@ class WebinarController extends Controller
                 $webinar["added_calendar"] = UserWebinar::where("webinar_id", $id)->where("user_id", $user->id)->first()->added_calendar;
             }
 
-            $records = array_merge(AnalyticUser::where('user_id', $user->id)->get(), UserWebinar::where('user_id', $user->id)->get());
+            $records = array_merge(AnalyticUser::where('user_id', $user->id)->get()->toArray(), UserWebinar::where('user_id', $user->id)->get()->toArray());
             $foundFields = [];
 
             foreach ($records as $record) {
