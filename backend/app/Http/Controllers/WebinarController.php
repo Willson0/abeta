@@ -38,6 +38,21 @@ class WebinarController extends Controller
                 $webinar["registered"] = true;
                 $webinar["added_calendar"] = UserWebinar::where("webinar_id", $id)->where("user_id", $user->id)->first()->added_calendar;
             }
+
+            $records = UserWebinar::where('user_id', $user->id)->get();
+            $foundFields = [];
+
+            foreach ($records as $record) {
+                $data = json_decode($record->data, true);
+
+                if (is_array($data)) {
+                    $foundFields = array_merge($foundFields, array_keys($data));
+                }
+            }
+            $foundFields[] = "Имя";
+            if ($user->phone) $foundFields[] = "Телефон";
+
+            $webinar->fields = array_diff($webinar->fields, $foundFields);
         }
         if (!$webinar["registered"] && !$request->cookie("admin")) unset($webinar["link"]);
 
