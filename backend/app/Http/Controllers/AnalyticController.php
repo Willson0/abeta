@@ -63,7 +63,24 @@ class AnalyticController extends Controller
             $user = User::where("telegram_id", $data["user"]["id"])->first();
             if (AnalyticUser::where("analytic_id", $id)->where("user_id", $user->id)->exists())
                 $analytic["locked"] = 0;
+
+            $records = array_merge(AnalyticUser::where('user_id', $user->id)->get(), UserWebinar::where('user_id', $user->id)->get());
+            $foundFields = [];
+
+            foreach ($records as $record) {
+                $data = json_decode($record->data, true);
+
+                if (is_array($data)) {
+                    $foundFields = array_merge($foundFields, array_keys($data));
+                }
+            }
+            $foundFields[] = "Имя";
+            if ($user->phone) $foundFields[] = "Телефон";
+
+            $analytic->fields = json_encode(array_values(array_diff(json_decode($analytic->fields, true), $foundFields)));
+            if (sizeof(array_diff(json_decode($analytic->fields, true), $foundFields)) == 0) $analytic->locked = 0;
         }
+
         $cookieparam = Cookie::get("admin");
         if ($cookieparam) {
             $cookie = AdminCookie::where("cookie", $cookieparam)->first();
@@ -73,7 +90,7 @@ class AnalyticController extends Controller
             }
         }
 
-        if ($analytic->locked == true) {
+        if ($analytic->locked) {
             $analytic->description = mb_substr($analytic->description, 0, 100) . "...";
             unset($analytic->pdf);
         }

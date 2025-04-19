@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WebinarStoreRequest;
 use App\Models\Analytic;
+use App\Models\AnalyticUser;
 use App\Models\User;
 use App\Models\UserWebinar;
 use App\Models\Webinar;
@@ -39,7 +40,7 @@ class WebinarController extends Controller
                 $webinar["added_calendar"] = UserWebinar::where("webinar_id", $id)->where("user_id", $user->id)->first()->added_calendar;
             }
 
-            $records = UserWebinar::where('user_id', $user->id)->get();
+            $records = array_merge(AnalyticUser::where('user_id', $user->id)->get(), UserWebinar::where('user_id', $user->id)->get());
             $foundFields = [];
 
             foreach ($records as $record) {
