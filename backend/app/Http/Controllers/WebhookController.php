@@ -1043,7 +1043,7 @@ class WebhookController extends Controller
                 }
 
                 $user["fullname"] = $message["text"];
-                $user["step"] = null;
+                $user["step"] = "";
 
                 $user->save();
                 utils::sendMessage($user->telegram_id, "ФИО было успешно добавлено!");
