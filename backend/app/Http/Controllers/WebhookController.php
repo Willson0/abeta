@@ -871,7 +871,7 @@ class WebhookController extends Controller
                     utils::answerData("Close", $request, $user);
 
                     $admin = Admin::where("telegram_id", $user->telegram_id)->first();
-                    $support = Support::where("admin_id", $admin->id)->first();
+                    $support = Support::where("admin_id", $admin->id)->where("closed", 0)->first();
 
                     $support->closed = 1;
                     $support->save();
@@ -1007,7 +1007,9 @@ class WebhookController extends Controller
                 Http::post($urlReaction, [
                     'chat_id' => $user->telegram_id,
                     "message_id" => $message["message_id"],
-                    "reaction" => ["✅"],
+                    "reaction" => [
+                        ["type" => "emoji", "emoji" =>  "👀"]
+                    ],
                 ]);
             }
             else if ($user->step === "send_phone") {
