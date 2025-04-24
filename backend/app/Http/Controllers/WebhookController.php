@@ -881,6 +881,9 @@ class WebhookController extends Controller
                     utils::returnToAdmin($menu, $user, "Администратор $user->fullname ($user->telegram_id) закрыл чат поддержки.");
                     utils::sendMessage($supUser->telegram_id, "Администратор $user->fullname ($user->telegram_id) закрыл чат поддержки.");
 
+                    $user->step = "";
+                    $user->save();
+
                     $supUser->step = "";
                     $supUser->save();
                 }
