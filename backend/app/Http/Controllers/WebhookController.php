@@ -900,6 +900,8 @@ class WebhookController extends Controller
                         $newuser->in_chat = 0;
                         $newuser->save();
 
+                        Log::critical("LEFT USER: " . $newuser);
+
                         if ($message["left_chat_member"]["id"] != $message["from"]["id"])
                             GroupLog::create([
                                 "telegram_id" => $message["left_chat_member"]["id"],
@@ -912,6 +914,8 @@ class WebhookController extends Controller
                         $newuser->chat_request = 0;
                         $newuser->in_chat = 1;
                         $newuser->save();
+
+                        Log::critical("ENTER USER: " . $newuser);
 
                         GroupLog::create ([
                             "telegram_id" => $message["new_chat_member"]["id"],

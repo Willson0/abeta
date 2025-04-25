@@ -20,7 +20,7 @@ class SupportController extends Controller
            "text" => $text,
         ]);
 
-        utils::sendAdmin("🔔 | Новое обращение по *консультации*!");
+        utils::sendAdmin("🔔 | Новое обращение по *консультации*!\n\nИнформация о пользователе:\nИмя: {$user->fullname}\nТелефон: {$user->phone}\nТелеграм ID: {$user->telegram_id}\n@{$user->username}");
 
         return response()->json($sup);
     }
