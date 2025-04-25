@@ -33,7 +33,8 @@ class VentureController extends Controller
             $status = 1;
 
             $sup = VentureDeal::where("user_id", $user->id)->where("processed", 1)->latest()->first();
-            if (Carbon::parse($sup->created_at) > Carbon::now()->subDay()) $status = -1;
+//            if (Carbon::parse($sup->created_at) > Carbon::now()->subDay()) $status = -1;
+            if (Carbon::parse($sup->created_at) > Carbon::now()) $status = -1;
         } else $status = 1;
 
         return response()->json($status);

@@ -23,7 +23,8 @@ class UserController extends Controller
             $user["support"] = 1;
 
             $sup = Support::where("user_id", $user["id"])->where("closed", 1)->latest()->first();
-            if (Carbon::parse($sup->created_at) > Carbon::now()->subDay()) $user["support"] = -1;
+//            if (Carbon::parse($sup->created_at) > Carbon::now()->subDay()) $user["support"] = -1;
+            if (Carbon::parse($sup->created_at) > Carbon::now()) $user["support"] = -1;
         }
         else $user["support"] = 1;
         // 1 - можно подавать заявку. 0 - не закрыта старая; -1 - идет кд
