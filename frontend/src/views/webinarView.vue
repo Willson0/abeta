@@ -122,6 +122,7 @@ export default {
                 return response.json();
             }).then((response) => {
                 this.webinar = response;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             })
         },
         copyLink () {
