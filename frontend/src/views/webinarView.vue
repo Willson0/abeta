@@ -123,8 +123,9 @@ export default {
             }).then((response) => {
                 this.webinar = response;
                 setTimeout(() => {
-                    document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
+                    // document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 300);
             })
         },
         copyLink () {
@@ -173,7 +174,7 @@ export default {
 
 <template>
     <div class="loading"></div>
-    <div class="webinar">
+    <div id="webinar" class="webinar">
         <div class="feed_webinar_image">
             <div class="feed_webinar_image_tags">
                 <div v-if="webinar.registered && isActual" style="background-color: #FF734C">Вы участвуете</div>

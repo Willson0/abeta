@@ -110,8 +110,9 @@ export default {
             }).then((response) => {
                 this.analytic = response;
                 setTimeout(() => {
-                    document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
+                    // document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 300);
             })
         },
         scrollToLock () {
