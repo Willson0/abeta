@@ -27,7 +27,7 @@ class AnalyticStoreRequest extends FormRequest
             "fields" => "required|array|min:1",
             "image" => "required|image|mimes:jpeg,png,jpg,gif,svg",
             "link" => "nullable|string",
-            "pdf" => "nullable",
+            'pdf' => 'nullable|file|mimetypes:application/pdf,application/octet-stream',
         ];
     }
 }

@@ -29,9 +29,14 @@ export default {
         this.fetchCategories();
     },
     methods: {
-        pdfChange (ev) {
+        pdfChange(ev) {
             const file = ev.target.files[0];
-            this.pdf = file || null;
+            if (file && (file.type === 'application/pdf' || file.name.endsWith('.pdf'))) {
+                this.pdf = file;
+            } else {
+                this.pdf = null;
+                alert('Допустимы только PDF-файлы');
+            }
         },
         togglePopup,
         async fetchCategories () {
