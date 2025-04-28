@@ -178,7 +178,7 @@ export default {
                     </div>
                     <input v-model="fields[field]" v-else type="text" :name="field">
                 </div>
-                <button>Зарегистрироваться</button>
+                <button>Получить доступ</button>
             </form>
             <div class="form_policy">
                 Нажимая на кнопку, вы соглашаетесь <a href="https://abeta.org/politics" target="_blank">с политикой конфиденциальности</a>
