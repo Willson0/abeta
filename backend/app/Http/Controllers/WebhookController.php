@@ -983,7 +983,8 @@ class WebhookController extends Controller
                     return response("", 200);
                 }
 
-                $support = Support::where("user_id", $user->id)->whereColumn("user_id", "!=", "admin_id")->whereNotNull("admin_id")->first();
+                $support = Support::where("user_id", $user->id)->where("closed", 0)
+                    ->whereColumn("user_id", "!=", "admin_id")->whereNotNull("admin_id")->first();
                 if (!$support) {
                     $admin = Admin::where("telegram_id", $user->telegram_id)->first();
                     if (!$admin) {
@@ -992,7 +993,7 @@ class WebhookController extends Controller
                         return response("", 200);
                     }
 
-                    $support = Support::where("admin_id", $admin->id)->first();
+                    $support = Support::where("admin_id", $admin->id)->where("closed", 0)->first();
                     if (!$support) utils::returnToAdmin($menu, $user, "Нет активных вопросов в чат поддержки");
 
                     utils::sendMessage($support->user->telegram_id, "Сообщение от администратора $user->fullname ($user->telegram_id):\n\n{$message["text"]}");
