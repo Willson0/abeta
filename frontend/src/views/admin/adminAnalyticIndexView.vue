@@ -171,7 +171,7 @@ export default {
             if (this.pdf) formData.append("pdf", this.pdf);
 
             for (const [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
+                console.log(`${key}: ${value.name} (${value.size} bytes)`);
             }
 
             console.log('File info:', {
