@@ -109,7 +109,9 @@ export default {
                 return response.json();
             }).then((response) => {
                 this.analytic = response;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(() => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 100);
             })
         },
         scrollToLock () {
