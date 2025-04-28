@@ -168,6 +168,8 @@ class AnalyticController extends Controller
         $data = $request->validated();
         Storage::disk("public")->delete($analytic["image"]);
 
+        Log::critical($request->all());
+
         $ext = $request->file("image")->extension();
         $time = time();
         $newFile = "analytics/images/analytics_" . $time . ".$ext";
