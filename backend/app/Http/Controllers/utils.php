@@ -216,7 +216,7 @@ class utils
             Http::post($url, [
                 'chat_id' => $admin->telegram_id,
                 'text' => $message,
-                'parse_mode' => 'Markdown'
+//                'parse_mode' => 'Markdown'
             ]);
         }
     }

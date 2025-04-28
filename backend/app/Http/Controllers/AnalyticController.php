@@ -12,6 +12,7 @@ use App\Models\Webinar;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class AnalyticController extends Controller
@@ -22,6 +23,8 @@ class AnalyticController extends Controller
 
     public function store (AnalyticStoreRequest $request) {
         $data = $request->validated();
+
+        Log::critical($data->all());
 
         $ext = $data["image"]->getClientOriginalExtension();
         $time = time();

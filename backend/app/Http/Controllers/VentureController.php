@@ -18,7 +18,7 @@ class VentureController extends Controller
             "user_id" => $user->id,
         ]);
 
-        utils::sendAdmin("🔔 | Новая заявка на *венчурные сделки*!\n\nИнформация о пользователе:\nИмя: {$user->fullname}\nТелефон: {$user->phone}\nТелеграм ID: {$user->telegram_id}\n@{$user->username}");
+        utils::sendAdmin("🔔 | Новая заявка на венчурные сделки!\n\nИнформация о пользователе:\nИмя: {$user->fullname}\nТелефон: {$user->phone}\nТелеграм ID: {$user->telegram_id}\n@{$user->username}");
 
         return response()->json($venture);
     }
