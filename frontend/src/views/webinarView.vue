@@ -123,7 +123,7 @@ export default {
             }).then((response) => {
                 this.webinar = response;
                 setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 100);
             })
         },
