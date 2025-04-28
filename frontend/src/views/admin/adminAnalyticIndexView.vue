@@ -174,6 +174,12 @@ export default {
                 console.log(`${key}: ${value}`);
             }
 
+            console.log('File info:', {
+                name: this.pdf.name,
+                size: (this.pdf.size / 1024 / 1024).toFixed(2) + 'MB',
+                type: this.pdf.type
+            });
+
             await fetch (config.backend + "analytic/" + this.$route.params.id + "/edit", {
                 method: "POST",
                 credentials: "include",
