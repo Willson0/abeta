@@ -164,7 +164,7 @@ class AnalyticController extends Controller
         return response()->json($analytic);
     }
 
-    public function update (Analytic $analytic, AnalyticStoreRequest $request) {
+    public function update (Analytic $analytic, Request $request) {
         Log::critical($request->all());
         $data = $request->validated();
         Storage::disk("public")->delete($analytic["image"]);
