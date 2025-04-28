@@ -1049,7 +1049,7 @@ class WebhookController extends Controller
             else if ($user->step === "enter_full_name") {
                 $pattern = '/^[А-ЯЁ][а-яё]+(?: [А-ЯЁ][а-яё]+){1,2}$/u';
                 if (!preg_match($pattern, $message["text"])) {
-                    utils::sendMessage($user->telegram_id, "⚠️ Похоже, ФИО введено неверно. Пожалуйста, напишите фамилию, имя и отчество полностью");
+                    utils::sendMessage($user->telegram_id, "⚠️ Похоже, ФИО введено неверно. \nПожалуйста, напишите правильные данные");
                     return response()->json(["status" => "ok"], 200);
                 }
 
