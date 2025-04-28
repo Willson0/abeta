@@ -165,10 +165,10 @@ class AnalyticController extends Controller
     }
 
     public function update (Analytic $analytic, AnalyticStoreRequest $request) {
+        Log::critical($request->all());
         $data = $request->validated();
         Storage::disk("public")->delete($analytic["image"]);
 
-        Log::critical($request->all());
 
         $ext = $request->file("image")->extension();
         $time = time();
