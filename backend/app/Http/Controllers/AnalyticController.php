@@ -24,8 +24,6 @@ class AnalyticController extends Controller
     public function store (AnalyticStoreRequest $request) {
         $data = $request->validated();
 
-        Log::critical($data->all());
-
         $ext = $data["image"]->getClientOriginalExtension();
         $time = time();
         $newFile = "analytics/images/analytics_" . $time . ".$ext";
