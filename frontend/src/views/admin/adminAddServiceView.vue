@@ -142,10 +142,7 @@ export default {
             await fetch (config.backend + "service", {
                 method: "POST",
                 credentials: "include",
-                body: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                body: formData
             }).then((response) => {
                 if (response.status === 401) return this.$router.push({name: "adminlogin"});
                 else if (!response.ok) return alert ("Error");
