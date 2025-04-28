@@ -970,23 +970,24 @@ class WebhookController extends Controller
 
             $urlReaction = "https://api.telegram.org/bot$token/setMessageReaction";
             if ($user->step === "support") {
-                if ($message["text"] == "/close") {
-                    $response = Http::post($sendurl, [
-                        'chat_id' => $user->telegram_id,
-                        'text' => "Вы уверены, что хотите закрыть этот чат?",
-                        "reply_markup" => [
-                            "inline_keyboard" => [
-                                [["text" => "✅ Да", "callback_data" => "admin_support_close"]],
-                            ]
-                        ]
-                    ]);
-                    return response("", 200);
-                }
-
                 $support = Support::where("user_id", $user->id)->where("closed", 0)
                     ->whereColumn("user_id", "!=", "admin_id")->whereNotNull("admin_id")->first();
                 if (!$support) {
                     $admin = Admin::where("telegram_id", $user->telegram_id)->first();
+
+                    if ($message["text"] == "/close") {
+                        $response = Http::post($sendurl, [
+                            'chat_id' => $user->telegram_id,
+                            'text' => "Вы уверены, что хотите закрыть этот чат?",
+                            "reply_markup" => [
+                                "inline_keyboard" => [
+                                    [["text" => "✅ Да", "callback_data" => "admin_support_close"]],
+                                ]
+                            ]
+                        ]);
+                        return response("", 200);
+                    }
+
                     if (!$admin) {
                         $user->step = "";
                         $user->save();
