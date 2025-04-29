@@ -54,8 +54,9 @@ export default {
                 }
             let loading = document.querySelector(".loading")
             loading.style.opacity = "0";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             setTimeout(() => {
-                loading.style.display = "none"
+                loading.style.display = "none";
             }, 200);
         })
 
