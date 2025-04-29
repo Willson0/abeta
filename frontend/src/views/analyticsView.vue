@@ -26,6 +26,7 @@ export default {
 
         let backbutton = window.Telegram.WebApp.BackButton;
         this.backbutton = backbutton;
+        window.scrollTo({ top: 0});
 
         backbutton.show();
 
@@ -54,7 +55,7 @@ export default {
                 }
             let loading = document.querySelector(".loading")
             loading.style.opacity = "0";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0});
             setTimeout(() => {
                 loading.style.display = "none";
             }, 200);
