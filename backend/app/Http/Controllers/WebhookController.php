@@ -787,7 +787,8 @@ class WebhookController extends Controller
                     $supUser->save();
 
                     utils::sendMessage($user->telegram_id, "Вы начали чат с $supUser->fullname.\n\nВопрос от пользователя:\n$support->text\n\nИнформация о пользователе:\nИмя: {$supUser->fullname}\nТелефон: {$supUser->phone}\nТелеграм ID: {$supUser->telegram_id}\n@{$supUser->username}");
-                    utils::sendMessage($supUser->telegram_id, "С вами начал чат администратор $user->fullname ($user->telegram_id).\n\nВаш вопрос:\n$support->text");
+//                    utils::sendMessage($supUser->telegram_id, "С вами начал чат администратор $user->fullname ($user->telegram_id).\n\nВаш вопрос:\n$support->text");
+                    utils::sendMessage($supUser->telegram_id, "Добрый день!\nВаша заявку на консультация с экспертами ABETA принята.\n\nВ ближайшее время с вами свяжется $user->fullname");
                 }
                 else if (preg_match('/^admin_services_requests_\d+$/', $request["callback_query"]["data"])) {
                     $number = 0;

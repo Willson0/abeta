@@ -3,6 +3,7 @@ version: '3'
 services:
   nginx:
     image: nginx:latest
+    restart: always
     container_name: nginx
     ports:
       - "80:80"
@@ -22,6 +23,7 @@ services:
       context: .
       dockerfile: php/Dockerfile
     container_name: php
+    restart: always
     volumes:
       - ./backend:/var/www/laravel
     depends_on:
@@ -30,6 +32,7 @@ services:
 
   mysql:
     image: mysql:latest
+    restart: always
     container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -39,10 +42,13 @@ services:
     ports:
       - "8101:3306"
       - "8443:443"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
 
   frontend:
     image: node:20
+    restart: always
     container_name: frontend
     volumes:
       - ./frontend:/var/www/vue
